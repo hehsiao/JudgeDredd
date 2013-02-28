@@ -1,0 +1,2 @@
+serviceClass: com.google.gwt.judgedredd.client.GreetingService
+path: BFF503825B81B1C57F8BB3D84FBCFEF5.gwt.rpc

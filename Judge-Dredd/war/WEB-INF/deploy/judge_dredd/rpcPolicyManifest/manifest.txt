@@ -1,0 +1,3 @@
+# Module judge_dredd
+# RPC service class, partial path of RPC policy file
+com.google.gwt.judgedredd.client.GreetingService, BFF503825B81B1C57F8BB3D84FBCFEF5.gwt.rpc
