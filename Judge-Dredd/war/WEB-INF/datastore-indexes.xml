@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<datastore-indexes autoGenerate="true">
+	<datastore-index kind="Crime" ancestor="false" source="auto">
+		<property name="type" direction="asc" />
+		<property name="crimeDate" direction="asc" />
+		<property name="createdDate" direction="asc" />
+ 		<property name="approved" direction="asc" />
+ 	</datastore-index>
+</datastore-indexes>
