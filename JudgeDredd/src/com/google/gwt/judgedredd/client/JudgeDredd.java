@@ -45,7 +45,6 @@ public class JudgeDredd implements EntryPoint {
 		final Label errorLabel = new Label();
 
 		// We can add style names to widgets
-		// Test Changes
 		sendButton.addStyleName("sendButton");
 
 		// Add the nameField and sendButton to the RootPanel
