@@ -7,6 +7,7 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.Label;
 
 public class AdminService implements EntryPoint {
 
@@ -15,15 +16,17 @@ public class AdminService implements EntryPoint {
 		// TODO Auto-generated method stub
 		RootPanel rootPanel = RootPanel.get();
 		
-		FlexTable flexTable_Approval = new FlexTable();
-		rootPanel.add(flexTable_Approval, 0, 0);
-		flexTable_Approval.setSize("199px", "300px");
+		FlexTable flexTable = new FlexTable();
+		rootPanel.add(flexTable, 0, 0);
+		flexTable.setSize("450px", "450px");
+		
+		Label lblTitle = new Label("Dataset(s) Awaiting Approval");
+		flexTable.setWidget(0, 0, lblTitle);
 		
 		ListBox listBox_Approval = new ListBox();
+		flexTable.setWidget(1, 0, listBox_Approval);
 		listBox_Approval.setMultipleSelect(true);
-		flexTable_Approval.setWidget(0, 0, listBox_Approval);
 		listBox_Approval.setSize("191px", "290px");
-		listBox_Approval.setName("Dataset Awaiting for Approval");
 		listBox_Approval.addItem("January");
 		listBox_Approval.addItem("February");
 		listBox_Approval.addItem("March");
@@ -37,11 +40,9 @@ public class AdminService implements EntryPoint {
 		listBox_Approval.addItem("November");
 		listBox_Approval.addItem("December");
 		listBox_Approval.setVisibleItemCount(5);
-		flexTable_Approval.getCellFormatter().setVerticalAlignment(0, 0, HasVerticalAlignment.ALIGN_MIDDLE);
-		flexTable_Approval.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
 		
 		FlexTable flexTable_Button = new FlexTable();
-		rootPanel.add(flexTable_Button, 0, 306);
+		flexTable.setWidget(2, 0, flexTable_Button);
 		flexTable_Button.setSize("199px", "42px");
 		
 		Button btnApprove = new Button("Approve");
@@ -49,5 +50,11 @@ public class AdminService implements EntryPoint {
 		flexTable_Button.setWidget(0, 0, btnApprove);
 		flexTable_Button.getCellFormatter().setVerticalAlignment(0, 0, HasVerticalAlignment.ALIGN_MIDDLE);
 		flexTable_Button.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		flexTable.getCellFormatter().setVerticalAlignment(1, 0, HasVerticalAlignment.ALIGN_MIDDLE);
+		flexTable.getCellFormatter().setHorizontalAlignment(1, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		flexTable.getCellFormatter().setVerticalAlignment(2, 0, HasVerticalAlignment.ALIGN_MIDDLE);
+		flexTable.getCellFormatter().setHorizontalAlignment(2, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		flexTable.getCellFormatter().setVerticalAlignment(0, 0, HasVerticalAlignment.ALIGN_MIDDLE);
+		flexTable.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
 	}
 }
