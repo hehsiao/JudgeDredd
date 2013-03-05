@@ -17,11 +17,11 @@ public class CrimeParser {
 	public CrimeParser (){
 		
 		retrieveCrimeDataset ("http://www.henrychsiao.com/crime_2011.csv");
-		
+		retrieveCrimeDataset ("2010.csv");
 		
 	}
 
-	private void retrieveCrimeDataset(String link) {
+	private ArrayList<ArrayList<String>> retrieveCrimeDataset(String link) {
 		Scanner scanner = null;
 		try {
 			URL url = new URL(link);
@@ -41,6 +41,8 @@ public class CrimeParser {
 			if(scanner!= null)
 				scanner.close();
 		}
+		
+		return crimeList;
 	}
 	
 	private void moveCrimetoDataStore(){
@@ -52,7 +54,7 @@ public class CrimeParser {
 		    
 		    Date crimeDate = new Date(year, month, 1);
 		    String location = aCrime.get(3).replace("XX", "00");
-		    addCrime(crimeType + "\t" + crimeDate.getYear() + "\t" + crimeDate.getMonth() + "\t" + location);
+		    new Crime(crimeType, crimeDate, location);
 	
 		}
 	}

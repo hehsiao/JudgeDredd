@@ -37,10 +37,11 @@ public class CrimeServiceImpl extends RemoteServiceServlet implements CrimeServi
 	    }
 	 }
 
-	  private User getUser() {
-	    UserService userService = UserServiceFactory.getUserService();
+	private User getUser() {
+		UserService userService = UserServiceFactory.getUserService();
 	    return userService.getCurrentUser();
-	  }
+	}
+	  
 	/**
 	 * @return  associated persistence manager
 	 */
