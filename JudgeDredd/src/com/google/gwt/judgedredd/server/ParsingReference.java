@@ -1,74 +1,52 @@
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
-import java.util.List;
+import java.util.Scanner;
 
-import javax.jdo.PersistenceManager;
-
-import com.google.gwt.judgedredd.server.Crime;
-
-import au.com.bytecode.opencsv.CSVReader;
 
 public class ParsingReference {
 	
 	public static void main( String[] args ){
 		
-		String[] row = null;
-		// TODO: need to figure out how to retrieve link on server.
-		// TODO: setup http connections or sth
-		// TODO: current files are from ftp source, might need to move it to HTTP server on ugrad servers
-		/**
-		 *  REFERENCE FROM GitLab lab
-		 *  InputStream in = this.getClass().getClassLoader().getResourceAsStream("userlist.txt");
-		 *  might be useful
-		 */
+		ArrayList<ArrayList<String>> crimeList = new ArrayList<ArrayList<String>>();
 		
-		String csvFilename = "http://www.henrychsiao.com/crime_2011.csv";
-		
+		Scanner scanner = null;
 		try {
-			// csvReader parse the files, 1 at the end indicates to skip the first line (headings)
-			URL url = new URL(csvFilename);
-			CSVReader csvReader = new CSVReader(new FileReader(url.getFile()), ',', '\'', 1);
-			List content = csvReader.readAll();
-						
-			for (Object object : content) {
-			    row = (String[]) object;
-			    
-			    int year = Integer.parseInt(row[1]);
-			    int month = Integer.parseInt(row[2]);
-//			    System.out.println(row[1] + " " + row[2]);
-			    Date crimeDate = new Date(year, month, 1);
-			    String location = row[3].replace("XX", "00");
-//			    location = location + ", Vancouver, BC, Canada";
-			    System.out.println(row[0] + "\t" + crimeDate.getYear() + "\t" + crimeDate.getMonth() + "\t" + location);
-			    
-			    // TODO: setup persistant manager using factory
-			    /**
-			     * REFERENCE StockServiceImpl.java.
-			     * something along the lines of 
-			     * PersistenceManager pm = getPersistenceManager();
-			     * try {
-			     * 		pm.makePersistent(new Crime(row[0], crimeDate.getYear(), crimeDate.getMonth(), location));
-			     * 		} finally {
-			     * 		pm.close();
-			     * 	}
-			     */
-			    // inside a few different methods
-			    
+			URL url = new URL("http://www.henrychsiao.com/crime_2011.csv");
+			scanner = new Scanner(url.openStream());
+			while (scanner.hasNextLine()) {
+				String line = scanner.nextLine();
+				ArrayList<String> myList = new ArrayList<String>(); 
+				Collections.addAll(myList, line.split(",")); 
+//				System.out.println(myList.get(0) + " "+ myList.get(1) + " " + myList.get(2) + " " + myList.get(3));
+				if(!myList.get(0).equals("TYPE")){
+					crimeList.add(myList);
+				}
 			}
-			
-			
-			csvReader.close();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
+
+		}
+		catch(IOException ex) {
+			ex.printStackTrace();
+
+		} finally {
+			if(scanner!= null)
+				scanner.close();
+		}
+
+	
+		for (ArrayList<String> aCrime: crimeList) { // instead of doing all the schools, probably would should do ones that have a corresponding school profile
+	
+			String crimeType = aCrime.get(0);
+			int year = Integer.parseInt(aCrime.get(1));
+		    int month = Integer.parseInt(aCrime.get(2));
+		    
+		    Date crimeDate = new Date(year, month, 1);
+		    String location = aCrime.get(3).replace("XX", "00");
+		    System.out.println(crimeType + "\t" + crimeDate.getYear() + "\t" + crimeDate.getMonth() + "\t" + location);
+	
+		}
 	}
 
 	
