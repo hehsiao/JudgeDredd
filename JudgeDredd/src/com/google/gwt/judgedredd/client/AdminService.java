@@ -57,7 +57,6 @@ public class AdminService implements EntryPoint {
 		flexTable_Button.setSize("199px", "42px");
 		
 		Button btnApprove = new Button("Approve");
-		
 		btnApprove.addClickHandler(new ClickHandler()
 		{
 			public void onClick(ClickEvent event) 
@@ -93,7 +92,6 @@ public class AdminService implements EntryPoint {
 		flexTable.getCellFormatter().setHorizontalAlignment(1, 1, HasHorizontalAlignment.ALIGN_CENTER);
 		
 		Button btnRemoval = new Button("Removal");
-		
 		btnRemoval.addClickHandler(new ClickHandler() 
 		{
 			public void onClick(ClickEvent event) 
