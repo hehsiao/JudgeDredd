@@ -17,18 +17,14 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 public class CrimeServiceImpl extends RemoteServiceServlet implements CrimeService {
 
-	private static final PersistenceManagerFactory PMF =  JDOHelper.getPersistenceManagerFactory("transactions-optional");
+	private static final PersistenceManagerFactory PMF =  
+			JDOHelper.getPersistenceManagerFactory("transactions-optional");
 
-	public void addCrime(String crimeType, Date crimeDate, String location) throws NotLoggedInException{
+	public void addReport() throws NotLoggedInException{
 		checkLoggedIn();
 		PersistenceManager pm = getPersistenceManager();
-		try{
-			pm.makePersistent(new Crime(crimeType, crimeDate, location, getUser()));
-		}
-		finally {
-			pm.close();
-		}
-		
+		CrimeParser report = new CrimeParser(pm, getUser());
+	
 	}
 	
 	private void checkLoggedIn() throws NotLoggedInException {

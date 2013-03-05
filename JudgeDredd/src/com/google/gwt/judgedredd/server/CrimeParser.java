@@ -7,21 +7,30 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Scanner;
 
+import javax.jdo.PersistenceManager;
+
+import com.google.appengine.api.users.User;
+
+
+
 public class CrimeParser {
 
-	ArrayList<ArrayList<String>> crimeList; 
+	private ArrayList<ArrayList<String>> rawCrimeList; 
+	private ArrayList<Crime> crimeList;
+	private PersistenceManager pm;
+	private User judge;
 	
 	/**
 	 * Constructor
 	 */
-	public CrimeParser (){
-		
+	public CrimeParser (PersistenceManager pm, User user){
+		this.pm = pm;
+		this.judge = user;
 		retrieveCrimeDataset ("http://www.henrychsiao.com/crime_2011.csv");
-		retrieveCrimeDataset ("2010.csv");
 		
 	}
 
-	private ArrayList<ArrayList<String>> retrieveCrimeDataset(String link) {
+	private void retrieveCrimeDataset(String link) {
 		Scanner scanner = null;
 		try {
 			URL url = new URL(link);
@@ -30,7 +39,7 @@ public class CrimeParser {
 				String line = scanner.nextLine();
 				ArrayList<String> myList = new ArrayList<String>(); 
 				Collections.addAll(myList, line.split(",")); 
-				crimeList.add( myList);
+				rawCrimeList.add( myList);
 			}
 
 		}
@@ -42,21 +51,28 @@ public class CrimeParser {
 				scanner.close();
 		}
 		
-		return crimeList;
-	}
-	
-	private void moveCrimetoDataStore(){
-		for (ArrayList<String> aCrime: crimeList) {
+		
+		for (ArrayList<String> aCrime: rawCrimeList) {
 			
 			String crimeType = aCrime.get(0);
 			int year = Integer.parseInt(aCrime.get(1));
 		    int month = Integer.parseInt(aCrime.get(2));
 		    
+		    // default day field to 1, as no actual date is provided from dataset
 		    Date crimeDate = new Date(year, month, 1);
+		    // replaces XX with 00 in the location field
 		    String location = aCrime.get(3).replace("XX", "00");
-		    new Crime(crimeType, crimeDate, location);
+		    crimeList.add(new Crime(crimeType, crimeDate, location, judge));
 	
 		}
+		
+		try{
+			pm.makePersistentAll(crimeList);
+		}
+		finally {
+			pm.close();
+		}
+		
 	}
 		
 }
