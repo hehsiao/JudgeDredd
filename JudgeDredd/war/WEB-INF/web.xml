@@ -17,10 +17,14 @@
   </welcome-file-list>
 
   <servlet>
-    <servlet-name>CrimeServiceImpl</servlet-name>
+    <servlet-name>crimeServlet</servlet-name>
     <servlet-class>com.google.gwt.judgedredd.server.CrimeServiceImpl</servlet-class>
   </servlet>
-
+  
+  <servlet-mapping>
+    <servlet-name>crimeServlet</servlet-name>
+    <url-pattern>/judgedredd/crimeservice</url-pattern>
+  </servlet-mapping>
 
   <servlet>
     <servlet-name>SystemServiceServlet</servlet-name>
