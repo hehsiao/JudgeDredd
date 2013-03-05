@@ -63,7 +63,8 @@ public class JudgeDredd implements EntryPoint {
 		Button btnParse = new Button("Parse Data");
 		btnParse.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				crimeService.addReport(new AsyncCallback<Void>() {
+				System.out.println("BUTTON PRESSED");
+				crimeService.addReport("Test", new AsyncCallback<Void>() {
 				      public void onFailure(Throwable error) {
 				         System.out.println("Failed");
 				      }

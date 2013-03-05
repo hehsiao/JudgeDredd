@@ -20,8 +20,8 @@ public class CrimeServiceImpl extends RemoteServiceServlet implements CrimeServi
 	private static final PersistenceManagerFactory PMF =  
 			JDOHelper.getPersistenceManagerFactory("transactions-optional");
 
-	public void addReport() throws NotLoggedInException{
-		checkLoggedIn();
+	public void addReport(String test) throws NotLoggedInException{
+		System.out.println(test);
 		PersistenceManager pm = getPersistenceManager();
 		CrimeParser report = new CrimeParser(pm, getUser());
 	

@@ -17,6 +17,12 @@
   </welcome-file-list>
 
   <servlet>
+    <servlet-name>CrimeServiceImpl</servlet-name>
+    <servlet-class>com.google.gwt.judgedredd.server.CrimeServiceImpl</servlet-class>
+  </servlet>
+
+
+  <servlet>
     <servlet-name>SystemServiceServlet</servlet-name>
     <servlet-class>com.google.api.server.spi.SystemServiceServlet</servlet-class>
     <init-param>
