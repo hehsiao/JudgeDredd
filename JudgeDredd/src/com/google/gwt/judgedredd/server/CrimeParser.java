@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Scanner;
 
 public class CrimeParser {
@@ -39,6 +40,20 @@ public class CrimeParser {
 		} finally {
 			if(scanner!= null)
 				scanner.close();
+		}
+	}
+	
+	private void moveCrimetoDataStore(){
+		for (ArrayList<String> aCrime: crimeList) {
+			
+			String crimeType = aCrime.get(0);
+			int year = Integer.parseInt(aCrime.get(1));
+		    int month = Integer.parseInt(aCrime.get(2));
+		    
+		    Date crimeDate = new Date(year, month, 1);
+		    String location = aCrime.get(3).replace("XX", "00");
+		    System.out.println(crimeType + "\t" + crimeDate.getYear() + "\t" + crimeDate.getMonth() + "\t" + location);
+	
 		}
 	}
 		

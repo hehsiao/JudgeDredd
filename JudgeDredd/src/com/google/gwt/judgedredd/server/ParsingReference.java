@@ -36,8 +36,7 @@ public class ParsingReference {
 		}
 
 	
-		for (ArrayList<String> aCrime: crimeList) { // instead of doing all the schools, probably would should do ones that have a corresponding school profile
-	
+		for (ArrayList<String> aCrime: crimeList) { 
 			String crimeType = aCrime.get(0);
 			int year = Integer.parseInt(aCrime.get(1));
 		    int month = Integer.parseInt(aCrime.get(2));
