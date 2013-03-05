@@ -29,6 +29,8 @@ public class Crime {
 	@Persistent
 	private Date crimeDate;
 	@Persistent
+	private String location;
+	@Persistent
 	private Date dateAdded;
 	@Persistent
 	private User judge; 
@@ -42,10 +44,11 @@ public class Crime {
 		this.dateAdded = new Date();
 	}
 	
-	public Crime(String type, Date crimeDate, User user){
+	public Crime(String type, Date crimeDate, String location, User user){
 		this();
 		this.crimeType = type;
 		this.crimeDate = crimeDate;
+		this.location = location;
 		this.judge = user;
 		this.approved = false;
 	}

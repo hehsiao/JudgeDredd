@@ -52,7 +52,7 @@ public class CrimeParser {
 		    
 		    Date crimeDate = new Date(year, month, 1);
 		    String location = aCrime.get(3).replace("XX", "00");
-		    System.out.println(crimeType + "\t" + crimeDate.getYear() + "\t" + crimeDate.getMonth() + "\t" + location);
+		    addCrime(crimeType + "\t" + crimeDate.getYear() + "\t" + crimeDate.getMonth() + "\t" + location);
 	
 		}
 	}
