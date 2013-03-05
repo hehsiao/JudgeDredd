@@ -17,6 +17,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
+
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
@@ -34,6 +35,8 @@ public class JudgeDredd implements EntryPoint {
 	 */
 	private final GreetingServiceAsync greetingService = GWT
 			.create(GreetingService.class);
+
+	private final CrimeServiceAsync crimeService = GWT.create(CrimeService.class);
 
 	/**
 	 * This is the entry point method.
@@ -60,6 +63,14 @@ public class JudgeDredd implements EntryPoint {
 		Button btnParse = new Button("Parse Data");
 		btnParse.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
+				crimeService.addReport(new AsyncCallback<Void>() {
+				      public void onFailure(Throwable error) {
+				         System.out.println("Failed");
+				      }
+				      public void onSuccess(Void ignore) {
+				    	  System.out.println("Success");
+				      }
+				    });
 			}
 		});
 		rootPanel.add(btnParse, 148, 143);
