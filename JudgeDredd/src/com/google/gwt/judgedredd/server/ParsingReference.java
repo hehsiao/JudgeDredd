@@ -2,6 +2,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.Date;
 import java.util.List;
 
@@ -18,19 +19,19 @@ public class ParsingReference {
 		String[] row = null;
 		// TODO: need to figure out how to retrieve link on server.
 		// TODO: setup http connections or sth
-		// TODO: current files are from ftp sourc, might need to move it to HTTP server on ugrad servers
+		// TODO: current files are from ftp source, might need to move it to HTTP server on ugrad servers
 		/**
 		 *  REFERENCE FROM GitLab lab
 		 *  InputStream in = this.getClass().getClassLoader().getResourceAsStream("userlist.txt");
 		 *  might be useful
 		 */
 		
-		String csvFilename = "crime_2011.csv";
+		String csvFilename = "http://www.henrychsiao.com/crime_2011.csv";
 		
 		try {
 			// csvReader parse the files, 1 at the end indicates to skip the first line (headings)
-			
-			CSVReader csvReader = new CSVReader(new FileReader(csvFilename), ',', '\'', 1);
+			URL url = new URL(csvFilename);
+			CSVReader csvReader = new CSVReader(new FileReader(url.getFile()), ',', '\'', 1);
 			List content = csvReader.readAll();
 						
 			for (Object object : content) {

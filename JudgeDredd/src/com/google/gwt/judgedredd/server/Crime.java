@@ -51,7 +51,7 @@ public class Crime {
 	}
 	
 	/**
-	 * Accessors for other classes
+	 * Getters for other classes
 	 */
 	
 	public Long getKey(){
@@ -77,6 +77,10 @@ public class Crime {
 	public boolean isApproved() {
 		return this.approved;
 	}
+	
+	/**
+	 * Setters
+	 */
 	
 	public void setApproval(){
 		this.approved = true;
