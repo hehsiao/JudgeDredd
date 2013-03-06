@@ -55,13 +55,12 @@ public class Login extends Composite {
 				if (textBoxUsername.getText().length() == 0 || textBoxPassword.getText().length() == 0) {
 					Window.alert("Username or password is empty."); 
 				}
-
-				if (textBoxUsername.getText().length() != 0 && textBoxPassword.getText().length() != 0 &&
-						(!textBoxUsername.getText().equals("admin") || !textBoxPassword.getText().equals("admin"))) {
-					Window.alert("Incorrect Username or password."); 
-				}
 				if (textBoxUsername.getText().equals("admin") && textBoxPassword.getText().equals("admin")) {
 					AdminPanel aPanel = AdminPanel.get();
+				}
+				if (textBoxUsername.getText().length() != 0 && textBoxPassword.getText().length() != 0 &&
+						(!textBoxUsername.getText().equals("admin") || !textBoxPassword.getText().equals("admin"))) {
+					UserPanel uPanel = UserPanel.get(); 
 				}
 				}
 		});

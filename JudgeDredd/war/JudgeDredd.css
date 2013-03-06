@@ -102,3 +102,18 @@ html>body .gwt-DecoratedTabBar {
   overflow: hidden;
   padding: 6px;
 }
+user {
+	color: orangered;
+	font-variant: normal;
+	font-size: 20px;
+	font-style: normal;
+	font-family: Arial;
+	font-weight: normal;
+}
+.user {
+	color: darkorange;
+	font-size: 18px;
+	font-style: normal;
+	font-family: Arial;
+	font-weight: normal;
+}
