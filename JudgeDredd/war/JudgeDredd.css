@@ -112,8 +112,13 @@ user {
 }
 .user {
 	color: darkorange;
+	margin: 1px;
 	font-size: 18px;
 	font-style: normal;
 	font-family: Arial;
 	font-weight: normal;
+	background-color: white;
+}
+.BackgroundColor-White {
+	background-color: white;
 }

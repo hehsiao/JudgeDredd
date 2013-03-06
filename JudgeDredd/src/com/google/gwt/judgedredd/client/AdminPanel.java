@@ -23,6 +23,7 @@ public class AdminPanel extends Composite {
 		
 		
 		FlexTable flexTable = new FlexTable();
+		flexTable.setStyleName("BackgroundColor-White");
 		rootPanel.add(flexTable, 10, 200);
 		flexTable.setSize("199px", "42px");
 		

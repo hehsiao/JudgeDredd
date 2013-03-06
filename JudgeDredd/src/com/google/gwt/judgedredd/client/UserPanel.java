@@ -21,14 +21,19 @@ public class UserPanel extends Composite {
 	public UserPanel() {
 		RootPanel rootPanel = RootPanel.get();
 		
-		Image image = new Image("Olympic_Henry.jpg");
-		rootPanel.add(image, 22, 235);
-		image.setSize("185px", "273px");
+		FlexTable flexTable = new FlexTable();
+		flexTable.setStyleName("user");
+		rootPanel.add(flexTable, 10, 140);
+		flexTable.setSize("428px", "442px");
 		
 		Label lblUserPanelIs = new Label("User Interface Coming Soon!");
+		flexTable.setWidget(2, 1, lblUserPanelIs);
 		lblUserPanelIs.setStyleName("user");
-		rootPanel.add(lblUserPanelIs, 22, 208);
-		lblUserPanelIs.setSize("261px", "34px");;  
+		lblUserPanelIs.setSize("261px", "35px");
+		
+		Image image = new Image("Olympic_Henry.jpg");
+		flexTable.setWidget(3, 1, image);
+		image.setSize("199px", "288px");;  
 									}
 
 	public static UserPanel get() {
