@@ -7,6 +7,7 @@ import javax.jdo.JDOObjectNotFoundException;
 import javax.jdo.PersistenceManager;
 import javax.jdo.PersistenceManagerFactory;
 import javax.jdo.Query;
+import java.util.List;
 
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
@@ -26,6 +27,26 @@ public class CrimeServiceImpl extends RemoteServiceServlet implements CrimeServi
 		CrimeParser report = new CrimeParser(pm, getUser());
 	
 	}
+	
+	public List<Crime> getMonthlyCrime(String specMonth) {
+		Query toBeApproved = pm.newQuery(Crime.class);
+		toBeApproved.setFilter("approved == false && month == sMonth");
+		toBeApproved.declareParameters("String sMonth");
+		
+		List<Crime> results = (List<Crime>) toBeApproved.execute(specMonth);
+		
+		return results;
+		// call with adminService using String specMonth parameter
+		
+		// iterate through results, pull fields for crimes out, cast into string, put each into flextable using setText("string")
+		// from HTMLTabl, the parent class for flexTable
+		
+	}
+
+
+
+	
+	
 	
 	private void checkLoggedIn() throws NotLoggedInException {
 	    if (getUser() == null) {
