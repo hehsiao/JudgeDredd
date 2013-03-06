@@ -29,6 +29,7 @@ public class CrimeServiceImpl extends RemoteServiceServlet implements CrimeServi
 	}
 	
 	public List<Crime> getMonthlyCrime(String specMonth) {
+		PersistenceManager pm = getPersistenceManager();
 		Query toBeApproved = pm.newQuery(Crime.class);
 		toBeApproved.setFilter("approved == false && month == sMonth");
 		toBeApproved.declareParameters("String sMonth");
