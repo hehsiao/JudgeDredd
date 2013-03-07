@@ -22,7 +22,7 @@ public class AdminPanel extends Composite {
 
 	public AdminPanel() {
 		RootPanel rootPanel = RootPanel.get();
-		rootPanel.setSize("665px", "780px");
+		rootPanel.setSize("600px", "600px");
 		
 		FlexTable flexTable_AdminReview = new FlexTable();
 		flexTable_AdminReview.setStyleName("BackgroundColor-White");

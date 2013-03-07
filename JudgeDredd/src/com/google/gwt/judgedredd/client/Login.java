@@ -24,7 +24,7 @@ public class Login extends Composite {
 		initWidget(verticalPanel);
 		verticalPanel.setSize("335px", "187px");
 		
-		Label lblSignInTo = new Label("Sign in to your account");
+		Label lblSignInTo = new Label("Citizens of Vancouver, this is Judge Dredd. Identify yourself: ");
 		lblSignInTo.setStyleName("gwt-Label-Login");
 		verticalPanel.add(lblSignInTo);
 		
