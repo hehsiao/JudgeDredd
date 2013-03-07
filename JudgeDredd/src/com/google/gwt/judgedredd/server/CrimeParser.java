@@ -25,6 +25,7 @@ public class CrimeParser {
 	 * Constructor
 	 */
 	public CrimeParser (PersistenceManager pm, User user){
+		System.out.println("CrimeParser Constructor created");
 		this.pm = pm;
 		this.judge = user;
 		storeCrimeList(retrieveCrimeDataset ("http://www.henrychsiao.com/crime_2011.csv"));
@@ -34,7 +35,7 @@ public class CrimeParser {
 	private ArrayList<ArrayList<String>> retrieveCrimeDataset(String link) {
 		// Array list of raw data from dataset
 		ArrayList<ArrayList<String>> crimeList = new ArrayList<ArrayList<String>>(); 
-		
+		System.out.println("Reading File");
 		Scanner scanner = null;
 		try {
 			URL url = new URL(link);
@@ -65,7 +66,7 @@ public class CrimeParser {
 	 * @param crimeList
 	 */
 	private void storeCrimeList(ArrayList<ArrayList<String>> crimeList) {
-		
+		System.out.println("Attempt to store data to datastore");
 		for (ArrayList<String> aCrime: crimeList) {
 			
 			String crimeType = aCrime.get(0);
@@ -81,6 +82,7 @@ public class CrimeParser {
 		}
 		
 		try{
+			System.out.println("make persistent call");
 			pm.makePersistentAll(crimeReport);
 		}
 		finally {
