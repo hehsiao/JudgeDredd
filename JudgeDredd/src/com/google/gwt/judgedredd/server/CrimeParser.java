@@ -17,7 +17,7 @@ public class CrimeParser {
 
 
 	// Array list of cleanup data in individual crimes
-	private ArrayList<Crime> crimeReport;
+	private ArrayList<Crime> crimeReport = new ArrayList<Crime>();
 	private PersistenceManager pm;
 	private User judge;
 	
@@ -44,7 +44,9 @@ public class CrimeParser {
 				String line = scanner.nextLine();
 				ArrayList<String> list = new ArrayList<String>(); 
 				Collections.addAll(list, line.split(",")); 
-				crimeList.add(list);
+				if(!list.get(0).equals("TYPE")){
+					crimeList.add(list);
+				}
 			}
 
 		}
@@ -77,7 +79,7 @@ public class CrimeParser {
 		    Date crimeDate = new Date(year, month, 1);
 		    // replaces XX with 00 in the location field
 		    String location = aCrime.get(3).replace("XX", "00");
-		    crimeReport.add(new Crime(crimeType, crimeDate, location, judge));
+		    crimeReport.add(new Crime(crimeType, crimeDate, location));
 	
 		}
 		
