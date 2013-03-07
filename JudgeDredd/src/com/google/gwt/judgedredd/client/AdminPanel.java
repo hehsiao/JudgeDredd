@@ -135,4 +135,3 @@ public class AdminPanel extends Composite {
 	    return APanel;
 	  }
 	}
-
