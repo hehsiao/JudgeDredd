@@ -15,14 +15,14 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextArea;
+import com.google.gwt.user.client.ui.ValueBoxBase.TextAlignment;
 
 public class AdminPanel extends Composite {
 	static AdminPanel APanel = new AdminPanel();
 
 	public AdminPanel() {
 		RootPanel rootPanel = RootPanel.get();
-		
-		
+		rootPanel.setSize("665px", "780px");
 		
 		FlexTable flexTable_AdminReview = new FlexTable();
 		flexTable_AdminReview.setStyleName("BackgroundColor-White");
@@ -30,9 +30,11 @@ public class AdminPanel extends Composite {
 		flexTable_AdminReview.setSize("666px", "364px");
 		
 		Label lblApproval = new Label("Dataset(s) Awaiting Approval");
+		lblApproval.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		flexTable_AdminReview.setWidget(0, 0, lblApproval);
 		
 		Label lblRemoval = new Label("Dataset(s) Awaiting Removal");
+		lblRemoval.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		flexTable_AdminReview.setWidget(0, 1, lblRemoval);
 		
 		final ListBox listBox_Approval = new ListBox();
@@ -120,15 +122,22 @@ public class AdminPanel extends Composite {
 		flexTable_DataDisplay.setSize("666px", "332px");
 		
 		Label lblDataDisplay = new Label("Approved Data Display");
+		lblDataDisplay.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		flexTable_DataDisplay.setWidget(0, 0, lblDataDisplay);
 		
 		TextArea textArea_DataDisplay = new TextArea();
+		textArea_DataDisplay.setAlignment(TextAlignment.CENTER);
 		flexTable_DataDisplay.setWidget(1, 0, textArea_DataDisplay);
-		textArea_DataDisplay.setSize("666px", "332px");
+		textArea_DataDisplay.setSize("666px", "300px");
 		flexTable_DataDisplay.getCellFormatter().setVerticalAlignment(0, 0, HasVerticalAlignment.ALIGN_MIDDLE);
 		flexTable_DataDisplay.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
 		flexTable_DataDisplay.getCellFormatter().setVerticalAlignment(1, 0, HasVerticalAlignment.ALIGN_MIDDLE);
 		flexTable_DataDisplay.getCellFormatter().setHorizontalAlignment(1, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		
+		Button btnRetrieveData = new Button("Retrieve Data");
+		flexTable_DataDisplay.setWidget(2, 0, btnRetrieveData);
+		flexTable_DataDisplay.getCellFormatter().setVerticalAlignment(2, 0, HasVerticalAlignment.ALIGN_MIDDLE);
+		flexTable_DataDisplay.getCellFormatter().setHorizontalAlignment(2, 0, HasHorizontalAlignment.ALIGN_CENTER);
 									}
 
 	public static AdminPanel get() {
