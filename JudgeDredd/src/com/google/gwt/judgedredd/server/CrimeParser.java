@@ -15,8 +15,9 @@ import com.google.appengine.api.users.User;
 
 public class CrimeParser {
 
-	private ArrayList<ArrayList<String>> rawCrimeList; 
-	private ArrayList<Crime> crimeList;
+
+	// Array list of cleanup data in individual crimes
+	private ArrayList<Crime> crimeReport;
 	private PersistenceManager pm;
 	private User judge;
 	
@@ -26,20 +27,23 @@ public class CrimeParser {
 	public CrimeParser (PersistenceManager pm, User user){
 		this.pm = pm;
 		this.judge = user;
-		retrieveCrimeDataset ("http://www.henrychsiao.com/crime_2011.csv");
+		storeCrimeList(retrieveCrimeDataset ("http://www.henrychsiao.com/crime_2011.csv"));
 		
 	}
 
-	private void retrieveCrimeDataset(String link) {
+	private ArrayList<ArrayList<String>> retrieveCrimeDataset(String link) {
+		// Array list of raw data from dataset
+		ArrayList<ArrayList<String>> crimeList = new ArrayList<ArrayList<String>>(); 
+		
 		Scanner scanner = null;
 		try {
 			URL url = new URL(link);
 			scanner = new Scanner(url.openStream());
 			while (scanner.hasNextLine()) {
 				String line = scanner.nextLine();
-				ArrayList<String> myList = new ArrayList<String>(); 
-				Collections.addAll(myList, line.split(",")); 
-				rawCrimeList.add( myList);
+				ArrayList<String> list = new ArrayList<String>(); 
+				Collections.addAll(list, line.split(",")); 
+				crimeList.add(list);
 			}
 
 		}
@@ -51,8 +55,18 @@ public class CrimeParser {
 				scanner.close();
 		}
 		
+		return crimeList;
 		
-		for (ArrayList<String> aCrime: rawCrimeList) {
+	}
+
+
+	/**
+	 * storeCrimeList cleans dataset and make data persistent
+	 * @param crimeList
+	 */
+	private void storeCrimeList(ArrayList<ArrayList<String>> crimeList) {
+		
+		for (ArrayList<String> aCrime: crimeList) {
 			
 			String crimeType = aCrime.get(0);
 			int year = Integer.parseInt(aCrime.get(1));
@@ -62,17 +76,16 @@ public class CrimeParser {
 		    Date crimeDate = new Date(year, month, 1);
 		    // replaces XX with 00 in the location field
 		    String location = aCrime.get(3).replace("XX", "00");
-		    crimeList.add(new Crime(crimeType, crimeDate, location, judge));
+		    crimeReport.add(new Crime(crimeType, crimeDate, location, judge));
 	
 		}
 		
 		try{
-			pm.makePersistentAll(crimeList);
+			pm.makePersistentAll(crimeReport);
 		}
 		finally {
 			pm.close();
 		}
-		
 	}
 		
 }
