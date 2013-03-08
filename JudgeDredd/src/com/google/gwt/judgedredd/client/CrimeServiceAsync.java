@@ -7,5 +7,5 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface CrimeServiceAsync {
 	public void addReport(String test, AsyncCallback<Void> async);
-	public void getMonthlyCrime(String specMonth, AsyncCallback<List<Crime>> async); 
+//	public void getMonthlyCrime(String specMonth, AsyncCallback<List<Crime>> async); 
 }

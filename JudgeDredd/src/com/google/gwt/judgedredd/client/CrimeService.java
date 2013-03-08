@@ -9,5 +9,5 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 @RemoteServiceRelativePath("crimeservice")
 public interface CrimeService extends RemoteService {
 	public void addReport(String test) throws NotLoggedInException;
-	public List<Crime> getMonthlyCrime(String specMonth);
+//	public List<Crime> getMonthlyCrime(String specMonth);
 }
