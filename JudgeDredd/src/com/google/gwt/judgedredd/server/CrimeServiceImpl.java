@@ -8,6 +8,8 @@ import javax.jdo.PersistenceManager;
 import javax.jdo.PersistenceManagerFactory;
 import javax.jdo.Query;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
@@ -15,10 +17,12 @@ import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gwt.judgedredd.client.CrimeService;
 import com.google.gwt.judgedredd.client.NotLoggedInException;
 import com.google.gwt.judgedredd.server.Crime;
+import com.google.gwt.judgedredd.server.CrimeServiceImpl;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 public class CrimeServiceImpl extends RemoteServiceServlet implements CrimeService {
 
+	private static final Logger LOG = Logger.getLogger(CrimeServiceImpl.class.getName());
 	private static final PersistenceManagerFactory PMF =  
 			JDOHelper.getPersistenceManagerFactory("transactions-optional");
 
@@ -29,6 +33,7 @@ public class CrimeServiceImpl extends RemoteServiceServlet implements CrimeServi
 		CrimeParser report = new CrimeParser(pm);
 	}
 
+	/*
 	public Crime[] getMonthlyCrimes(int month) throws NotLoggedInException {
 //	    checkLoggedIn();
 	    PersistenceManager pm = getPersistenceManager();
@@ -48,7 +53,7 @@ public class CrimeServiceImpl extends RemoteServiceServlet implements CrimeServi
 	    
 		return (Crime[]) crimes.toArray(new Crime[0]);
 	}
-
+*/
 	
 	
 	private void checkLoggedIn() throws NotLoggedInException {
