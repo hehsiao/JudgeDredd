@@ -47,15 +47,22 @@ public class CrimeServiceImpl extends RemoteServiceServlet implements CrimeServi
 	    	 q.declareParameters("Boolean f, int m");
 	    	 List<Crime> report = (List<Crime>) q.execute(false, month);
 	    	 for (Crime c : report) {
-	    	        crimes.add(c);
+	    		 	ClientCrime clientC = new ClientCrime();
+	    		 	clientC.setId(c.getKey());
+	    		 	clientC.setLocation(c.getLocation());
+	    		 	clientC.setCrimeDate(c.getCrimeDate());
+	    		 	clientC.setCrimeType(c.getType());
+	    		 	clientC.setDateAdded(c.getDateAdded());
+	    		 	clientC.setApproved(c.isApproved());
+	    	        crimes.add(clientC);
 	    	 }
 	    } finally {
 	        pm.close();
 	    }
 	    
-		return (Crime[]) crimes.toArray(new Crime[0]);
+		return (ClientCrime[]) crimes.toArray(new ClientCrime[0]);
 	}
-*/
+
 	
 	
 	private void checkLoggedIn() throws NotLoggedInException {
