@@ -8,6 +8,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 
 
+
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
@@ -23,7 +24,7 @@ public class JudgeDredd implements EntryPoint {
 		Button btnParse = new Button("Parse Data");
 		btnParse.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				System.out.println("BUTTON PRESSED");
+				
 				crimeService.addReport("Test", new AsyncCallback<Void>() {
 				      public void onFailure(Throwable error) {
 				         System.out.println("Failed");
