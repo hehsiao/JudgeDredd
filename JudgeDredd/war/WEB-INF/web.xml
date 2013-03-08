@@ -40,4 +40,15 @@
     <url-pattern>/_ah/spi/*</url-pattern>
   </servlet-mapping>
 
+  <servlet>
+    <servlet-name>loginService</servlet-name>
+    <servlet-class>com.google.gwt.judgedredd.server.LoginServiceImpl</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>loginService</servlet-name>
+    <url-pattern>/judgedredd/login</url-pattern>
+  </servlet-mapping>
+
+
 </web-app>

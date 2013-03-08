@@ -1,2 +1,3 @@
 # Module judgedredd
 # RPC service class, partial path of RPC policy file
+com.google.gwt.judgedredd.client.CrimeService, 07088EB19E2ABBE970395CCC3A941F78.gwt.rpc

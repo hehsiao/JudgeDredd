@@ -1,7 +1,6 @@
 package com.google.gwt.judgedredd.server;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 import javax.jdo.JDOHelper;
 import javax.jdo.JDOObjectNotFoundException;
@@ -23,16 +22,15 @@ public class CrimeServiceImpl extends RemoteServiceServlet implements CrimeServi
 	private static final PersistenceManagerFactory PMF =  
 			JDOHelper.getPersistenceManagerFactory("transactions-optional");
 
-
-	public void addReport(String test) throws NotLoggedInException{
-		System.out.println(test);
+	public void addReport() throws NotLoggedInException{
+		
+//		checkLoggedIn();
 		PersistenceManager pm = getPersistenceManager();
 		CrimeParser report = new CrimeParser(pm);
 	}
-	
-/*	
+
 	public Crime[] getMonthlyCrimes(int month) throws NotLoggedInException {
-	    checkLoggedIn();
+//	    checkLoggedIn();
 	    PersistenceManager pm = getPersistenceManager();
 	    List<Crime> crimes = new ArrayList<Crime>();
 	    
@@ -50,11 +48,13 @@ public class CrimeServiceImpl extends RemoteServiceServlet implements CrimeServi
 	    
 		return (Crime[]) crimes.toArray(new Crime[0]);
 	}
-*/
+
 	
 	
 	private void checkLoggedIn() throws NotLoggedInException {
+		System.out.println("checking users");
 	    if (getUser() == null) {
+	    	System.out.println("not logged in");
 	      throw new NotLoggedInException("Not logged in.");
 	    }
 	 }

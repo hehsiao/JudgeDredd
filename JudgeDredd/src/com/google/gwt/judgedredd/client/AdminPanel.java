@@ -61,7 +61,7 @@ public class AdminPanel extends Composite {
 			{
 				btnParseData.setEnabled(false);
 				
-				crimeService.addReport("Test", new AsyncCallback<Void>() 
+				crimeService.addReport(new AsyncCallback<Void>() 
 				{
 					public void onFailure(Throwable error) 
 					{
