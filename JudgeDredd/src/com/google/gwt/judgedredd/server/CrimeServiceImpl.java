@@ -1,5 +1,6 @@
 package com.google.gwt.judgedredd.server;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.jdo.JDOHelper;
@@ -14,40 +15,42 @@ import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gwt.judgedredd.client.CrimeService;
 import com.google.gwt.judgedredd.client.NotLoggedInException;
+import com.google.gwt.judgedredd.server.Crime;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 public class CrimeServiceImpl extends RemoteServiceServlet implements CrimeService {
 
 	private static final PersistenceManagerFactory PMF =  
 			JDOHelper.getPersistenceManagerFactory("transactions-optional");
-	
 
-	private PersistenceManager pm = getPersistenceManager();
 
 	public void addReport(String test) throws NotLoggedInException{
 		System.out.println(test);
+		PersistenceManager pm = getPersistenceManager();
 		CrimeParser report = new CrimeParser(pm);
 	}
 	
-	public List<Crime> getMonthlyCrime(String specMonth) {
-		PersistenceManager pm = getPersistenceManager();
-		Query toBeApproved = pm.newQuery(Crime.class);
-		toBeApproved.setFilter("approved == false && month == sMonth");
-		toBeApproved.declareParameters("String sMonth");
-		
-		List<Crime> results = (List<Crime>) toBeApproved.execute(specMonth);
-		
-		return results;
-		// call with adminService using String specMonth parameter
-		
-		// iterate through results, pull fields for crimes out, cast into string, put each into flextable using setText("string")
-		// from HTMLTabl, the parent class for flexTable
-		
+/*	
+	public Crime[] getMonthlyCrimes(int month) throws NotLoggedInException {
+	    checkLoggedIn();
+	    PersistenceManager pm = getPersistenceManager();
+	    List<Crime> crimes = new ArrayList<Crime>();
+	    
+	    try {
+	    	System.out.println("zzz");
+	    	Query q = pm.newQuery(Crime.class, "approved == f && crimeDate.getMonth() == m");
+	    	 q.declareParameters("Boolean f, int m");
+	    	 List<Crime> report = (List<Crime>) q.execute(false, month);
+	    	 for (Crime c : report) {
+	    	        crimes.add(c);
+	    	 }
+	    } finally {
+	        pm.close();
+	    }
+	    
+		return (Crime[]) crimes.toArray(new Crime[0]);
 	}
-
-
-
-	
+*/
 	
 	
 	private void checkLoggedIn() throws NotLoggedInException {

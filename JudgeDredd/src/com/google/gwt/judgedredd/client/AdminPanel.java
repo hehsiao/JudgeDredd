@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.judgedredd.server.Crime;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.ValueBoxBase.TextAlignment;
 
@@ -157,6 +158,22 @@ public class AdminPanel extends Composite {
 		flexTable_AdminReview.getCellFormatter().setHorizontalAlignment(7, 1, HasHorizontalAlignment.ALIGN_CENTER);
 		flexTable_AdminReview.getCellFormatter().setVerticalAlignment(6, 1, HasVerticalAlignment.ALIGN_MIDDLE);
 		flexTable_AdminReview.getCellFormatter().setHorizontalAlignment(6, 1, HasHorizontalAlignment.ALIGN_CENTER);
+		
+		btnRetrieveData.addClickHandler(new ClickHandler()
+		{
+			public void onClick(ClickEvent event) 
+			{
+				System.out.println("retrieving data");
+				
+				/*
+				Crime[] c = crimeService.getMonthlyCrimes(2, new AsyncCallback<Crime[]>() {
+								public void onFailure(Throwable error) {
+									System.out.println("failed to retrieve data");
+								}
+							}); */
+			}
+		});
+		
 									}
 
 	public static AdminPanel get() {
