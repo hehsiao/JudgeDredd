@@ -20,16 +20,17 @@ public class CrimeServiceImpl extends RemoteServiceServlet implements CrimeServi
 
 	private static final PersistenceManagerFactory PMF =  
 			JDOHelper.getPersistenceManagerFactory("transactions-optional");
+	
+
+	private PersistenceManager pm = getPersistenceManager();
 
 	public void addReport(String test) throws NotLoggedInException{
 		System.out.println(test);
-		PersistenceManager pm = getPersistenceManager();
 		CrimeParser report = new CrimeParser(pm, getUser());
 	
 	}
 	
 	public List<Crime> getMonthlyCrime(String specMonth) {
-		PersistenceManager pm = getPersistenceManager();
 		Query toBeApproved = pm.newQuery(Crime.class);
 		toBeApproved.setFilter("approved == false && month == sMonth");
 		toBeApproved.declareParameters("String sMonth");

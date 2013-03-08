@@ -76,7 +76,7 @@ public class CrimeParser {
 		    int month = Integer.parseInt(aCrime.get(2));
 		    
 		    // default day field to 1, as no actual date is provided from dataset
-		    Date crimeDate = new Date(year, month, 1);
+		    Date crimeDate = new Date(year-1900, month, 1);
 		    // replaces XX with 00 in the location field
 		    String location = aCrime.get(3).replace("XX", "00");
 		    crimeReport.add(new Crime(crimeType, crimeDate, location));
