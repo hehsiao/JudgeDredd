@@ -14,21 +14,20 @@ public class UserPanel extends Composite {
 		
 		FlexTable flexTable = new FlexTable();
 		flexTable.setStyleName("user");
-		rootPanel.add(flexTable, 10, 140);
-		flexTable.setSize("428px", "442px");
+		rootPanel.add(flexTable, 525, 300);
+		flexTable.setSize("300px", "300px");
 		
-		Label lblUserPanelIs = new Label("User Interface Coming Soon!");
+		Label lblUserPanelIs = new Label("The Law? I am the Law!");
 		flexTable.setWidget(2, 1, lblUserPanelIs);
 		lblUserPanelIs.setStyleName("user");
-		lblUserPanelIs.setSize("261px", "35px");
+		lblUserPanelIs.setSize("260px", "35px");
 		
 		Image image = new Image("Olympic_Henry.jpg");
 		flexTable.setWidget(3, 1, image);
-		image.setSize("199px", "288px");;  
+		image.setSize("140px", "188px");;  
 									}
 
 	public static UserPanel get() {
 	    return UPanel;
 	  }
-	}
-
+}
