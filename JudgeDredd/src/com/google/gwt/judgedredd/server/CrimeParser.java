@@ -11,6 +11,8 @@ import java.util.Scanner;
 import javax.jdo.PersistenceManager;
 
 import com.google.appengine.api.users.User;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 
 
 
@@ -81,7 +83,7 @@ public class CrimeParser {
 		    Calendar crimeDate = new GregorianCalendar(year, month-1, 1); // month-1 is to offset calendar
 		    // replaces XX with 00 in the location field
 		    String location = aCrime.get(3).replace("XX", "00");
-		    crimeReport.add(new Crime(crimeType, crimeDate, location));
+		    crimeReport.add(new Crime(crimeType, crimeDate, location, getUser()));
 	
 		}
 		
@@ -93,5 +95,11 @@ public class CrimeParser {
 			pm.close();
 		}
 	}
+	
+	private User getUser() {
+		UserService userService = UserServiceFactory.getUserService();
+		return userService.getCurrentUser();
+	}
+
 		
 }

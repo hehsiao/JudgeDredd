@@ -45,12 +45,12 @@ public class Crime {
 		this.dateAdded = new Date();
 	}
 	
-	public Crime(String type, Calendar crimeDate, String location){
+	public Crime(String type, Calendar crimeDate, String location, User user){
 		this();
 		this.crimeType = type;
 		this.crimeDate = crimeDate;
 		this.location = location;
-//		this.judge = user;
+		this.judge = user;
 		this.approved = false;
 	}
 	
