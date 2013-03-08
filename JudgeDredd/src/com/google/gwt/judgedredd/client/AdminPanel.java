@@ -55,7 +55,7 @@ public class AdminPanel extends Composite {
 		listBox_Approval.addItem("December");
 		listBox_Approval.setVisibleItemCount(5);
 		
-		Button btnParseData = new Button("Parse Data");
+		final Button btnParseData = new Button("Parse Data");
 		btnParseData.addClickHandler(new ClickHandler() 
 		{
 			public void onClick(ClickEvent event) 
@@ -71,6 +71,8 @@ public class AdminPanel extends Composite {
 				    	  System.out.println("Success");
 				    }
 				});
+				
+				btnParseData.setEnabled(false);
 		    }
 		});
 		
