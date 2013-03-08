@@ -10,6 +10,7 @@
 
 package com.google.gwt.judgedredd.server;
 
+import java.util.Calendar;
 import java.util.Date;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -27,7 +28,7 @@ public class Crime {
 	@Persistent
 	private String crimeType;
 	@Persistent
-	private Date crimeDate;
+	private Calendar crimeDate;
 	@Persistent
 	private String location;
 	@Persistent
@@ -44,7 +45,7 @@ public class Crime {
 		this.dateAdded = new Date();
 	}
 	
-	public Crime(String type, Date crimeDate, String location){
+	public Crime(String type, Calendar crimeDate, String location){
 		this();
 		this.crimeType = type;
 		this.crimeDate = crimeDate;
@@ -65,10 +66,17 @@ public class Crime {
 		return this.crimeType;
 	}
 	
-	public Date getCrimeDate(){
+	public Calendar getCrimeDate(){
 		return this.crimeDate;
 	}
 	
+	public int getCrimeMonth(){
+		return this.crimeDate.get(Calendar.MONTH)+1; // +1 to change to correct month
+	}
+	
+	public int getCrimeDay(){
+		return this.crimeDate.get(Calendar.DAY_OF_MONTH);
+	}
 	public Date getDateAdded() {
 		return this.dateAdded;
 	}

@@ -4,7 +4,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Scanner;
 
 import javax.jdo.PersistenceManager;
@@ -46,6 +47,7 @@ public class CrimeParser {
 				Collections.addAll(list, line.split(",")); 
 				if(!list.get(0).equals("TYPE")){
 					crimeList.add(list);
+					System.out.println(list.toString());
 				}
 			}
 
@@ -76,7 +78,7 @@ public class CrimeParser {
 		    int month = Integer.parseInt(aCrime.get(2));
 		    
 		    // default day field to 1, as no actual date is provided from dataset
-		    Date crimeDate = new Date(year-1900, month, 1);
+		    Calendar crimeDate = new GregorianCalendar(year, month-1, 1); // month-1 is to offset calendar
 		    // replaces XX with 00 in the location field
 		    String location = aCrime.get(3).replace("XX", "00");
 		    crimeReport.add(new Crime(crimeType, crimeDate, location));
