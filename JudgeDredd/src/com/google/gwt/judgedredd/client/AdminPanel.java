@@ -26,29 +26,8 @@ public class AdminPanel extends Composite {
 		
 		FlexTable flexTable_AdminReview = new FlexTable();
 		flexTable_AdminReview.setStyleName("BackgroundColor-White");
-		rootPanel.add(flexTable_AdminReview, 100, 10);
-		flexTable_AdminReview.setSize("666px", "364px");
-		
-		Button btnParseData = new Button("Parse Data");
-		btnParseData.addClickHandler(new ClickHandler() 
-		{
-			public void onClick(ClickEvent event) 
-			{
-				crimeService.addReport("Test", new AsyncCallback<Void>() 
-				{
-					public void onFailure(Throwable error) 
-					{
-				         System.out.println("Failed");
-				    }
-				    public void onSuccess(Void ignore) 
-				    {
-				    	  System.out.println("Success");
-				    }
-				});
-		    }
-		});
-		
-		flexTable_AdminReview.setWidget(0, 1, btnParseData);
+		rootPanel.add(flexTable_AdminReview, 115, 10);
+		flexTable_AdminReview.setSize("700px", "400px");
 		
 		Label lblApproval = new Label("Dataset(s) Awaiting Approval");
 		lblApproval.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
@@ -76,6 +55,27 @@ public class AdminPanel extends Composite {
 		listBox_Approval.addItem("December");
 		listBox_Approval.setVisibleItemCount(5);
 		
+		Button btnParseData = new Button("Parse Data");
+		btnParseData.addClickHandler(new ClickHandler() 
+		{
+			public void onClick(ClickEvent event) 
+			{
+				crimeService.addReport("Test", new AsyncCallback<Void>() 
+				{
+					public void onFailure(Throwable error) 
+					{
+				         System.out.println("Failed");
+				    }
+				    public void onSuccess(Void ignore) 
+				    {
+				    	  System.out.println("Success");
+				    }
+				});
+		    }
+		});
+		
+		flexTable_AdminReview.setWidget(2, 1, btnParseData);
+		
 		final ListBox listBox_Removal = new ListBox();
 		listBox_Removal.setMultipleSelect(true);
 		flexTable_AdminReview.setWidget(2, 2, listBox_Removal);
@@ -91,7 +91,7 @@ public class AdminPanel extends Composite {
 		flexTable_AdminReview.getCellFormatter().setHorizontalAlignment(2, 2, HasHorizontalAlignment.ALIGN_CENTER);
 		
 		Button btnApprove = new Button("Approve");
-		flexTable_AdminReview.setWidget(3, 0, btnApprove);
+		flexTable_AdminReview.setWidget(4, 0, btnApprove);
 		btnApprove.addClickHandler(new ClickHandler()
 		{
 			public void onClick(ClickEvent event) 
@@ -112,10 +112,10 @@ public class AdminPanel extends Composite {
 		
 		btnApprove.setText("Approve");
 		btnApprove.setSize("67", "30");
-		flexTable_AdminReview.getCellFormatter().setVerticalAlignment(3, 2, HasVerticalAlignment.ALIGN_MIDDLE);
-		flexTable_AdminReview.getCellFormatter().setHorizontalAlignment(3, 2, HasHorizontalAlignment.ALIGN_CENTER);
-		flexTable_AdminReview.getCellFormatter().setVerticalAlignment(3, 0, HasVerticalAlignment.ALIGN_MIDDLE);
-		flexTable_AdminReview.getCellFormatter().setHorizontalAlignment(3, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		flexTable_AdminReview.getCellFormatter().setVerticalAlignment(4, 2, HasVerticalAlignment.ALIGN_MIDDLE);
+		flexTable_AdminReview.getCellFormatter().setHorizontalAlignment(4, 2, HasHorizontalAlignment.ALIGN_CENTER);
+		flexTable_AdminReview.getCellFormatter().setVerticalAlignment(4, 0, HasVerticalAlignment.ALIGN_MIDDLE);
+		flexTable_AdminReview.getCellFormatter().setHorizontalAlignment(4, 0, HasHorizontalAlignment.ALIGN_CENTER);
 		
 		Button btnRemoval = new Button("Removal");
 		btnRemoval.addClickHandler(new ClickHandler() 
@@ -136,32 +136,28 @@ public class AdminPanel extends Composite {
 			}	// end onClick(ClickEven event)
 		});	// end btnRemoval.addClickHandler
 		
-		flexTable_AdminReview.setWidget(3, 2, btnRemoval);
-		flexTable_AdminReview.getCellFormatter().setVerticalAlignment(0, 1, HasVerticalAlignment.ALIGN_MIDDLE);
-		flexTable_AdminReview.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER);
-		
-		FlexTable flexTable_DataDisplay = new FlexTable();
-		rootPanel.add(flexTable_DataDisplay, 0, 395);
-		flexTable_DataDisplay.setSize("666px", "332px");
+		flexTable_AdminReview.setWidget(4, 2, btnRemoval);
+		flexTable_AdminReview.getCellFormatter().setVerticalAlignment(2, 1, HasVerticalAlignment.ALIGN_MIDDLE);
+		flexTable_AdminReview.getCellFormatter().setHorizontalAlignment(2, 1, HasHorizontalAlignment.ALIGN_CENTER);
 		
 		Label lblDataDisplay = new Label("Approved Data Display");
+		flexTable_AdminReview.setWidget(5, 1, lblDataDisplay);
 		lblDataDisplay.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-		flexTable_DataDisplay.setWidget(0, 0, lblDataDisplay);
-		lblDataDisplay.setWidth("600px");
+		lblDataDisplay.setWidth("200px");
+		flexTable_AdminReview.getCellFormatter().setVerticalAlignment(5, 1, HasVerticalAlignment.ALIGN_MIDDLE);
+		flexTable_AdminReview.getCellFormatter().setHorizontalAlignment(5, 1, HasHorizontalAlignment.ALIGN_CENTER);
 		
 		TextArea textArea_DataDisplay = new TextArea();
+		flexTable_AdminReview.setWidget(6, 1, textArea_DataDisplay);
 		textArea_DataDisplay.setAlignment(TextAlignment.CENTER);
-		flexTable_DataDisplay.setWidget(1, 0, textArea_DataDisplay);
 		textArea_DataDisplay.setSize("600px", "250px");
-		flexTable_DataDisplay.getCellFormatter().setVerticalAlignment(0, 0, HasVerticalAlignment.ALIGN_MIDDLE);
-		flexTable_DataDisplay.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
-		flexTable_DataDisplay.getCellFormatter().setVerticalAlignment(1, 0, HasVerticalAlignment.ALIGN_MIDDLE);
-		flexTable_DataDisplay.getCellFormatter().setHorizontalAlignment(1, 0, HasHorizontalAlignment.ALIGN_CENTER);
 		
 		Button btnRetrieveData = new Button("Retrieve Data");
-		flexTable_DataDisplay.setWidget(2, 0, btnRetrieveData);
-		flexTable_DataDisplay.getCellFormatter().setVerticalAlignment(2, 0, HasVerticalAlignment.ALIGN_MIDDLE);
-		flexTable_DataDisplay.getCellFormatter().setHorizontalAlignment(2, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		flexTable_AdminReview.setWidget(7, 1, btnRetrieveData);
+		flexTable_AdminReview.getCellFormatter().setVerticalAlignment(7, 1, HasVerticalAlignment.ALIGN_MIDDLE);
+		flexTable_AdminReview.getCellFormatter().setHorizontalAlignment(7, 1, HasHorizontalAlignment.ALIGN_CENTER);
+		flexTable_AdminReview.getCellFormatter().setVerticalAlignment(6, 1, HasVerticalAlignment.ALIGN_MIDDLE);
+		flexTable_AdminReview.getCellFormatter().setHorizontalAlignment(6, 1, HasHorizontalAlignment.ALIGN_CENTER);
 									}
 
 	public static AdminPanel get() {
