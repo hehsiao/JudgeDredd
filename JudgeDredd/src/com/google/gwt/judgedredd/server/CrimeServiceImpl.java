@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+import com.google.gwt.judgedredd.client.ClientCrime;
 import com.google.gwt.judgedredd.client.CrimeService;
 import com.google.gwt.judgedredd.client.NotLoggedInException;
 import com.google.gwt.judgedredd.server.Crime;
@@ -33,11 +34,15 @@ public class CrimeServiceImpl extends RemoteServiceServlet implements CrimeServi
 		CrimeParser report = new CrimeParser(pm);
 	}
 
+<<<<<<< HEAD
 	/*
 	public Crime[] getMonthlyCrimes(int month) throws NotLoggedInException {
+=======
+	public ClientCrime[] getMonthlyCrimes(int month) throws NotLoggedInException {
+>>>>>>> ClientCrime so that the client can see the data
 //	    checkLoggedIn();
 	    PersistenceManager pm = getPersistenceManager();
-	    List<Crime> crimes = new ArrayList<Crime>();
+	    List<ClientCrime> crimes = new ArrayList<ClientCrime>();
 	    
 	    try {
 	    	System.out.println("zzz");

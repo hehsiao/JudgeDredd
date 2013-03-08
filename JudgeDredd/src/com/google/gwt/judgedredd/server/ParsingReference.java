@@ -26,6 +26,7 @@ public class ParsingReference {
 				if(!myList.get(0).equals("TYPE")){
 					crimeList.add(myList);
 				}
+				System.out.println(myList);
 			}
 
 		}
@@ -45,7 +46,7 @@ public class ParsingReference {
 		    
 		    Date crimeDate = new Date(year, month, 1);
 		    String location = aCrime.get(3).replace("XX", "00");
-		    System.out.println(crimeType + "\t" + crimeDate.getYear() + "\t" + crimeDate.getMonth() + "\t" + location);
+//		    System.out.println(crimeType + "\t" + crimeDate.getYear() + "\t" + crimeDate.getMonth() + "\t" + location);
 	
 		}
 	}
