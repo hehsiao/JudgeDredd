@@ -19,7 +19,6 @@ public class AdminPanel extends Composite {
 	static AdminPanel APanel = new AdminPanel();
 	private final CrimeServiceAsync crimeService = GWT.create(CrimeService.class);
 
-	@SuppressWarnings("deprecation")
 	public AdminPanel() {
 		RootPanel rootPanel = RootPanel.get();
 		rootPanel.setSize("700px", "700px");
@@ -37,9 +36,8 @@ public class AdminPanel extends Composite {
 		lblRemoval.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		flexTable_AdminReview.setWidget(1, 2, lblRemoval);
 		
-		final ListBox listBox_Approval = new ListBox();
+		final ListBox listBox_Approval = new ListBox(true);
 		flexTable_AdminReview.setWidget(2, 0, listBox_Approval);
-		listBox_Approval.setMultipleSelect(true);
 		listBox_Approval.setSize("191px", "290px");
 		listBox_Approval.addItem("January");
 		listBox_Approval.addItem("February");
@@ -78,8 +76,7 @@ public class AdminPanel extends Composite {
 		
 		flexTable_AdminReview.setWidget(2, 1, btnParseData);
 		
-		final ListBox listBox_Removal = new ListBox();
-		listBox_Removal.setMultipleSelect(true);
+		final ListBox listBox_Removal = new ListBox(true);
 		flexTable_AdminReview.setWidget(2, 2, listBox_Removal);
 		listBox_Removal.setSize("191px", "290px");
 		listBox_Removal.setVisibleItemCount(5);
