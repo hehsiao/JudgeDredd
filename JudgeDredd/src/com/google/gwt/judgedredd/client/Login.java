@@ -24,7 +24,7 @@ public class Login extends Composite {
 		initWidget(verticalPanel);
 		verticalPanel.setSize("335px", "187px");
 		
-		Label lblSignInTo = new Label("Citizens of Vancouver, this is Judge Dredd. Identify yourself: ");
+		final Label lblSignInTo = new Label("Citizens of Vancouver, this is Judge Dredd. Identify yourself: ");
 		lblSignInTo.setStyleName("gwt-Label-Login");
 		verticalPanel.add(lblSignInTo);
 		
@@ -62,7 +62,7 @@ public class Login extends Composite {
 						(!textBoxUsername.getText().equals("admin") || !textBoxPassword.getText().equals("admin"))) {
 					UserPanel uPanel = UserPanel.get(); 
 				}
-				}
+			}
 		});
 		flexTable.setWidget(2, 1, btnSignIn);
 	}

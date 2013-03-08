@@ -24,6 +24,6 @@ public class AdminService implements EntryPoint {
 		RootPanel rootPanel = RootPanel.get();
 				
 		Login login_1 = new Login();
-		rootPanel.add(login_1, 576, 200);
+		rootPanel.add(login_1, 525, 150);
 	}
 }

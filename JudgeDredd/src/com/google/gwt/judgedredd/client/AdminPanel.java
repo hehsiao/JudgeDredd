@@ -124,11 +124,12 @@ public class AdminPanel extends Composite {
 		Label lblDataDisplay = new Label("Approved Data Display");
 		lblDataDisplay.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 		flexTable_DataDisplay.setWidget(0, 0, lblDataDisplay);
+		lblDataDisplay.setWidth("600px");
 		
 		TextArea textArea_DataDisplay = new TextArea();
 		textArea_DataDisplay.setAlignment(TextAlignment.CENTER);
 		flexTable_DataDisplay.setWidget(1, 0, textArea_DataDisplay);
-		textArea_DataDisplay.setSize("666px", "300px");
+		textArea_DataDisplay.setSize("600px", "250px");
 		flexTable_DataDisplay.getCellFormatter().setVerticalAlignment(0, 0, HasVerticalAlignment.ALIGN_MIDDLE);
 		flexTable_DataDisplay.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
 		flexTable_DataDisplay.getCellFormatter().setVerticalAlignment(1, 0, HasVerticalAlignment.ALIGN_MIDDLE);
