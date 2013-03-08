@@ -60,6 +60,8 @@ public class AdminPanel extends Composite {
 		{
 			public void onClick(ClickEvent event) 
 			{
+				btnParseData.setEnabled(false);
+				
 				crimeService.addReport("Test", new AsyncCallback<Void>() 
 				{
 					public void onFailure(Throwable error) 
@@ -71,8 +73,6 @@ public class AdminPanel extends Composite {
 				    	  System.out.println("Success");
 				    }
 				});
-				
-				btnParseData.setEnabled(false);
 		    }
 		});
 		
