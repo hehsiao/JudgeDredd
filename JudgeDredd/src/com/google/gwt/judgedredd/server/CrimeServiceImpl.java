@@ -34,12 +34,9 @@ public class CrimeServiceImpl extends RemoteServiceServlet implements CrimeServi
 		CrimeParser report = new CrimeParser(pm);
 	}
 
-<<<<<<< HEAD
-	/*
-	public Crime[] getMonthlyCrimes(int month) throws NotLoggedInException {
-=======
+
 	public ClientCrime[] getMonthlyCrimes(int month) throws NotLoggedInException {
->>>>>>> ClientCrime so that the client can see the data
+
 //	    checkLoggedIn();
 	    PersistenceManager pm = getPersistenceManager();
 	    List<ClientCrime> crimes = new ArrayList<ClientCrime>();
