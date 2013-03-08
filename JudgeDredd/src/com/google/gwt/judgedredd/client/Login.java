@@ -2,13 +2,9 @@ package com.google.gwt.judgedredd.client;
 
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HasVerticalAlignment;
-import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -56,10 +52,12 @@ public class Login extends Composite {
 					Window.alert("Username or password is empty."); 
 				}
 				if (textBoxUsername.getText().equals("admin") && textBoxPassword.getText().equals("admin")) {
+					@SuppressWarnings("unused")
 					AdminPanel aPanel = AdminPanel.get();
 				}
 				if (textBoxUsername.getText().length() != 0 && textBoxPassword.getText().length() != 0 &&
 						(!textBoxUsername.getText().equals("admin") || !textBoxPassword.getText().equals("admin"))) {
+					@SuppressWarnings("unused")
 					UserPanel uPanel = UserPanel.get(); 
 				}
 			}

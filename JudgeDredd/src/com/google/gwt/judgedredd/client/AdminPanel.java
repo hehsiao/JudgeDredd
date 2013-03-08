@@ -1,44 +1,65 @@
 package com.google.gwt.judgedredd.client;
 
-import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.ValueBoxBase.TextAlignment;
 
 public class AdminPanel extends Composite {
 	static AdminPanel APanel = new AdminPanel();
+	private final CrimeServiceAsync crimeService = GWT.create(CrimeService.class);
 
+	@SuppressWarnings("deprecation")
 	public AdminPanel() {
 		RootPanel rootPanel = RootPanel.get();
-		rootPanel.setSize("600px", "600px");
+		rootPanel.setSize("700px", "700px");
 		
 		FlexTable flexTable_AdminReview = new FlexTable();
 		flexTable_AdminReview.setStyleName("BackgroundColor-White");
-		rootPanel.add(flexTable_AdminReview, 0, 10);
+		rootPanel.add(flexTable_AdminReview, 100, 10);
 		flexTable_AdminReview.setSize("666px", "364px");
+		
+		Button btnParseData = new Button("Parse Data");
+		btnParseData.addClickHandler(new ClickHandler() 
+		{
+			public void onClick(ClickEvent event) 
+			{
+				crimeService.addReport("Test", new AsyncCallback<Void>() 
+				{
+					public void onFailure(Throwable error) 
+					{
+				         System.out.println("Failed");
+				    }
+				    public void onSuccess(Void ignore) 
+				    {
+				    	  System.out.println("Success");
+				    }
+				});
+		    }
+		});
+		
+		flexTable_AdminReview.setWidget(0, 1, btnParseData);
 		
 		Label lblApproval = new Label("Dataset(s) Awaiting Approval");
 		lblApproval.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-		flexTable_AdminReview.setWidget(0, 0, lblApproval);
+		flexTable_AdminReview.setWidget(1, 0, lblApproval);
 		
 		Label lblRemoval = new Label("Dataset(s) Awaiting Removal");
 		lblRemoval.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-		flexTable_AdminReview.setWidget(0, 1, lblRemoval);
+		flexTable_AdminReview.setWidget(1, 2, lblRemoval);
 		
 		final ListBox listBox_Approval = new ListBox();
-		flexTable_AdminReview.setWidget(1, 0, listBox_Approval);
+		flexTable_AdminReview.setWidget(2, 0, listBox_Approval);
 		listBox_Approval.setMultipleSelect(true);
 		listBox_Approval.setSize("191px", "290px");
 		listBox_Approval.addItem("January");
@@ -57,20 +78,20 @@ public class AdminPanel extends Composite {
 		
 		final ListBox listBox_Removal = new ListBox();
 		listBox_Removal.setMultipleSelect(true);
-		flexTable_AdminReview.setWidget(1, 1, listBox_Removal);
+		flexTable_AdminReview.setWidget(2, 2, listBox_Removal);
 		listBox_Removal.setSize("191px", "290px");
 		listBox_Removal.setVisibleItemCount(5);
+		flexTable_AdminReview.getCellFormatter().setVerticalAlignment(2, 0, HasVerticalAlignment.ALIGN_MIDDLE);
 		flexTable_AdminReview.getCellFormatter().setVerticalAlignment(1, 0, HasVerticalAlignment.ALIGN_MIDDLE);
-		flexTable_AdminReview.getCellFormatter().setVerticalAlignment(0, 0, HasVerticalAlignment.ALIGN_MIDDLE);
-		flexTable_AdminReview.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
 		flexTable_AdminReview.getCellFormatter().setHorizontalAlignment(1, 0, HasHorizontalAlignment.ALIGN_CENTER);
-		flexTable_AdminReview.getCellFormatter().setVerticalAlignment(0, 1, HasVerticalAlignment.ALIGN_MIDDLE);
-		flexTable_AdminReview.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER);
-		flexTable_AdminReview.getCellFormatter().setVerticalAlignment(1, 1, HasVerticalAlignment.ALIGN_MIDDLE);
-		flexTable_AdminReview.getCellFormatter().setHorizontalAlignment(1, 1, HasHorizontalAlignment.ALIGN_CENTER);
+		flexTable_AdminReview.getCellFormatter().setHorizontalAlignment(2, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		flexTable_AdminReview.getCellFormatter().setVerticalAlignment(1, 2, HasVerticalAlignment.ALIGN_MIDDLE);
+		flexTable_AdminReview.getCellFormatter().setHorizontalAlignment(1, 2, HasHorizontalAlignment.ALIGN_CENTER);
+		flexTable_AdminReview.getCellFormatter().setVerticalAlignment(2, 2, HasVerticalAlignment.ALIGN_MIDDLE);
+		flexTable_AdminReview.getCellFormatter().setHorizontalAlignment(2, 2, HasHorizontalAlignment.ALIGN_CENTER);
 		
 		Button btnApprove = new Button("Approve");
-		flexTable_AdminReview.setWidget(2, 0, btnApprove);
+		flexTable_AdminReview.setWidget(3, 0, btnApprove);
 		btnApprove.addClickHandler(new ClickHandler()
 		{
 			public void onClick(ClickEvent event) 
@@ -91,10 +112,10 @@ public class AdminPanel extends Composite {
 		
 		btnApprove.setText("Approve");
 		btnApprove.setSize("67", "30");
-		flexTable_AdminReview.getCellFormatter().setVerticalAlignment(2, 1, HasVerticalAlignment.ALIGN_MIDDLE);
-		flexTable_AdminReview.getCellFormatter().setHorizontalAlignment(2, 1, HasHorizontalAlignment.ALIGN_CENTER);
-		flexTable_AdminReview.getCellFormatter().setVerticalAlignment(2, 0, HasVerticalAlignment.ALIGN_MIDDLE);
-		flexTable_AdminReview.getCellFormatter().setHorizontalAlignment(2, 0, HasHorizontalAlignment.ALIGN_CENTER);
+		flexTable_AdminReview.getCellFormatter().setVerticalAlignment(3, 2, HasVerticalAlignment.ALIGN_MIDDLE);
+		flexTable_AdminReview.getCellFormatter().setHorizontalAlignment(3, 2, HasHorizontalAlignment.ALIGN_CENTER);
+		flexTable_AdminReview.getCellFormatter().setVerticalAlignment(3, 0, HasVerticalAlignment.ALIGN_MIDDLE);
+		flexTable_AdminReview.getCellFormatter().setHorizontalAlignment(3, 0, HasHorizontalAlignment.ALIGN_CENTER);
 		
 		Button btnRemoval = new Button("Removal");
 		btnRemoval.addClickHandler(new ClickHandler() 
@@ -115,7 +136,9 @@ public class AdminPanel extends Composite {
 			}	// end onClick(ClickEven event)
 		});	// end btnRemoval.addClickHandler
 		
-		flexTable_AdminReview.setWidget(2, 1, btnRemoval);
+		flexTable_AdminReview.setWidget(3, 2, btnRemoval);
+		flexTable_AdminReview.getCellFormatter().setVerticalAlignment(0, 1, HasVerticalAlignment.ALIGN_MIDDLE);
+		flexTable_AdminReview.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER);
 		
 		FlexTable flexTable_DataDisplay = new FlexTable();
 		rootPanel.add(flexTable_DataDisplay, 0, 395);
