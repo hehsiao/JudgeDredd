@@ -10,7 +10,6 @@
 
 package com.google.gwt.judgedredd.server;
 
-import java.util.Calendar;
 import java.util.Date;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -28,13 +27,13 @@ public class Crime {
 	@Persistent
 	private String crimeType;
 	@Persistent
-	private Calendar crimeDate;
+	private Date crimeDate;
 	@Persistent
 	private String location;
 	@Persistent
 	private Date dateAdded;
-	@Persistent
-	private User judge; 
+//	@Persistent
+//	private User judge; 
 	@Persistent
 	private Boolean approved;
 	
@@ -45,12 +44,12 @@ public class Crime {
 		this.dateAdded = new Date();
 	}
 	
-	public Crime(String type, Calendar crimeDate, String location, User user){
+	public Crime(String type, Date crimeDate, String location){
 		this();
 		this.crimeType = type;
 		this.crimeDate = crimeDate;
 		this.location = location;
-		this.judge = user;
+//		this.judge = user;
 		this.approved = false;
 	}
 	
@@ -66,24 +65,24 @@ public class Crime {
 		return this.crimeType;
 	}
 	
-	public Calendar getCrimeDate(){
+	public Date getCrimeDate(){
 		return this.crimeDate;
 	}
 	
 	public int getCrimeMonth(){
-		return this.crimeDate.get(Calendar.MONTH)+1; // +1 to change to correct month
+		return this.crimeDate.getMonth(); // +1 to change to correct month
 	}
 	
 	public int getCrimeDay(){
-		return this.crimeDate.get(Calendar.DAY_OF_MONTH);
+		return this.crimeDate.getDate();
 	}
 	public Date getDateAdded() {
 		return this.dateAdded;
 	}
 	
-	public User getJudge(){
-		return this.judge;
-	}
+//	public User getJudge(){
+//		return this.judge;
+//	}
 	
 	public boolean isApproved() {
 		return this.approved;

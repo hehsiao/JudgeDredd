@@ -26,7 +26,7 @@ public class CrimeServiceImpl extends RemoteServiceServlet implements CrimeServi
 
 	public void addReport(String test) throws NotLoggedInException{
 		System.out.println(test);
-		CrimeParser report = new CrimeParser(pm, getUser());
+		CrimeParser report = new CrimeParser(pm);
 	}
 	
 	public List<Crime> getMonthlyCrime(String specMonth) {

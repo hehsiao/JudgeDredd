@@ -7,3 +7,11 @@
 *.ear
 
 JudgeDredd/.gwt/.gwt-log
+
+JudgeDredd/war/WEB-INF/appengine-generated/local_db.bin
+
+JudgeDredd/war/WEB-INF/appengine-generated/datastore-indexes-auto.xml
+
+JudgeDredd/war/WEB-INF/appengine-generated/datastore-indexes-auto.xml
+
+JudgeDredd/war/WEB-INF/appengine-generated/datastore-indexes-auto.xml

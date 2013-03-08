@@ -19,18 +19,15 @@ public class CrimeParser {
 	// Array list of cleanup data in individual crimes
 	private ArrayList<Crime> crimeReport = new ArrayList<Crime>();
 	private PersistenceManager pm;
-	@SuppressWarnings("unused")
-	private User judge;
-	
+
 	/**
 	 * Constructor
 	 */
-	public CrimeParser (PersistenceManager pm, User user){
+	public CrimeParser (PersistenceManager pm){
 		System.out.println("CrimeParser Constructor created");
 		this.pm = pm;
-		this.judge = user;
 		storeCrimeList(retrieveCrimeDataset ("http://www.henrychsiao.com/crime_2011.csv"));
-		
+
 	}
 
 	private ArrayList<ArrayList<String>> retrieveCrimeDataset(String link) {
@@ -58,9 +55,9 @@ public class CrimeParser {
 			if(scanner!= null)
 				scanner.close();
 		}
-		
+
 		return crimeList;
-		
+
 	}
 
 
@@ -71,20 +68,20 @@ public class CrimeParser {
 	private void storeCrimeList(ArrayList<ArrayList<String>> crimeList) {
 		System.out.println("Attempt to store data to datastore");
 		for (ArrayList<String> aCrime: crimeList) {
-			
+
 			String crimeType = aCrime.get(0);
 			int year = Integer.parseInt(aCrime.get(1));
 		    int month = Integer.parseInt(aCrime.get(2));
-		    
+
 		    // default day field to 1, as no actual date is provided from dataset
 		    @SuppressWarnings("deprecation")
 			Date crimeDate = new Date(year-1900, month, 1);
 		    // replaces XX with 00 in the location field
 		    String location = aCrime.get(3).replace("XX", "00");
 		    crimeReport.add(new Crime(crimeType, crimeDate, location));
-	
+
 		}
-		
+
 		try{
 			System.out.println("make persistent call");
 			pm.makePersistentAll(crimeReport);
@@ -93,5 +90,5 @@ public class CrimeParser {
 			pm.close();
 		}
 	}
-		
+
 }
