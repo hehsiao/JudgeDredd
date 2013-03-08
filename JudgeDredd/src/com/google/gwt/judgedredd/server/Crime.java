@@ -61,10 +61,6 @@ public class Crime {
 		return this.id;
 	}
 	
-	public String getLocation(){
-		return this.location;
-	}
-	
 	public String getType(){
 		return this.crimeType;
 	}

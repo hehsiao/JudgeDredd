@@ -1,6 +1,5 @@
 package com.google.gwt.judgedredd.server;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 import javax.jdo.JDOHelper;
@@ -14,7 +13,6 @@ import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gwt.judgedredd.client.CrimeService;
-import com.google.gwt.judgedredd.server.Crime;
 import com.google.gwt.judgedredd.client.NotLoggedInException;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -31,26 +29,26 @@ public class CrimeServiceImpl extends RemoteServiceServlet implements CrimeServi
 		CrimeParser report = new CrimeParser(pm);
 	}
 	
-	public Crime[] getMonthlyCrime(int specMonth) throws NotLoggedInException {
-	    checkLoggedIn();
-	    System.out.println("zzz");
-	    List<Crime> result = new ArrayList<Crime>();
-	    try {
-	    	System.out.println("zzz2");
-	      /*Query q = pm.newQuery(Crime.class, "approved == false && crimeDate.getMonth() == sMonth");
-	      q.declareParameters("int sMonth");
-	      //q.setOrdering("createDate");
-	      List<Crime> report = (List<Crime>) q.execute(2);
-	      for (Crime c : report) {
-	        result.add(c);
-	      }*/
-	    } finally {
-	      pm.close();
-	    }
-	    return (Crime[]) result.toArray(new Crime[0]);
-	  }
+	public List<Crime> getMonthlyCrime(String specMonth) {
+		PersistenceManager pm = getPersistenceManager();
+		Query toBeApproved = pm.newQuery(Crime.class);
+		toBeApproved.setFilter("approved == false && month == sMonth");
+		toBeApproved.declareParameters("String sMonth");
+		
+		List<Crime> results = (List<Crime>) toBeApproved.execute(specMonth);
+		
+		return results;
+		// call with adminService using String specMonth parameter
+		
+		// iterate through results, pull fields for crimes out, cast into string, put each into flextable using setText("string")
+		// from HTMLTabl, the parent class for flexTable
+		
+	}
 
 
+
+	
+	
 	
 	private void checkLoggedIn() throws NotLoggedInException {
 	    if (getUser() == null) {
