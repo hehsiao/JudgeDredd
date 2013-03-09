@@ -1,6 +1,7 @@
 package com.google.gwt.judgedredd.server;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.jdo.JDOHelper;
 import javax.jdo.JDOObjectNotFoundException;
@@ -32,10 +33,11 @@ public class CrimeServiceImpl extends RemoteServiceServlet implements CrimeServi
 //		checkLoggedIn();
 		PersistenceManager pm = getPersistenceManager();
 		CrimeParser report = new CrimeParser(pm);
+
 	}
 
 
-	public ClientCrime[] getMonthlyCrimes(int month) throws NotLoggedInException {
+	public ClientCrime[] getMonthlyCrimes(int targetMonth) throws NotLoggedInException {
 
 //	    checkLoggedIn();
 	    PersistenceManager pm = getPersistenceManager();
@@ -43,19 +45,24 @@ public class CrimeServiceImpl extends RemoteServiceServlet implements CrimeServi
 
 	    try {
 	    	System.out.println("zzz");
-	    	Query q = pm.newQuery(Crime.class, "approved == f && crimeDate.getMonth() == m");
-	    	 q.declareParameters("Boolean f, int m");
-	    	 List<Crime> report = (List<Crime>) q.execute(false, month);
-	    	 for (Crime c : report) {
-	    		 	ClientCrime clientC = new ClientCrime();
-	    		 	clientC.setId(c.getKey());
-	    		 	clientC.setLocation(c.getLocation());
-	    		 	clientC.setCrimeDate(c.getCrimeDate());
-	    		 	clientC.setCrimeType(c.getType());
-	    		 	clientC.setDateAdded(c.getDateAdded());
-	    		 	clientC.setApproved(c.isApproved());
-	    	        crimes.add(clientC);
-	    	 }
+	    	Query q = pm.newQuery(Crime.class, "month == targetMonth && approved == f");
+	    	q.declareParameters("Integer targetMonth, Boolean f");
+	    	q.setOrdering("crimeType asc");
+	    	System.out.println("set new Query");
+	    	List<Crime> report = (List<Crime>) q.execute(targetMonth, false);
+	    	System.out.println("executed");
+	    	for (Crime c : report) {
+	    		ClientCrime clientC = new ClientCrime();
+	    		clientC.setLocation(c.getLocation());
+	    		clientC.setCrimeYear(c.getCrimeYear());
+	    		clientC.setCrimeMonth(c.getCrimeMonth());
+	    		clientC.setCrimeType(c.getType());
+	    		//	    		 	clientC.setDateAdded(c.getDateAdded());
+	    		clientC.setApproved(c.isApproved());
+	    		crimes.add(clientC);
+	    		System.out.println(c.getType() + ", " + c.getCrimeYear() + ", " + c.getCrimeMonth() + ", " + c.getLocation());
+	    	}
+	    	System.out.println("done printing list");
 	    } finally {
 	        pm.close();
 	    }
@@ -63,8 +70,10 @@ public class CrimeServiceImpl extends RemoteServiceServlet implements CrimeServi
 		return (ClientCrime[]) crimes.toArray(new ClientCrime[0]);
 	}
 
-
-
+//	public int getMonthlyCrimes(){
+//		
+//	}
+	
 	private void checkLoggedIn() throws NotLoggedInException {
 		System.out.println("checking users");
 	    if (getUser() == null) {
