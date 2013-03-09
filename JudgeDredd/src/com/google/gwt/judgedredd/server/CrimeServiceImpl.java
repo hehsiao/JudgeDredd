@@ -28,7 +28,7 @@ public class CrimeServiceImpl extends RemoteServiceServlet implements CrimeServi
 			JDOHelper.getPersistenceManagerFactory("transactions-optional");
 
 	public void addReport() throws NotLoggedInException{
-		
+
 //		checkLoggedIn();
 		PersistenceManager pm = getPersistenceManager();
 		CrimeParser report = new CrimeParser(pm);
@@ -40,7 +40,7 @@ public class CrimeServiceImpl extends RemoteServiceServlet implements CrimeServi
 //	    checkLoggedIn();
 	    PersistenceManager pm = getPersistenceManager();
 	    List<ClientCrime> crimes = new ArrayList<ClientCrime>();
-	    
+
 	    try {
 	    	System.out.println("zzz");
 	    	Query q = pm.newQuery(Crime.class, "approved == f && crimeDate.getMonth() == m");
@@ -59,12 +59,12 @@ public class CrimeServiceImpl extends RemoteServiceServlet implements CrimeServi
 	    } finally {
 	        pm.close();
 	    }
-	    
+
 		return (ClientCrime[]) crimes.toArray(new ClientCrime[0]);
 	}
 
-	
-	
+
+
 	private void checkLoggedIn() throws NotLoggedInException {
 		System.out.println("checking users");
 	    if (getUser() == null) {
@@ -77,7 +77,7 @@ public class CrimeServiceImpl extends RemoteServiceServlet implements CrimeServi
 		UserService userService = UserServiceFactory.getUserService();
 	    return userService.getCurrentUser();
 	}
-	  
+
 	/**
 	 * @return  associated persistence manager
 	 */

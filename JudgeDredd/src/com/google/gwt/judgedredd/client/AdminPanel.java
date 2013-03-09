@@ -16,6 +16,7 @@ import com.google.gwt.judgedredd.server.Crime;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.ValueBoxBase.TextAlignment;
 
+
 public class AdminPanel extends Composite {
 	static AdminPanel APanel = new AdminPanel();
 	private final CrimeServiceAsync crimeService = GWT.create(CrimeService.class);
@@ -165,16 +166,22 @@ public class AdminPanel extends Composite {
 			{
 				System.out.println("retrieving data");
 				
-				/*
-				Crime[] c = crimeService.getMonthlyCrimes(2, new AsyncCallback<Crime[]>() {
-								public void onFailure(Throwable error) {
-									System.out.println("failed to retrieve data");
-								}
-							}); */
+				
+				crimeService.getMonthlyCrimes(2, new AsyncCallback<ClientCrime[]> () {
+					public void onFailure(Throwable error) {
+						System.out.println("Failed");
+					}
+					public void onSuccess(ClientCrime[] crimeArray) {
+						ClientCrime[] c = crimeArray;
+						System.out.println(c.toString());
+					}
+				});
 			}
-		});
-		
-									}
+				
+			});
+
+			
+		}
 
 	public static AdminPanel get() {
 	    return APanel;

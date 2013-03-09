@@ -1,10 +1,10 @@
 package com.google.gwt.judgedredd.client;
 
-import java.util.Calendar;
+import java.io.Serializable;
 import java.util.Date;
 
 
-public class ClientCrime {
+public class ClientCrime implements Serializable {
 	private Long id;
 	private String crimeType;
 	private Date crimeDate;
@@ -13,7 +13,6 @@ public class ClientCrime {
 
 	private Boolean approved;
 	
-
 	
 	/**
 	 * Getters for other classes
@@ -36,15 +35,11 @@ public class ClientCrime {
 	}
 
 	public int getCrimeMonth(){
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(this.crimeDate);
-		return cal.get(Calendar.MONTH) + 1;
+		return crimeDate.getMonth();
 	}
 	
 	public int getCrimeDay(){
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(this.crimeDate);
-		return cal.get(Calendar.DAY_OF_MONTH);
+		return crimeDate.getDate();
 	}
 	
 	public Date getDateAdded() {
