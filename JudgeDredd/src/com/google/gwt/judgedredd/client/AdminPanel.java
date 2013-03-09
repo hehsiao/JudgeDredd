@@ -70,7 +70,8 @@ public class AdminPanel extends Composite {
 				    }
 				    public void onSuccess(Void ignore) 
 				    {
-				    	  System.out.println("Success");
+				    	// TODO: notify admin that the data is stored in UI
+				    	System.out.println("Success");
 				    }
 				});
 		    }
@@ -166,14 +167,14 @@ public class AdminPanel extends Composite {
 			{
 				System.out.println("retrieving data");
 				
-				
-				crimeService.getMonthlyCrimes(2, new AsyncCallback<ClientCrime[]> () {
+				// TODO: integrate selections of month and replace static "3"
+				crimeService.getMonthlyCrimes( 3, new AsyncCallback<ClientCrime[]> () {
 					public void onFailure(Throwable error) {
 						System.out.println("Failed");
 					}
 					public void onSuccess(ClientCrime[] crimeArray) {
-						ClientCrime[] c = crimeArray;
-						System.out.println(c.toString());
+						ClientCrime[] monthlyCrimes = crimeArray;
+						// TODO: Display list on UI
 					}
 				});
 			}
