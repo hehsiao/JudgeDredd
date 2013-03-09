@@ -26,7 +26,7 @@ public class CrimeParser {
 	public CrimeParser (PersistenceManager pm){
 		System.out.println("CrimeParser Constructor created");
 		this.pm = pm;
-		storeCrimeList(retrieveCrimeDataset ("http://www.henrychsiao.com/crime_2011.csv"));
+		storeCrimeList(retrieveCrimeDataset ("http://www.henrychsiao.com/crime_2010.csv"));
 
 	}
 
@@ -46,7 +46,6 @@ public class CrimeParser {
 					crimeList.add(list);
 				}
 			}
-
 		}
 		catch(IOException ex) {
 			ex.printStackTrace();
@@ -62,24 +61,36 @@ public class CrimeParser {
 
 
 	/**
-	 * storeCrimeList cleans dataset and make data persistent
+	 * storeCrimeList shuffle dataset, parse data into correct format.
+	 * takes the first 500 entries in the shuffle dataset and store it in datastore
+	 * 
 	 * @param crimeList
+	 * 
 	 */
 	private void storeCrimeList(ArrayList<ArrayList<String>> crimeList) {
+		
 		System.out.println("Attempt to store data to datastore");
+		
+		// Setup Data entry count
+		int count = 0;
+		Collections.shuffle(crimeList);
+		
 		for (ArrayList<String> aCrime: crimeList) {
 
 			String crimeType = aCrime.get(0);
 			int year = Integer.parseInt(aCrime.get(1));
 		    int month = Integer.parseInt(aCrime.get(2));
 
-		    // default day field to 1, as no actual date is provided from dataset
-		    @SuppressWarnings("deprecation")
-			Date crimeDate = new Date(year-1900, month, 1);
 		    // replaces XX with 00 in the location field
 		    String location = aCrime.get(3).replace("XX", "00");
-		    crimeReport.add(new Crime(crimeType, crimeDate, location));
-
+		    crimeReport.add(new Crime(crimeType, year, month, location));
+		    count++;
+		    
+		    // max entries from dataset
+		    if(count == 500){
+		    	break;
+		    }
+		    
 		}
 
 		try{
