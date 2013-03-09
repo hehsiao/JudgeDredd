@@ -7,7 +7,8 @@ import java.util.Date;
 public class ClientCrime implements Serializable {
 	private Long id;
 	private String crimeType;
-	private Date crimeDate;
+	private int year;
+	private int month;
 	private String location;
 	private Date dateAdded;
 
@@ -30,25 +31,17 @@ public class ClientCrime implements Serializable {
 		return this.crimeType;
 	}
 	
-	public Date getCrimeDate(){
-		return this.crimeDate;
-	}
-
-	public int getCrimeMonth(){
-		return crimeDate.getMonth();
+	public int getCrimeYear(){
+		return this.year;
 	}
 	
-	public int getCrimeDay(){
-		return crimeDate.getDate();
+	public int getCrimeMonth(){
+		return this.month;
 	}
 	
 	public Date getDateAdded() {
 		return this.dateAdded;
 	}
-	
-//	public User getJudge(){
-//		return this.judge;
-//	}
 	
 	public boolean isApproved() {
 		return this.approved;
@@ -70,10 +63,14 @@ public class ClientCrime implements Serializable {
 		this.crimeType = crimeType;
 	}
 
-	public void setCrimeDate(Date crimeDate) {
-		this.crimeDate = crimeDate;
+	public void setCrimeYear(int year){
+		this.year = year;
 	}
-
+	
+	public void setCrimeMonth(int month){
+		this.month = month;
+	}
+	
 	public void setLocation(String location) {
 		this.location = location;
 	}

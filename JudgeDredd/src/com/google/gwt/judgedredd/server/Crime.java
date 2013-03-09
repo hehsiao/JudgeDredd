@@ -28,13 +28,13 @@ public class Crime {
 	@Persistent
 	private String crimeType;
 	@Persistent
-	private Date crimeDate;
+	private Integer year;
+	@Persistent
+	private Integer month;
 	@Persistent
 	private String location;
 	@Persistent
 	private Date dateAdded;
-//	@Persistent
-//	private User judge; 
 	@Persistent
 	private Boolean approved;
 	
@@ -45,12 +45,12 @@ public class Crime {
 		this.dateAdded = new Date();
 	}
 	
-	public Crime(String type, Date crimeDate, String location){
+	public Crime(String type, int year, int month, String location){
 		this();
 		this.crimeType = type;
-		this.crimeDate = crimeDate;
+		this.year = year;
+		this.month = month;
 		this.location = location;
-//		this.judge = user;
 		this.approved = false;
 	}
 	
@@ -70,29 +70,17 @@ public class Crime {
 		return this.crimeType;
 	}
 	
-	public Date getCrimeDate(){
-		return this.crimeDate;
-	}
-
-	public int getCrimeMonth(){
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(this.crimeDate);
-		return cal.get(Calendar.MONTH) + 1;
+	public int getCrimeYear(){
+		return this.year;
 	}
 	
-	public int getCrimeDay(){
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(this.crimeDate);
-		return cal.get(Calendar.DAY_OF_MONTH);
+	public int getCrimeMonth(){
+		return this.month;
 	}
 	
 	public Date getDateAdded() {
 		return this.dateAdded;
 	}
-	
-//	public User getJudge(){
-//		return this.judge;
-//	}
 	
 	public boolean isApproved() {
 		return this.approved;
