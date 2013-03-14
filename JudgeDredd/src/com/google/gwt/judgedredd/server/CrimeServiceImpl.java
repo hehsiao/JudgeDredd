@@ -35,7 +35,7 @@ public class CrimeServiceImpl extends RemoteServiceServlet implements CrimeServi
 		CrimeParser report = new CrimeParser(pm);
 
 	}
-
+	
 
 	public ClientCrime[] getMonthlyCrimes(int targetMonth) throws NotLoggedInException {
 
@@ -57,7 +57,7 @@ public class CrimeServiceImpl extends RemoteServiceServlet implements CrimeServi
 	    		clientC.setCrimeYear(c.getCrimeYear());
 	    		clientC.setCrimeMonth(c.getCrimeMonth());
 	    		clientC.setCrimeType(c.getType());
-	    		//	    		 	clientC.setDateAdded(c.getDateAdded());
+	    		//	clientC.setDateAdded(c.getDateAdded());
 	    		clientC.setApproved(c.isApproved());
 	    		crimes.add(clientC);
 	    		System.out.println(c.getType() + ", " + c.getCrimeYear() + ", " + c.getCrimeMonth() + ", " + c.getLocation());
@@ -70,6 +70,18 @@ public class CrimeServiceImpl extends RemoteServiceServlet implements CrimeServi
 		return (ClientCrime[]) crimes.toArray(new ClientCrime[0]);
 	}
 
+	
+	public void approveCrimes(int targetMonth) throws NotLoggedInException {
+		ClientCrime[] crimesToBeApproved = getMonthlyCrimes(targetMonth);
+		for (ClientCrime c : crimesToBeApproved) {
+			c.setApproved(true);
+		}
+			
+	}
+	
+	
+	
+	
 //	public int getMonthlyCrimes(){
 //		
 //	}
