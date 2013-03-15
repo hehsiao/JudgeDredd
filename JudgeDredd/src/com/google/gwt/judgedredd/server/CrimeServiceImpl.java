@@ -53,7 +53,7 @@ public class CrimeServiceImpl extends RemoteServiceServlet implements CrimeServi
 			pm.close();
 		}
 	}
-
+	
 
 	public ClientCrime[] getCrimesByMonth(int[] targetMonths) throws NotLoggedInException {
 
@@ -91,10 +91,49 @@ public class CrimeServiceImpl extends RemoteServiceServlet implements CrimeServi
 			System.out.println(c.getType() + ", " + c.getCrimeYear() + ", " + c.getCrimeMonth() + ", " + c.getLocation());
 		}
 
+		return (ClientCrime[]) crimes.toArray(new ClientCrime[0]);
+	}
+	
+	public void approveCrimes(int[] targetMonth) throws NotLoggedInException {
+		ClientCrime[] crimesToBeApproved = getCrimesByMonth(targetMonth);
+		for (ClientCrime c : crimesToBeApproved) {
+			c.setApproved(true);
+		}
+			
+	}
+	
+	public ClientCrime[] getCertainCrimeType(String crimeType) throws NotLoggedInException {
+
+	    PersistenceManager pm = getPersistenceManager();
+	    List<ClientCrime> crimes = new ArrayList<ClientCrime>();
+
+	    try {
+	    	Query q = pm.newQuery(Crime.class, "crimeType == ct");
+	    	q.declareParameters("String ct");
+	    	q.setOrdering("crimeType asc");
+	    	System.out.println("set new Query");
+	    	List<Crime> report = (List<Crime>) q.execute(crimeType);
+	    	System.out.println("executed");
+	    	for (Crime c : report) {
+	    		ClientCrime clientC = new ClientCrime();
+	    		clientC.setLocation(c.getLocation());
+	    		clientC.setCrimeYear(c.getCrimeYear());
+	    		clientC.setCrimeMonth(c.getCrimeMonth());
+	    		clientC.setCrimeType(c.getType());
+	    		//	clientC.setDateAdded(c.getDateAdded());
+	    		clientC.setApproved(c.isApproved());
+	    		crimes.add(clientC);
+	    		System.out.println(c.getType() + ", " + c.getCrimeYear() + ", " + c.getCrimeMonth() + ", " + c.getLocation());
+	    	}
+	    	System.out.println("done printing list");
+	    } finally {
+	        pm.close();
+	    }
 
 		return (ClientCrime[]) crimes.toArray(new ClientCrime[0]);
 	}
 
+	
 	private void checkLoggedIn() throws NotLoggedInException {
 		System.out.println("checking users");
 		if (getUser() == null) {
