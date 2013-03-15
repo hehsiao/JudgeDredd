@@ -11,7 +11,7 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 public interface CrimeService extends RemoteService {
 	public int[] addReport(String url) throws NotLoggedInException;
 	public ClientCrime[] getCrimesByMonth(int[] targetMonths) throws NotLoggedInException;
-	public void approveCrimes(int[] targetMonth) throws NotLoggedInException;
+	public void approveCrimes(int[] targetMonths) throws NotLoggedInException;
 	public ClientCrime[] getCertainCrimeType(String crimeType) throws NotLoggedInException;
 	// TODO: getMonthlyCrimesCount()
 	

@@ -3,11 +3,14 @@ package com.google.gwt.judgedredd.server;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import javax.jdo.Extent;
 import javax.jdo.JDOHelper;
 import javax.jdo.JDOObjectNotFoundException;
 import javax.jdo.PersistenceManager;
 import javax.jdo.PersistenceManagerFactory;
 import javax.jdo.Query;
+import javax.jdo.Transaction;
+
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,6 +18,7 @@ import java.util.logging.Logger;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+import com.google.gwt.dev.js.rhino.ObjToIntMap.Iterator;
 import com.google.gwt.judgedredd.client.ClientCrime;
 import com.google.gwt.judgedredd.client.CrimeService;
 import com.google.gwt.judgedredd.client.NotLoggedInException;
@@ -94,13 +98,31 @@ public class CrimeServiceImpl extends RemoteServiceServlet implements CrimeServi
 		return (ClientCrime[]) crimes.toArray(new ClientCrime[0]);
 	}
 	
-	public void approveCrimes(int[] targetMonth) throws NotLoggedInException {
-		ClientCrime[] crimesToBeApproved = getCrimesByMonth(targetMonth);
-		for (ClientCrime c : crimesToBeApproved) {
-			c.setApproved(true);
+	public void approveCrimes(int[] targetMonths) throws NotLoggedInException {
+		PersistenceManager pm = getPersistenceManager();
+		List<Crime> crimes = new ArrayList<Crime>();
+		Transaction tx = pm.currentTransaction();
+		try {
+			tx.begin();
+			Extent e = pm.getExtent(Crime.class, true);
+			java.util.Iterator iter=e.iterator();
+			while (iter.hasNext()) {
+				Crime c = (Crime) iter.next();
+				for (int month: targetMonths) {
+			    	if (c.isApproved() == false && c.getCrimeMonth() == month) {
+			    		c.setApproval();
+			    	}
+			    }
+				tx.commit();
+			}
 		}
-			
-	}
+		catch (Exception e) {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+		}
+	}	
+
 	
 	public ClientCrime[] getCertainCrimeType(String crimeType) throws NotLoggedInException {
 
