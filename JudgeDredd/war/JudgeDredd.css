@@ -11,7 +11,9 @@
  *      property: rule applies to all versions of IE
  *    }
  */
-
+h1 {
+	text-align:center
+}
 body, table td, select {
   font-family: Arial Unicode MS, Arial, sans-serif;
   font-size: small;
