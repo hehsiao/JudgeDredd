@@ -18,10 +18,11 @@ public class JudgeDredd implements EntryPoint {
 	public void onModuleLoad() 
 	{
 		TabPanel panel = new TabPanel();
+		panel.setAnimationEnabled(true);
 		FlowPanel flowpanel;
 		
 		flowpanel = new FlowPanel();
-		panel.add(flowpanel, "Home");
+		panel.add(flowpanel, "Map");
 
 		flowpanel = new FlowPanel();
 		flowpanel.add((IsWidget) new Login());
@@ -29,7 +30,7 @@ public class JudgeDredd implements EntryPoint {
 
 		panel.selectTab(0);
 
-		panel.setSize("500px", "250px");
+		panel.setSize("1300px", "1000px");
 		panel.addStyleName("table-center");
 		RootPanel.get("body").add(panel);
 		//RootPanel.get("body").remove(panel);
