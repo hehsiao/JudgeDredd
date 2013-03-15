@@ -99,13 +99,13 @@ public class CrimeParser {
 		// TODO Auto-generated method stub
 	    // clean address and prepare for geocoding
 	    // replaces XX with 00 in the location field
-	    location.replace("XX", "00");
+	    location = location.replace("XX", "00");
 	    // if location is an intersection, change "/" to "and"
-	    if(location.contains("/"))
-	    	location.replaceFirst("/", " and ");
+	    location = location.replace("/", "and");
 	    // adds Vancouver, BC at the end of address
 	    location += ", Vancouver, BC";
 	    
+	    System.out.println(location);
 	    return location;
 	}
 
