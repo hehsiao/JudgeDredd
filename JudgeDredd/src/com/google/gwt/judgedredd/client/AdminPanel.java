@@ -16,7 +16,6 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.judgedredd.server.Crime;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.ValueBoxBase.TextAlignment;
 
@@ -30,7 +29,7 @@ public class AdminPanel extends Composite {
 		rootPanel.setSize("700px", "700px");
 		
 		FlexTable flexTable_AdminReview = new FlexTable();
-		flexTable_AdminReview.setStyleName("BackgroundColor-White");
+		flexTable_AdminReview.setStyleName("BackgroundColor-Black");
 		rootPanel.add(flexTable_AdminReview, 115, 10);
 		flexTable_AdminReview.setSize("700px", "400px");
 		
