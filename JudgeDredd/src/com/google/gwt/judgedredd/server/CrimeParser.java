@@ -9,7 +9,6 @@ import java.util.Scanner;
 import com.google.appengine.api.users.User;
 
 
-
 public class CrimeParser {
 
 	private int MAX_NUMBER_OF_CRIMES = 500; // max number of crimes to store in datastore
@@ -75,9 +74,9 @@ public class CrimeParser {
 			int year = Integer.parseInt(aCrime.get(1));
 		    int month = Integer.parseInt(aCrime.get(2));
 
-		    // replaces XX with 00 in the location field
-		    String location = aCrime.get(3).replace("XX", "00");
-		    crimeReport.add(new Crime(crimeType, year, month, location));
+		    String cleanAddress = parseAddress(aCrime.get(3));
+   
+		    crimeReport.add(new Crime(crimeType, year, month, cleanAddress));
 		    monthlyCrimes[month-1]++;
 		    crimes_counter++;
 		    
@@ -96,6 +95,20 @@ public class CrimeParser {
 		return crimeReport;
 	}
 	
+	private String parseAddress(String location) {
+		// TODO Auto-generated method stub
+	    // clean address and prepare for geocoding
+	    // replaces XX with 00 in the location field
+	    location.replace("XX", "00");
+	    // if location is an intersection, change "/" to "and"
+	    if(location.contains("/"))
+	    	location.replaceFirst("/", " and ");
+	    // adds Vancouver, BC at the end of address
+	    location += ", Vancouver, BC";
+	    
+	    return location;
+	}
+
 	public int[] getCrimesCountByMonth(){
 		return monthlyCrimes;
 	}
