@@ -4,7 +4,7 @@ import com.google.gwt.judgedredd.client.ClientCrime;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface CrimeServiceAsync {
-	public void addReport(AsyncCallback<Void> async);
-	public void getMonthlyCrimes(int month, AsyncCallback<ClientCrime[]> async); 
+	public void addReport(String url, AsyncCallback<int[]> async);
+	public void getCrimesByMonth(int[] targetMonths, AsyncCallback<ClientCrime[]> async); 
 //	public void getMonthlyCrimesCount(AsyncCallback<Integer> async);
 }

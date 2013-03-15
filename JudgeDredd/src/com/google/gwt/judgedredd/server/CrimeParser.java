@@ -4,10 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.Scanner;
-
-import javax.jdo.PersistenceManager;
 
 import com.google.appengine.api.users.User;
 
@@ -15,22 +12,16 @@ import com.google.appengine.api.users.User;
 
 public class CrimeParser {
 
-
-	// Array list of cleanup data in individual crimes
-	private ArrayList<Crime> crimeReport = new ArrayList<Crime>();
-	private PersistenceManager pm;
-
+	private int MAX_NUMBER_OF_CRIMES = 500; // max number of crimes to store in datastore
+	private int[] monthlyCrimes = new int[12];
+	
 	/**
 	 * Constructor
 	 */
-	public CrimeParser (PersistenceManager pm){
-		System.out.println("CrimeParser Constructor created");
-		this.pm = pm;
-		storeCrimeList(retrieveCrimeDataset ("http://www.henrychsiao.com/crime_2010.csv"));
-
+	public CrimeParser (){
 	}
 
-	private ArrayList<ArrayList<String>> retrieveCrimeDataset(String link) {
+	public ArrayList<Crime> retrieveCrimeDataset(String link) {
 		// Array list of raw data from dataset
 		ArrayList<ArrayList<String>> crimeList = new ArrayList<ArrayList<String>>(); 
 		System.out.println("Reading File");
@@ -55,28 +46,31 @@ public class CrimeParser {
 				scanner.close();
 		}
 
-		return crimeList;
+		// OPTIONAL
+		ArrayList<Crime> report = selectCrimes(crimeList);
+		
+		return report;
 
 	}
 
-
 	/**
-	 * storeCrimeList shuffle dataset, parse data into correct format.
-	 * takes the first 500 entries in the shuffle dataset and store it in datastore
+	 * selectCrimes shuffles dataset, parse data into correct format.
+	 * takes the first "MAX_NUMBER_OF_CRIMES" entries in the shuffle dataset and store it in datastore
+	 * 
+	 * ** workaround for google app engine limit
+	 * ** developer can change the max number from the global constant at the top
 	 * 
 	 * @param crimeList
-	 * 
 	 */
-	private void storeCrimeList(ArrayList<ArrayList<String>> crimeList) {
+	public ArrayList<Crime> selectCrimes(ArrayList<ArrayList<String>> crimeList){
 		
-		System.out.println("Attempt to store data to datastore");
+		int crimes_counter = 0;
 		
-		// Setup Data entry count
-		int count = 0;
+		ArrayList<Crime> crimeReport = new ArrayList<Crime>();
+		
 		Collections.shuffle(crimeList);
 		
 		for (ArrayList<String> aCrime: crimeList) {
-
 			String crimeType = aCrime.get(0);
 			int year = Integer.parseInt(aCrime.get(1));
 		    int month = Integer.parseInt(aCrime.get(2));
@@ -84,22 +78,26 @@ public class CrimeParser {
 		    // replaces XX with 00 in the location field
 		    String location = aCrime.get(3).replace("XX", "00");
 		    crimeReport.add(new Crime(crimeType, year, month, location));
-		    count++;
+		    monthlyCrimes[month-1]++;
+		    crimes_counter++;
 		    
 		    // max entries from dataset
-		    if(count == 500){
+		    if(crimes_counter == MAX_NUMBER_OF_CRIMES){
 		    	break;
 		    }
 		    
 		}
-
-		try{
-			System.out.println("make persistent call");
-			pm.makePersistentAll(crimeReport);
+		
+		for(int i = 0; i < monthlyCrimes.length; i++){
+			int month = i+1;
+			System.out.println("Month " + month + " has " + monthlyCrimes[i] + " crimes.");
 		}
-		finally {
-			pm.close();
-		}
+		
+		return crimeReport;
 	}
-
+	
+	public int[] getCrimesCountByMonth(){
+		return monthlyCrimes;
+	}
+	
 }

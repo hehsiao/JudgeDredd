@@ -28,63 +28,84 @@ public class CrimeServiceImpl extends RemoteServiceServlet implements CrimeServi
 	private static final PersistenceManagerFactory PMF =  
 			JDOHelper.getPersistenceManagerFactory("transactions-optional");
 
-	public void addReport() throws NotLoggedInException{
+	public int[] addReport(String url) throws NotLoggedInException{
 
-//		checkLoggedIn();
+		//		checkLoggedIn();
+		
+		CrimeParser parser = new CrimeParser();
+		ArrayList<Crime> crimeReport = parser.retrieveCrimeDataset(url);
+		
+		// can be used as a seperate call
+		approveReport(crimeReport);
+		
+		return parser.getCrimesCountByMonth();
+	}
+	
+	public void approveReport (ArrayList<Crime> crimeReport){
+
 		PersistenceManager pm = getPersistenceManager();
-		CrimeParser report = new CrimeParser(pm);
-
+		// make persistent
+		try{
+			System.out.println("make persistent call");
+			pm.makePersistentAll(crimeReport);
+		}
+		finally {
+			pm.close();
+		}
 	}
 
 
-	public ClientCrime[] getMonthlyCrimes(int targetMonth) throws NotLoggedInException {
+	public ClientCrime[] getCrimesByMonth(int[] targetMonths) throws NotLoggedInException {
 
-//	    checkLoggedIn();
-	    PersistenceManager pm = getPersistenceManager();
-	    List<ClientCrime> crimes = new ArrayList<ClientCrime>();
+		//	    checkLoggedIn();
+		PersistenceManager pm = getPersistenceManager();
+		List<ClientCrime> crimes = new ArrayList<ClientCrime>();
 
-	    try {
-	    	System.out.println("zzz");
-	    	Query q = pm.newQuery(Crime.class, "month == targetMonth && approved == f");
-	    	q.declareParameters("Integer targetMonth, Boolean f");
-	    	q.setOrdering("crimeType asc");
-	    	System.out.println("set new Query");
-	    	List<Crime> report = (List<Crime>) q.execute(targetMonth, false);
-	    	System.out.println("executed");
-	    	for (Crime c : report) {
-	    		ClientCrime clientC = new ClientCrime();
-	    		clientC.setLocation(c.getLocation());
-	    		clientC.setCrimeYear(c.getCrimeYear());
-	    		clientC.setCrimeMonth(c.getCrimeMonth());
-	    		clientC.setCrimeType(c.getType());
-	    		//	    		 	clientC.setDateAdded(c.getDateAdded());
-	    		clientC.setApproved(c.isApproved());
-	    		crimes.add(clientC);
-	    		System.out.println(c.getType() + ", " + c.getCrimeYear() + ", " + c.getCrimeMonth() + ", " + c.getLocation());
-	    	}
-	    	System.out.println("done printing list");
-	    } finally {
-	        pm.close();
-	    }
+		try {
+			for(int month: targetMonths){
+				System.out.println("Set new query for " + month);
+				Query q = pm.newQuery(Crime.class, "month == targetMonth && approved == f");
+				q.declareParameters("Integer targetMonth, Boolean f");
+				q.setOrdering("crimeType asc");
+				List<Crime> report = (List<Crime>) q.execute(month, false);
+				System.out.println("executed");
+				for (Crime c : report) {
+					ClientCrime clientC = new ClientCrime();
+					clientC.setLocation(c.getLocation());
+					clientC.setCrimeYear(c.getCrimeYear());
+					clientC.setCrimeMonth(c.getCrimeMonth());
+					clientC.setCrimeType(c.getType());
+					clientC.setApproved(c.isApproved());
+					crimes.add(clientC);
+//					System.out.println(clientC.getType() + ", " + clientC.getCrimeYear() + ", " + clientC.getCrimeMonth() + ", " + clientC.getLocation() + " Size: " + crimes.size());
+				}
+//				System.out.println("done printing list");
+			}
+		} finally {
+			pm.close();
+		}
+		System.out.println("Full list of crimes returning");
+//		System.out.println("Test 1: " + crimes.get(0).getLocation());
+//		System.out.println("Test 2: " + crimes.get(crimes.size()-2).getLocation());
+		for (ClientCrime c: crimes){
+			System.out.println(c.getType() + ", " + c.getCrimeYear() + ", " + c.getCrimeMonth() + ", " + c.getLocation());
+		}
+
 
 		return (ClientCrime[]) crimes.toArray(new ClientCrime[0]);
 	}
 
-//	public int getMonthlyCrimes(){
-//		
-//	}
-	
 	private void checkLoggedIn() throws NotLoggedInException {
 		System.out.println("checking users");
-	    if (getUser() == null) {
-	    	System.out.println("not logged in");
-	      throw new NotLoggedInException("Not logged in.");
-	    }
-	 }
+		if (getUser() == null) {
+			System.out.println("not logged in");
+			throw new NotLoggedInException("Not logged in.");
+		}
+	}
 
 	private User getUser() {
 		UserService userService = UserServiceFactory.getUserService();
-	    return userService.getCurrentUser();
+		return userService.getCurrentUser();
 	}
 
 	/**
