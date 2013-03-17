@@ -72,5 +72,9 @@ public class Login extends Composite {
 		flexTable.getCellFormatter().setVerticalAlignment(2, 1, HasVerticalAlignment.ALIGN_MIDDLE);
 		flexTable.getCellFormatter().setHorizontalAlignment(2, 1, HasHorizontalAlignment.ALIGN_LEFT);
 	}
-
+	
+	public void hide() {
+		this.setVisible(false);
+	}
+	
 }
