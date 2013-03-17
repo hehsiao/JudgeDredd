@@ -34,6 +34,10 @@ public class Crime {
 	@Persistent
 	private String location;
 	@Persistent
+	private double latitude;
+	@Persistent
+	private double longitude;
+	@Persistent
 	private Date dateAdded;
 	@Persistent
 	private Boolean approved;
@@ -45,12 +49,14 @@ public class Crime {
 		this.dateAdded = new Date();
 	}
 	
-	public Crime(String type, int year, int month, String location){
+	public Crime(String type, int year, int month, String location, double latitude, double longitude){
 		this();
 		this.crimeType = type;
 		this.year = year;
 		this.month = month;
 		this.location = location;
+		this.latitude = latitude;
+		this.longitude = longitude;
 		this.approved = false;
 	}
 	
@@ -86,6 +92,14 @@ public class Crime {
 		return this.approved;
 	}
 	
+	public double getLatitude() {
+		return latitude;
+	}
+	
+	public double getLongitude() {
+		return longitude;
+	}
+	
 	/**
 	 * Setters
 	 */
@@ -93,5 +107,7 @@ public class Crime {
 	public void setApproval(){
 		this.approved = true;
 	}
+
+
 	
 }

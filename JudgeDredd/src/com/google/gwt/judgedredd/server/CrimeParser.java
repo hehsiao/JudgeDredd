@@ -75,8 +75,12 @@ public class CrimeParser {
 		    int month = Integer.parseInt(aCrime.get(2));
 
 		    String cleanAddress = parseAddress(aCrime.get(3));
+		    
+		    // TODO: variables for geocoder
+		    double latitude = 0.00;
+		    double longitude = 0.00;
    
-		    crimeReport.add(new Crime(crimeType, year, month, cleanAddress));
+		    crimeReport.add(new Crime(crimeType, year, month, cleanAddress, latitude, longitude));
 		    monthlyCrimes[month-1]++;
 		    crimes_counter++;
 		    
