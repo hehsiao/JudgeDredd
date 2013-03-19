@@ -2,7 +2,13 @@ package com.google.gwt.judgedredd.client;
 
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.RootLayoutPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabPanel;
+import com.google.maps.gwt.client.GoogleMap;
+import com.google.maps.gwt.client.LatLng;
+import com.google.maps.gwt.client.MapOptions;
+import com.google.maps.gwt.client.MapTypeId;
 
 public class UserPanel extends Composite
 {
@@ -27,6 +33,24 @@ public class UserPanel extends Composite
 		
 		flowPanel = new FlowPanel();
 		tabPanel.add(flowPanel, "Type");
+		
+		MapOptions options  = MapOptions.create() ;
+
+	    options.setCenter(LatLng.create( 49, 123 ));   
+	    options.setZoom( 6 ) ;
+	    options.setMapTypeId( MapTypeId.ROADMAP );
+	    options.setDraggable(true);
+	    options.setMapTypeControl(true);
+	    options.setScaleControl(true) ;
+	    options.setScrollwheel(true) ;
+
+	    SimplePanel widg = new SimplePanel() ;
+
+	    widg.setSize("100%","100%");
+
+	    GoogleMap theMap = GoogleMap.create( widg.getElement(), options ) ;
+
+	    RootLayoutPanel.get().add( widg ) ;
 		
 		
 	}	// end UserPanel()
