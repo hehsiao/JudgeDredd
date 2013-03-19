@@ -1,2 +1,0 @@
-serviceClass: com.google.gwt.judgedredd.client.CrimeService
-path: 07088EB19E2ABBE970395CCC3A941F78.gwt.rpc

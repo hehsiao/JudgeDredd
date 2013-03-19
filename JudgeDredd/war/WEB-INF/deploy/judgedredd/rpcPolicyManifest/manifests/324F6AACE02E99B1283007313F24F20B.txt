@@ -1,2 +1,0 @@
-serviceClass: com.google.gwt.judgedredd.client.LoginService
-path: EEE04C348572E55AEE9872F2D7E07D7C.gwt.rpc
