@@ -7,7 +7,6 @@ public class AdminService implements EntryPoint {
 
 	@Override
 	public void onModuleLoad() {
-		// TODO Auto-generated method stub
 		RootPanel rootPanel = RootPanel.get();
 				
 		Login login_1 = new Login();
