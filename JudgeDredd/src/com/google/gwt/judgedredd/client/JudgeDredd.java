@@ -9,9 +9,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabPanel;
 
 import com.google.gwt.judgedredd.client.LoginInfo;
@@ -23,12 +21,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.maps.gwt.client.GoogleMap;
-import com.google.maps.gwt.client.LatLng;
-import com.google.maps.gwt.client.MapOptions;
-import com.google.maps.gwt.client.MapTypeId;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -108,7 +101,7 @@ public class JudgeDredd implements EntryPoint {
 		FlowPanel flowpanel;
 
 		flowpanel = new FlowPanel();
-//		flowpanel.add((IsWidget) new UserPanel());
+		flowpanel.add((IsWidget) new Map());
 		panel.add(flowpanel, "Map");
 
 		flowpanel = new FlowPanel();
@@ -121,7 +114,6 @@ public class JudgeDredd implements EntryPoint {
 		panel.addStyleName("table-center");
 		RootPanel.get("body").add(panel);
 		//RootPanel.get("body").remove(panel);
-		loadMap();
 	}
 
 	/**
@@ -137,25 +129,6 @@ public class JudgeDredd implements EntryPoint {
 		RootPanel.get("body").add(new AdminPanel());	
 	}
 	
-	private void loadMap(){
-		MapOptions options  = MapOptions.create() ;
-
-	    options.setCenter(LatLng.create( +49.2505, -123.1119 ));   
-	    options.setZoom( 12 );
-	    options.setMapTypeId( MapTypeId.ROADMAP );
-	    options.setDraggable(true);
-	    options.setMapTypeControl(true);
-	    options.setScaleControl(true) ;
-	    options.setScrollwheel(true) ;
-
-	    SimplePanel mapPanel = new SimplePanel() ;
-
-	    mapPanel.setSize("100%","500px");
-
-	    final GoogleMap theMap = GoogleMap.create( mapPanel.getElement(), options ) ;
-	    RootPanel.get("map").add( mapPanel ) ;
-	}
-
 	private void handleError(Throwable error) {
 		Window.alert(error.getMessage());
 		if (error instanceof NotLoggedInException) {
