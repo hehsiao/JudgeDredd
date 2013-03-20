@@ -102,6 +102,7 @@ public class JudgeDredd implements EntryPoint {
 		FlowPanel flowpanel;
 
 		flowpanel = new FlowPanel();
+		flowpanel.add((IsWidget) new UserPanel());
 		panel.add(flowpanel, "Map");
 
 		flowpanel = new FlowPanel();
