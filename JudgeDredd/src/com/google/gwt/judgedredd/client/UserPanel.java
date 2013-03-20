@@ -51,6 +51,8 @@ public class UserPanel extends Composite
 
 	    final GoogleMap theMap = GoogleMap.create( mapPanel.getElement(), options ) ;
 	    RootLayoutPanel.get().add( mapPanel ) ;
+	    
+	    tabPanel.add(flowPanel, "Map");
 		
 		
 	}	// end UserPanel()
