@@ -189,13 +189,14 @@ public class AdminPanel extends Composite {
 				
 				// TODO: TEST CODES
 				// NEEDS TO BE CHANGED TO APPROVEDCRIMES INSTEAD
-				crimeService.getCrimesByMonth( monthsSelected , new AsyncCallback<ClientCrime[]> () {
+				int[] targetMonths = {2,3,4};
+				crimeService.approveCrimes(targetMonths, new AsyncCallback<Void> () 
+				{
 					public void onFailure(Throwable error) {
 						System.out.println("Failed");
 					}
-					public void onSuccess(ClientCrime[] crimeArray) {
-						ClientCrime[] monthlyCrimes = crimeArray;
-						// TODO: Display list on UI
+					public void onSuccess(Void ignore) {
+						System.out.println("success, able to approve");
 					}
 				});
 			}	// end onClick(ClickEven event)

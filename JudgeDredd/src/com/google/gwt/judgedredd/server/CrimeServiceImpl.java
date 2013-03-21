@@ -100,7 +100,6 @@ public class CrimeServiceImpl extends RemoteServiceServlet implements CrimeServi
 	
 	public void approveCrimes(int[] targetMonths) throws NotLoggedInException {
 		PersistenceManager pm = getPersistenceManager();
-		List<Crime> crimes = new ArrayList<Crime>();
 		Transaction tx = pm.currentTransaction();
 		try {
 			tx.begin();
