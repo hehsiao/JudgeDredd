@@ -30,10 +30,12 @@ public class JudgeDredd implements EntryPoint {
 	
 	private LoginInfo loginInfo = null;
 	private VerticalPanel loginPanel = new VerticalPanel();
-	private Label welcomeLabel = new Label("Citizens of Vancouver, this is Judge Dredd. Identify yourself:");
-	private Label loginLabel = new Label("Please sign in to your Google Account to access the JudgeDredd application.");
+	private Label welcomeLabel = new Label("Citizens of Vancouver, this is Judge Dredd.");
+	private Label loginLabel = new Label("You are required, by law, to sign in using your Google Account to access the Grand Hall of Justice of Vancouver.");
 	private Anchor signInLink = new Anchor("Sign In");
 	private Anchor signOutLink = new Anchor("Sign Out");
+	private TabPanel panel;
+	private FlowPanel flowpanel;
 	/**
 	 * This is the entry point method.
 	 */
@@ -78,42 +80,53 @@ public class JudgeDredd implements EntryPoint {
 	 */
 	private void loadLogin() {
 		// Assemble login panel.
+		panel = new TabPanel();
+		panel.setAnimationEnabled(true);
+
+		flowpanel = new FlowPanel();
+		flowpanel.add((IsWidget) new Map());
+		panel.add(flowpanel, "Map");
+		
 		signInLink.setHref(loginInfo.getLoginUrl());
 		loginPanel.add(welcomeLabel);
 		loginPanel.add(loginLabel);
 		loginPanel.add(signInLink);
-		RootPanel.get("main").add(loginPanel);
+		flowpanel = new FlowPanel();
+		flowpanel.add(loginPanel);
+		panel.add(flowpanel, "Sign In");
+
+		panel.selectTab(0);
+
+		panel.setSize("180%", "100%");
+		panel.addStyleName("table-center");
+		RootPanel.get("body").add(panel);
 	}
 
 	/**
 	 * Loads User Interface
 	 */
 	private void loadCivilians() {
-		// TODO Auto-generated method stub
-		signOutLink.setHref(loginInfo.getLogoutUrl());
-		welcomeLabel = new Label("Hello " + loginInfo.getNickname() + ", You are logged in as a Civilian");
-		loginPanel.add(welcomeLabel);
-		loginPanel.add(signOutLink);
-		RootPanel.get("main").add(loginPanel);	
-
-		TabPanel panel = new TabPanel();
+		// TODO Auto-generated method stub	
+		panel = new TabPanel();
 		panel.setAnimationEnabled(true);
-		FlowPanel flowpanel;
 
 		flowpanel = new FlowPanel();
 		flowpanel.add((IsWidget) new Map());
 		panel.add(flowpanel, "Map");
 
+		signOutLink.setHref(loginInfo.getLogoutUrl());
+		welcomeLabel = new Label("Hello " + loginInfo.getNickname() + ", you are logged in as a Civilian.");
+		loginPanel.add(welcomeLabel);
+		loginPanel.add(signOutLink);
 		flowpanel = new FlowPanel();
-		flowpanel.add((IsWidget) new Login());
-		panel.add(flowpanel, "Login");
+		flowpanel.add(loginPanel);
+		panel.add(flowpanel, "Sign Out");
 
 		panel.selectTab(0);
 
-		panel.setSize("100%", "100%");
+		panel.setSize("180%", "100%");
 		panel.addStyleName("table-center");
 		RootPanel.get("body").add(panel);
-		//RootPanel.get("body").remove(panel);
 	}
 
 	/**
@@ -121,12 +134,30 @@ public class JudgeDredd implements EntryPoint {
 	 */
 	private void loadJudgeDredd() {
 		// TODO Auto-generated method stub
+		panel = new TabPanel();
+		panel.setAnimationEnabled(true);
+
+		flowpanel = new FlowPanel();
+		flowpanel.add((IsWidget) new Map());
+		panel.add(flowpanel, "Map");
+		
+		flowpanel = new FlowPanel();
+		flowpanel.add((IsWidget) new AdminPanel());
+		panel.add(flowpanel, "Administration");
+		
 		signOutLink.setHref(loginInfo.getLogoutUrl());
-		welcomeLabel = new Label("Hello " + loginInfo.getNickname() + ", You are logged in as a Judge");
+		welcomeLabel = new Label("Hello " + loginInfo.getNickname() + ", you are logged in as a Judge.");
 		loginPanel.add(welcomeLabel);
 		loginPanel.add(signOutLink);
-		RootPanel.get("main").add(loginPanel);
-		RootPanel.get("body").add(new AdminPanel());	
+		flowpanel = new FlowPanel();
+		flowpanel.add(loginPanel);
+		panel.add(flowpanel, "Sign Out");
+		
+		panel.selectTab(0);
+
+		panel.setSize("180%", "100%");
+		panel.addStyleName("table-center");
+		RootPanel.get("body").add(panel);	
 	}
 	
 	private void handleError(Throwable error) {
