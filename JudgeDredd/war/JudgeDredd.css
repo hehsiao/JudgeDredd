@@ -24,10 +24,10 @@ h1 {
 }
 
 body, table td, select {
-  font-size: 14pt;
+  font-size: 13pt;
   font-family: 'Trebuchet MS', sans-serif;
-  background: #0b0f0e;
-  color: #ff0000;
+  background: transparent;
+  color: #00aad5;
 }
 select {
   color: #000;
@@ -66,14 +66,14 @@ a, a:visited, a:hover {
   font-size: small;
   cursor: pointer;
   cursor: hand;
-  background: url("images/hborder.png") repeat-x 0px -27px;
-  border: 1px outset #000;
+  background: #CCCCCC url("images/hborder.png") repeat-x 0px -27px;
+  border: 3px outset #00aad5;
 }
 .gwt-Button:active {
   border: 1px inset #000;
 }
 .gwt-Button:hover {
-  border: 1px outset #24d3ff;
+  border: 1px outset #00aad5;
 }
 .gwt-Button[disabled] {
   cursor: default;
@@ -247,6 +247,9 @@ a, a:visited, a:hover {
 }
 
 .gwt-ListBox {
+	color: #C2C2C2;
+	background: #363435;
+	border: 2px outset #00aad5;
 }
 
 .gwt-MenuBar {
@@ -385,7 +388,10 @@ a, a:visited, a:hover {
 }
 
 .gwt-PasswordTextBox {
+  color: #C2C2C2;
   padding: 2px;
+  background: #363435;
+  border: 2px outset #00aad5;
 }
 .gwt-PasswordTextBox-readonly {
   color: #888;
@@ -502,7 +508,7 @@ a, a:visited, a:hover {
   cursor: hand;
 }
 .gwt-PushButton-up-hovering {
-  border: 1px outset #24d3ff;
+  border: 1px outset #00aad5;
   cursor: pointer;
   cursor: hand;
 }
@@ -525,7 +531,7 @@ a, a:visited, a:hover {
   cursor: hand;
 }
 .gwt-PushButton-down-hovering {
-  border: 1px inset #24d3ff;
+  border: 1px inset #00aad5;
   cursor: pointer;
   cursor: hand;
 }
@@ -858,14 +864,20 @@ a, a:visited, a:hover {
 }
 
 .gwt-TextArea {
+  color: #C2C2C2;
   padding: 2px;
+  background: #363435;
+  border: 2px outset #00aad5;
 }
 .gwt-TextArea-readonly {
   color: #888;
 }
 
-.gwt-TextBox {
+.gwt-TextBox {	
+  color: #C2C2C2;
   padding: 2px;
+  background: #363435;
+  border: 2px outset #00aad5;
 }
 .gwt-TextBox-readonly {
   color: #888;

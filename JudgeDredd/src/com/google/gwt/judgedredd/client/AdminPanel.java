@@ -29,8 +29,8 @@ public class AdminPanel extends Composite {
 		rootPanel.setSize("700px", "700px");
 		
 		FlexTable flexTable_AdminReview = new FlexTable();
-		flexTable_AdminReview.setStyleName("BackgroundColor-Black");
-		rootPanel.add(flexTable_AdminReview, 115, 10);
+		flexTable_AdminReview.setStyleName("BackgroundColor-B");
+		rootPanel.add(flexTable_AdminReview, 10, 293);
 		flexTable_AdminReview.setSize("700px", "400px");
 		
 		Label lblApproval = new Label("Dataset(s) Awaiting Approval");
@@ -42,6 +42,7 @@ public class AdminPanel extends Composite {
 		flexTable_AdminReview.setWidget(1, 2, lblRemoval);
 		
 		final ListBox listBox_Approval = new ListBox(true);
+		listBox_Approval.setStyleName("gwt-ListBox");
 		flexTable_AdminReview.setWidget(2, 0, listBox_Approval);
 		listBox_Approval.setSize("191px", "290px");
 		listBox_Approval.addItem("January");
