@@ -20,10 +20,10 @@ public class Login extends Composite {
 		
 		VerticalPanel verticalPanel = new VerticalPanel();
 		initWidget(verticalPanel);
-		verticalPanel.setSize("335px", "200px");
+		verticalPanel.setSize("386px", "200px");
 		
 		final Label lblSignInTo = new Label("Citizens of Vancouver, this is Judge Dredd. Identify yourself: ");
-		lblSignInTo.setSize("260px", "35px");
+		lblSignInTo.setSize("380px", "35px");
 		lblSignInTo.setStyleName("gwt-Label-Login");
 		verticalPanel.add(lblSignInTo);
 		
@@ -32,7 +32,7 @@ public class Login extends Composite {
 		flexTable.setBorderWidth(0);
 		flexTable.setCellPadding(1);
 		verticalPanel.add(flexTable);
-		flexTable.setSize("335px", "130px");
+		flexTable.setSize("368px", "130px");
 		
 		Label lblUsername = new Label("Login ID:");
 		lblUsername.setStyleName("gwt-Label-Login");

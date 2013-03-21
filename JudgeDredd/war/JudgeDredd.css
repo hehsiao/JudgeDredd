@@ -25,9 +25,9 @@ h1 {
 
 body, table td, select {
   font-size: 13pt;
-  font-family: 'Trebuchet MS', sans-serif;
+  font-family: 'Verdana', Monospace;
   background: transparent;
-  color: #00aad5;
+  color: #CCCCCC;
 }
 select {
   color: #000;
