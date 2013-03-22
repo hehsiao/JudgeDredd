@@ -49,13 +49,8 @@ public class JudgeDredd implements EntryPoint {
 
 			public void onSuccess(LoginInfo result) {
 				loginInfo = result;
-				if(loginInfo.isLoggedIn()) {
-					if(isJudge(loginInfo)){
+				if(loginInfo.isLoggedIn() && isJudge(loginInfo)) {
 						loadJudgeDredd();
-					}
-					else{
-						loadCivilians();
-					}
 				} else {
 //					loadLogin();
 					loadCivilians();
@@ -79,32 +74,32 @@ public class JudgeDredd implements EntryPoint {
 	}
 
 
-	/**
-	 * Login Interface
-	 */
-	private void loadLogin() {
-		// Assemble login panel.
-		panel = new TabPanel();
-		panel.setAnimationEnabled(true);
-
+//	/**
+//	 * Login Interface
+//	 */
+//	private void loadLogin() {
+//		// Assemble login panel.
+//		panel = new TabPanel();
+//		panel.setAnimationEnabled(true);
+//
+////		flowpanel = new FlowPanel();
+////		flowpanel.add((IsWidget) new Map());
+////		panel.add(flowpanel, "Map");
+//		
+//		signInLink.setHref(loginInfo.getLoginUrl());
+//		loginPanel.add(welcomeLabel);
+//		loginPanel.add(loginLabel);
+//		loginPanel.add(signInLink);
 //		flowpanel = new FlowPanel();
-//		flowpanel.add((IsWidget) new Map());
-//		panel.add(flowpanel, "Map");
-		
-		signInLink.setHref(loginInfo.getLoginUrl());
-		loginPanel.add(welcomeLabel);
-		loginPanel.add(loginLabel);
-		loginPanel.add(signInLink);
-		flowpanel = new FlowPanel();
-		flowpanel.add(loginPanel);
-		panel.add(flowpanel, "Sign In");
-
-		panel.selectTab(0);
-
-		panel.setSize("180%", "100%");
-		panel.addStyleName("table-center");
-		RootPanel.get("body").add(panel);
-	}
+//		flowpanel.add(loginPanel);
+//		panel.add(flowpanel, "Sign In");
+//
+//		panel.selectTab(0);
+//
+//		panel.setSize("180%", "100%");
+//		panel.addStyleName("table-center");
+//		RootPanel.get("body").add(panel);
+//	}
 
 	/**
 	 * Loads User Interface
