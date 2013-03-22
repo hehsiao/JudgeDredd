@@ -74,16 +74,7 @@ public class CrimeParser {
 		ArrayList<Crime> crimeReport = new ArrayList<Crime>();
 		
 		Collections.shuffle(crimeList);
-		int sleepCounter = 0;
 		for (ArrayList<String> aCrime: crimeList) {
-			if(sleepCounter == 10){
-				System.out.println("Sleeping");
-				sleepCounter = 0;
-				try{					
-					Thread.sleep(1000); // Sleep for 1 sec 
-					}
-					catch(InterruptedException e){}
-			}
 
 			String crimeType = aCrime.get(0);
 			int year = Integer.parseInt(aCrime.get(1));
@@ -113,16 +104,18 @@ public class CrimeParser {
 				e.printStackTrace();
 			}
 		    
-   
-		    crimeReport.add(new Crime(crimeType, year, month, cleanAddress, latitude, longitude));
-		    monthlyCrimes[month-1]++;
-		    crimes_counter++;
+		    if(latitude == Double.NaN || longitude == Double.NaN){
+		    	// Skip entry if latlng is not returned.
+		    } else {
+			    crimeReport.add(new Crime(crimeType, year, month, cleanAddress, latitude, longitude));
+			    monthlyCrimes[month-1]++;
+			    crimes_counter++;
+			}
 		    
 		    // max entries from dataset
 		    if(crimes_counter == MAX_NUMBER_OF_CRIMES){
 		    	break;
 		    }
-			sleepCounter++;
 		    
 		}
 		

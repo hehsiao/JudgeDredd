@@ -57,7 +57,8 @@ public class JudgeDredd implements EntryPoint {
 						loadCivilians();
 					}
 				} else {
-					loadLogin();
+//					loadLogin();
+					loadCivilians();
 				}
 			}
 		});
@@ -86,9 +87,9 @@ public class JudgeDredd implements EntryPoint {
 		panel = new TabPanel();
 		panel.setAnimationEnabled(true);
 
-		flowpanel = new FlowPanel();
-		flowpanel.add((IsWidget) new Map());
-		panel.add(flowpanel, "Map");
+//		flowpanel = new FlowPanel();
+//		flowpanel.add((IsWidget) new Map());
+//		panel.add(flowpanel, "Map");
 		
 		signInLink.setHref(loginInfo.getLoginUrl());
 		loginPanel.add(welcomeLabel);
@@ -109,56 +110,56 @@ public class JudgeDredd implements EntryPoint {
 	 * Loads User Interface
 	 */
 	private void loadCivilians() {
+		
+		if(loginInfo.isLoggedIn()){
+			signOutLink.setHref(loginInfo.getLogoutUrl());
+			loginPanel.add(signOutLink);
+		} else {
+			signInLink.setHref(loginInfo.getLoginUrl());
+			loginPanel.add(signInLink);
+		}
+		
 		panel = new TabPanel();
 		panel.setAnimationEnabled(true);
 
 		flowpanel = new FlowPanel();
-		flowpanel.add((IsWidget) new Map());
-		panel.add(flowpanel, "Map");
-
-		signOutLink.setHref(loginInfo.getLogoutUrl());
-		welcomeLabel = new Label("Hello " + loginInfo.getNickname() + ", you are logged in as a Civilian.");
-		loginPanel.add(welcomeLabel);
-		loginPanel.add(signOutLink);
-		flowpanel = new FlowPanel();
-		flowpanel.add(loginPanel);
-		panel.add(flowpanel, "Sign Out");
-
+		flowpanel.add((IsWidget) new Label("Home"));
+		panel.add(flowpanel, "Home");
+		
 		panel.selectTab(0);
 
-		panel.setSize("180%", "100%");
+		panel.setSize("100%", "100%");
 		panel.addStyleName("table-center");
+		RootPanel.get("login").add(loginPanel);
 		RootPanel.get("body").add(panel);
+		RootPanel.get("map").add(new Map());
 	}
 
 	/**
 	 * Loads Administrator Interface
 	 */
 	private void loadJudgeDredd() {
+		
+		signOutLink.setHref(loginInfo.getLogoutUrl());
+		loginPanel.add(signOutLink);
+//		welcomeLabel = new Label("Hello " + loginInfo.getNickname() + ", you are logged in as a Judge.");
+//		loginPanel.add(welcomeLabel);
+		
 		panel = new TabPanel();
 		panel.setAnimationEnabled(true);
-
-		flowpanel = new FlowPanel();
-		flowpanel.add((IsWidget) new Map());
-		panel.add(flowpanel, "Map");
 		
 		flowpanel = new FlowPanel();
 		flowpanel.add((IsWidget) new AdminPanel());
 		panel.add(flowpanel, "Administration");
 		
-		signOutLink.setHref(loginInfo.getLogoutUrl());
-		welcomeLabel = new Label("Hello " + loginInfo.getNickname() + ", you are logged in as a Judge.");
-		loginPanel.add(welcomeLabel);
-		loginPanel.add(signOutLink);
-		flowpanel = new FlowPanel();
-		flowpanel.add(loginPanel);
-		panel.add(flowpanel, "Sign Out");
-		
 		panel.selectTab(0);
 
-		panel.setSize("180%", "100%");
+		panel.setSize("100%", "100%");
 		panel.addStyleName("table-center");
-		RootPanel.get("body").add(panel);	
+
+		RootPanel.get("login").add(loginPanel);
+		RootPanel.get("body").add(panel);
+		RootPanel.get("map").add(new Map());
 	}
 	
 	/**
