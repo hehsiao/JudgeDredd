@@ -6,18 +6,24 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
 
-import com.google.appengine.api.users.User;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPathExpressionException;
+
+import org.xml.sax.SAXException;
+
 
 
 public class CrimeParser {
 
-	private int MAX_NUMBER_OF_CRIMES = 500; // max number of crimes to store in datastore
-	private int[] monthlyCrimes = new int[12];
+	final private int MAX_NUMBER_OF_CRIMES = 500; // max number of crimes to store in datastore
+	private int[] monthlyCrimes;
 	
 	/**
 	 * Constructor
+	 * Initialize monthlyCrimes counter
 	 */
 	public CrimeParser (){
+		monthlyCrimes = new int[12];
 	}
 
 	public ArrayList<Crime> retrieveCrimeDataset(String link) {
@@ -64,21 +70,49 @@ public class CrimeParser {
 	public ArrayList<Crime> selectCrimes(ArrayList<ArrayList<String>> crimeList){
 		
 		int crimes_counter = 0;
-		
+		double[] latlng = new double[2];
 		ArrayList<Crime> crimeReport = new ArrayList<Crime>();
 		
 		Collections.shuffle(crimeList);
-		
+		int sleepCounter = 0;
 		for (ArrayList<String> aCrime: crimeList) {
+			if(sleepCounter == 10){
+				System.out.println("Sleeping");
+				sleepCounter = 0;
+				try{					
+					Thread.sleep(1000); // Sleep for 1 sec 
+					}
+					catch(InterruptedException e){}
+			}
+
 			String crimeType = aCrime.get(0);
 			int year = Integer.parseInt(aCrime.get(1));
 		    int month = Integer.parseInt(aCrime.get(2));
 
 		    String cleanAddress = parseAddress(aCrime.get(3));
 		    
-		    // TODO: variables for geocoder
 		    double latitude = 0.00;
 		    double longitude = 0.00;
+		    
+		    try {
+				Geocoder geocode = new Geocoder(cleanAddress);
+				latlng = geocode.getLatlng();
+				latitude = latlng[0];
+				longitude = latlng[1];
+			} catch (XPathExpressionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ParserConfigurationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SAXException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		    
    
 		    crimeReport.add(new Crime(crimeType, year, month, cleanAddress, latitude, longitude));
 		    monthlyCrimes[month-1]++;
@@ -88,31 +122,46 @@ public class CrimeParser {
 		    if(crimes_counter == MAX_NUMBER_OF_CRIMES){
 		    	break;
 		    }
+			sleepCounter++;
 		    
 		}
 		
-		for(int i = 0; i < monthlyCrimes.length; i++){
-			int month = i+1;
-			System.out.println("Month " + month + " has " + monthlyCrimes[i] + " crimes.");
-		}
+	
+		// DEBUG CODE 
+//		for(int i = 0; i < monthlyCrimes.length; i++){
+//			int month = i+1;
+//			System.out.println("Month " + month + " has " + monthlyCrimes[i] + " crimes.");
+//		}
 		
 		return crimeReport;
 	}
 	
-	private String parseAddress(String location) {
-		// TODO Auto-generated method stub
-	    // clean address and prepare for geocoding
-	    // replaces XX with 00 in the location field
+	/**
+	 * helper method to clean Address and prepare for Geocoding.
+	 * replaces XX to 00 and "/" to "and" and add Vancouver, BC to the end.
+	 * 
+	 * @param location
+	 * @return a cleaned address
+	 */
+	public String parseAddress(String location) {
+
 	    location = location.replace("XX", "00");
-	    // if location is an intersection, change "/" to "and"
 	    location = location.replace("/", "and");
-	    // adds Vancouver, BC at the end of address
+	    
 	    location += ", Vancouver, BC";
 	    
-	    System.out.println(location);
+	    // DEBUG
+//	    System.out.println(location);
+	    
 	    return location;
 	}
 
+	/**
+	 * Getting Crime count by month
+	 * 
+	 * @return Array of crimes counter by Month, count is stored in month-1
+	 *		ie: monthlyCrimes[0] = January, monthlyCrimes[3] = April...
+	 */
 	public int[] getCrimesCountByMonth(){
 		return monthlyCrimes;
 	}

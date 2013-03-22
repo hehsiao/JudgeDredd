@@ -2,6 +2,8 @@ package com.google.gwt.judgedredd.server;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.jdo.Extent;
 import javax.jdo.JDOHelper;
@@ -21,6 +23,7 @@ import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gwt.dev.js.rhino.ObjToIntMap.Iterator;
 import com.google.gwt.judgedredd.client.ClientCrime;
 import com.google.gwt.judgedredd.client.CrimeService;
+import com.google.gwt.judgedredd.client.LoginInfo;
 import com.google.gwt.judgedredd.client.NotLoggedInException;
 import com.google.gwt.judgedredd.server.Crime;
 import com.google.gwt.judgedredd.server.CrimeServiceImpl;
@@ -34,7 +37,7 @@ public class CrimeServiceImpl extends RemoteServiceServlet implements CrimeServi
 
 	public int[] addReport(String url) throws NotLoggedInException{
 
-		//		checkLoggedIn();
+		checkLoggedIn();
 		
 		CrimeParser parser = new CrimeParser();
 		ArrayList<Crime> crimeReport = parser.retrieveCrimeDataset(url);
@@ -61,7 +64,7 @@ public class CrimeServiceImpl extends RemoteServiceServlet implements CrimeServi
 
 	public ClientCrime[] getCrimesByMonth(int[] targetMonths) throws NotLoggedInException {
 
-		//	    checkLoggedIn();
+		checkLoggedIn();
 		PersistenceManager pm = getPersistenceManager();
 		List<ClientCrime> crimes = new ArrayList<ClientCrime>();
 
@@ -99,6 +102,8 @@ public class CrimeServiceImpl extends RemoteServiceServlet implements CrimeServi
 	}
 	
 	public void approveCrimes(int[] targetMonths) throws NotLoggedInException {
+
+		checkLoggedIn();
 		PersistenceManager pm = getPersistenceManager();
 		List<Crime> crimes = new ArrayList<Crime>();
 		Transaction tx = pm.currentTransaction();
@@ -126,6 +131,7 @@ public class CrimeServiceImpl extends RemoteServiceServlet implements CrimeServi
 	
 	public ClientCrime[] getCertainCrimeType(String crimeType) throws NotLoggedInException {
 
+		checkLoggedIn();
 	    PersistenceManager pm = getPersistenceManager();
 	    List<ClientCrime> crimes = new ArrayList<ClientCrime>();
 
@@ -157,16 +163,32 @@ public class CrimeServiceImpl extends RemoteServiceServlet implements CrimeServi
 
 	
 	private void checkLoggedIn() throws NotLoggedInException {
-		System.out.println("checking users");
+		System.out.println("Verify user");
 		if (getUser() == null) {
 			System.out.println("not logged in");
 			throw new NotLoggedInException("Not logged in.");
+		}
+		if (!isJudge(getUser().getEmail())){
+			System.out.println("Not Authorized");
+			throw new NotLoggedInException("Not Authorized");
 		}
 	}
 
 	private User getUser() {
 		UserService userService = UserServiceFactory.getUserService();
 		return userService.getCurrentUser();
+	}
+	
+	/**
+	 * @param loginInfo
+	 * @return true - if loginInfo email matches one of the ones in the list
+	 */
+	private boolean isJudge(String email) {
+		final Set<String> JUDGES = new HashSet<String>(Arrays.asList(
+			     new String[] {"me@henrychsiao.com","matthew.hsu@gmail.com","jywdominic@gmail.com","alvin.dong92@gmail.com"}
+			));
+		
+		return JUDGES.contains(email);
 	}
 
 	/**

@@ -50,7 +50,7 @@ public class AdminPanel extends Composite
 		closeButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				dialogBox.hide();
-				btnParseData.setEnabled(false);
+				btnParseData.setEnabled(true);
 				btnParseData.setFocus(true);
 			}
 		});
@@ -71,6 +71,7 @@ public class AdminPanel extends Composite
 				    {
 				    	popUpDisplay(monthlyCrimes);
 				    }
+				    
 					private void popUpDisplay(int[] monthlyCrimes) {
 						// TODO Auto-generated method stub
 				    	// TODO: notify admin that the data is stored in UI

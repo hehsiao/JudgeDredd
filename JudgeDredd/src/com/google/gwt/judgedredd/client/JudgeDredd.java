@@ -65,8 +65,11 @@ public class JudgeDredd implements EntryPoint {
 	}
 
 
+	/**
+	 * @param loginInfo
+	 * @return true - if loginInfo email matches one of the ones in the list
+	 */
 	protected boolean isJudge(LoginInfo loginInfo) {
-		// TODO Auto-generated method stub
 		final Set<String> JUDGES = new HashSet<String>(Arrays.asList(
 			     new String[] {"me@henrychsiao.com","matthew.hsu@gmail.com","jywdominic@gmail.com","alvin.dong92@gmail.com"}
 			));
@@ -106,7 +109,6 @@ public class JudgeDredd implements EntryPoint {
 	 * Loads User Interface
 	 */
 	private void loadCivilians() {
-		// TODO Auto-generated method stub	
 		panel = new TabPanel();
 		panel.setAnimationEnabled(true);
 
@@ -133,7 +135,6 @@ public class JudgeDredd implements EntryPoint {
 	 * Loads Administrator Interface
 	 */
 	private void loadJudgeDredd() {
-		// TODO Auto-generated method stub
 		panel = new TabPanel();
 		panel.setAnimationEnabled(true);
 
@@ -160,6 +161,10 @@ public class JudgeDredd implements EntryPoint {
 		RootPanel.get("body").add(panel);	
 	}
 	
+	/**
+	 * handle Error with a GUI interface
+	 * @param error
+	 */
 	private void handleError(Throwable error) {
 		Window.alert(error.getMessage());
 		if (error instanceof NotLoggedInException) {
