@@ -38,16 +38,16 @@ public class CrimeServiceImpl extends RemoteServiceServlet implements CrimeServi
 	public int[] addReport(String url) throws NotLoggedInException{
 
 		checkLoggedIn();
-		
+
 		CrimeParser parser = new CrimeParser();
 		ArrayList<Crime> crimeReport = parser.retrieveCrimeDataset(url);
-		
+
 		// can be used as a seperate call
 		approveReport(crimeReport);
-		
+
 		return parser.getCrimesCountByMonth();
 	}
-	
+
 	public void approveReport (ArrayList<Crime> crimeReport){
 
 		PersistenceManager pm = getPersistenceManager();
@@ -60,7 +60,7 @@ public class CrimeServiceImpl extends RemoteServiceServlet implements CrimeServi
 			pm.close();
 		}
 	}
-	
+
 
 	public ClientCrime[] getCrimesByMonth(int[] targetMonths) throws NotLoggedInException {
 
@@ -84,24 +84,24 @@ public class CrimeServiceImpl extends RemoteServiceServlet implements CrimeServi
 					clientC.setCrimeType(c.getType());
 					clientC.setApproved(c.isApproved());
 					crimes.add(clientC);
-//					System.out.println(clientC.getType() + ", " + clientC.getCrimeYear() + ", " + clientC.getCrimeMonth() + ", " + clientC.getLocation() + " Size: " + crimes.size());
+					//					System.out.println(clientC.getType() + ", " + clientC.getCrimeYear() + ", " + clientC.getCrimeMonth() + ", " + clientC.getLocation() + " Size: " + crimes.size());
 				}
-//				System.out.println("done printing list");
+				//				System.out.println("done printing list");
 			}
 		} finally {
 			pm.close();
 		}
 		System.out.println("Full list of crimes returning");
-//		System.out.println("Test 1: " + crimes.get(0).getLocation());
-//		System.out.println("Test 2: " + crimes.get(crimes.size()-2).getLocation());
+		//		System.out.println("Test 1: " + crimes.get(0).getLocation());
+		//		System.out.println("Test 2: " + crimes.get(crimes.size()-2).getLocation());
 		for (ClientCrime c: crimes){
 			System.out.println(c.getType() + ", " + c.getCrimeYear() + ", " + c.getCrimeMonth() + ", " + c.getLocation());
 		}
 
 		return (ClientCrime[]) crimes.toArray(new ClientCrime[0]);
 	}
-	
-	public void approveCrimes(int[] targetMonths) throws NotLoggedInException {
+
+	public void approveCrimes(int month) throws NotLoggedInException {
 
 		checkLoggedIn();
 		PersistenceManager pm = getPersistenceManager();
@@ -113,11 +113,9 @@ public class CrimeServiceImpl extends RemoteServiceServlet implements CrimeServi
 			java.util.Iterator iter=e.iterator();
 			while (iter.hasNext()) {
 				Crime c = (Crime) iter.next();
-				for (int month: targetMonths) {
-			    	if (c.isApproved() == false && c.getCrimeMonth() == month) {
-			    		c.setApproval();
-			    	}
-			    }
+				if (c.isApproved() == false && c.getCrimeMonth() == month) {
+					c.setApproval();
+				}
 				tx.commit();
 			}
 		}
@@ -128,40 +126,40 @@ public class CrimeServiceImpl extends RemoteServiceServlet implements CrimeServi
 		}
 	}	
 
-	
+
 	public ClientCrime[] getCertainCrimeType(String crimeType) throws NotLoggedInException {
 
 		checkLoggedIn();
-	    PersistenceManager pm = getPersistenceManager();
-	    List<ClientCrime> crimes = new ArrayList<ClientCrime>();
+		PersistenceManager pm = getPersistenceManager();
+		List<ClientCrime> crimes = new ArrayList<ClientCrime>();
 
-	    try {
-	    	Query q = pm.newQuery(Crime.class, "crimeType == ct");
-	    	q.declareParameters("String ct");
-	    	q.setOrdering("crimeType asc");
-	    	System.out.println("set new Query");
-	    	List<Crime> report = (List<Crime>) q.execute(crimeType);
-	    	System.out.println("executed");
-	    	for (Crime c : report) {
-	    		ClientCrime clientC = new ClientCrime();
-	    		clientC.setLocation(c.getLocation());
-	    		clientC.setCrimeYear(c.getCrimeYear());
-	    		clientC.setCrimeMonth(c.getCrimeMonth());
-	    		clientC.setCrimeType(c.getType());
-	    		//	clientC.setDateAdded(c.getDateAdded());
-	    		clientC.setApproved(c.isApproved());
-	    		crimes.add(clientC);
-	    		System.out.println(c.getType() + ", " + c.getCrimeYear() + ", " + c.getCrimeMonth() + ", " + c.getLocation());
-	    	}
-	    	System.out.println("done printing list");
-	    } finally {
-	        pm.close();
-	    }
+		try {
+			Query q = pm.newQuery(Crime.class, "crimeType == ct");
+			q.declareParameters("String ct");
+			q.setOrdering("crimeType asc");
+			System.out.println("set new Query");
+			List<Crime> report = (List<Crime>) q.execute(crimeType);
+			System.out.println("executed");
+			for (Crime c : report) {
+				ClientCrime clientC = new ClientCrime();
+				clientC.setLocation(c.getLocation());
+				clientC.setCrimeYear(c.getCrimeYear());
+				clientC.setCrimeMonth(c.getCrimeMonth());
+				clientC.setCrimeType(c.getType());
+				//	clientC.setDateAdded(c.getDateAdded());
+				clientC.setApproved(c.isApproved());
+				crimes.add(clientC);
+				System.out.println(c.getType() + ", " + c.getCrimeYear() + ", " + c.getCrimeMonth() + ", " + c.getLocation());
+			}
+			System.out.println("done printing list");
+		} finally {
+			pm.close();
+		}
 
 		return (ClientCrime[]) crimes.toArray(new ClientCrime[0]);
 	}
 
-	
+
 	private void checkLoggedIn() throws NotLoggedInException {
 		System.out.println("Verify user");
 		if (getUser() == null) {
@@ -178,16 +176,16 @@ public class CrimeServiceImpl extends RemoteServiceServlet implements CrimeServi
 		UserService userService = UserServiceFactory.getUserService();
 		return userService.getCurrentUser();
 	}
-	
+
 	/**
 	 * @param loginInfo
 	 * @return true - if loginInfo email matches one of the ones in the list
 	 */
 	private boolean isJudge(String email) {
 		final Set<String> JUDGES = new HashSet<String>(Arrays.asList(
-			     new String[] {"me@henrychsiao.com","matthew.hsu@gmail.com","jywdominic@gmail.com","alvin.dong92@gmail.com"}
-			));
-		
+				new String[] {"me@henrychsiao.com","matthew.hsu@gmail.com","jywdominic@gmail.com","alvin.dong92@gmail.com"}
+				));
+
 		return JUDGES.contains(email);
 	}
 

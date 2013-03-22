@@ -73,34 +73,6 @@ public class JudgeDredd implements EntryPoint {
 		return JUDGES.contains(loginInfo.getEmailAddress());
 	}
 
-
-//	/**
-//	 * Login Interface
-//	 */
-//	private void loadLogin() {
-//		// Assemble login panel.
-//		panel = new TabPanel();
-//		panel.setAnimationEnabled(true);
-//
-////		flowpanel = new FlowPanel();
-////		flowpanel.add((IsWidget) new Map());
-////		panel.add(flowpanel, "Map");
-//		
-//		signInLink.setHref(loginInfo.getLoginUrl());
-//		loginPanel.add(welcomeLabel);
-//		loginPanel.add(loginLabel);
-//		loginPanel.add(signInLink);
-//		flowpanel = new FlowPanel();
-//		flowpanel.add(loginPanel);
-//		panel.add(flowpanel, "Sign In");
-//
-//		panel.selectTab(0);
-//
-//		panel.setSize("180%", "100%");
-//		panel.addStyleName("table-center");
-//		RootPanel.get("body").add(panel);
-//	}
-
 	/**
 	 * Loads User Interface
 	 */
