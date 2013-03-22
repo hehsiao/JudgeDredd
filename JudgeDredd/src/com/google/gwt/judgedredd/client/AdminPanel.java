@@ -6,22 +6,26 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.user.client.ui.FlexTable;
 
 public class AdminPanel extends Composite 
 {
 	private final CrimeServiceAsync crimeService = GWT.create(CrimeService.class);
+	private FlexTable approveFlexTable;
+	private FlowPanel flowpanel;
 
 	public AdminPanel() 
 	{
-		FlowPanel flowpanel = new FlowPanel();
+		flowpanel = new FlowPanel();
 		initWidget(flowpanel);
 		flowpanel.setSize("100%", "100%");
-		
+
 		// Create the popup dialog box
 		final DialogBox dialogBox = new DialogBox();
 		dialogBox.setText("Remote Procedure Call");
@@ -43,9 +47,9 @@ public class AdminPanel extends Composite
 		URL_Field.selectAll();
 		flowpanel.add(URL_Field);
 		URL_Field.setWidth("250px");
-		
+
 		final Button btnParseData = new Button("Parse Data");
-		
+
 		// Add a handler to close the DialogBox
 		closeButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
@@ -54,7 +58,7 @@ public class AdminPanel extends Composite
 				btnParseData.setFocus(true);
 			}
 		});
-		
+
 		btnParseData.addClickHandler(new ClickHandler() 
 		{
 			public void onClick(ClickEvent event) 
@@ -62,56 +66,120 @@ public class AdminPanel extends Composite
 				btnParseData.setEnabled(false);
 				String url = URL_Field.getText();
 				crimeService.addReport(url, new AsyncCallback<int[]>() 
-				{
+						{
 					public void onFailure(Throwable error) 
 					{
-				         System.out.println("Failed");
-				    }
-				    public void onSuccess(int[] monthlyCrimes) 
-				    {
-				    	popUpDisplay(monthlyCrimes);
-				    }
-				    
+						System.out.println("Failed");
+					}
+					public void onSuccess(int[] monthlyCrimes) 
+					{
+						displayCrimes(monthlyCrimes);
+						popUpDisplay(monthlyCrimes);
+					}
+
 					private void popUpDisplay(int[] monthlyCrimes) {
 						// TODO Auto-generated method stub
-				    	// TODO: notify admin that the data is stored in UI
-				    	
+						// TODO: notify admin that the data is stored in UI
+
 						System.out.println("Success");		
 						int totalCrimes = 0;
-				    	String result = "";
+						String result = "";
 						for(int i = 0; i < monthlyCrimes.length; i++){
 
 							totalCrimes += monthlyCrimes[i]; 
-					        String monthString;
-					        switch (i+1) {
-					            case 1:  monthString = "January";	break;
-					            case 2:  monthString = "February";	break;
-					            case 3:  monthString = "March";		break;
-					            case 4:  monthString = "April";		break;
-					            case 5:  monthString = "May";		break;
-					            case 6:  monthString = "June";		break;
-					            case 7:  monthString = "July";		break;
-					            case 8:  monthString = "August";	break;
-					            case 9:  monthString = "September";	break;
-					            case 10: monthString = "October";	break;
-					            case 11: monthString = "November";	break;
-					            case 12: monthString = "December";	break;
-					            default: monthString = "Invalid month";	break;
-					        }
-					        result +=  monthlyCrimes[i] + " crimes occured in " + monthString + ".<br>";
-//							System.out.println(monthString + " has " + monthlyCrimes[i] + " crimes.");
+							String monthString;
+							switch (i+1) {
+							case 1:  monthString = "January";	break;
+							case 2:  monthString = "February";	break;
+							case 3:  monthString = "March";		break;
+							case 4:  monthString = "April";		break;
+							case 5:  monthString = "May";		break;
+							case 6:  monthString = "June";		break;
+							case 7:  monthString = "July";		break;
+							case 8:  monthString = "August";	break;
+							case 9:  monthString = "September";	break;
+							case 10: monthString = "October";	break;
+							case 11: monthString = "November";	break;
+							case 12: monthString = "December";	break;
+							default: monthString = "Invalid month";	break;
+							}
+							result +=  monthlyCrimes[i] + " crimes occured in " + monthString + ".<br>";
+							//							System.out.println(monthString + " has " + monthlyCrimes[i] + " crimes.");
 						}
-				    	result += "<br>Total Crimes recorded: " + totalCrimes + ".<br><br>";
-				    	
+						result += "<br>Total Crimes recorded: " + totalCrimes + ".<br><br>";
+
 						dialogBox.setText("Parsing Complete");
 						serverResponseLabel.setHTML(result);
 						dialogBox.center();
 						closeButton.setFocus(true);
 					} 
-				});
+						});
 			}
 		});
-		
+
 		flowpanel.add(btnParseData);
+
+
+
+	}
+
+	private void displayCrimes(int[] monthlyCrimes) {
+		approveFlexTable = new FlexTable();
+		flowpanel.add(approveFlexTable);
+
+		// Create table for crime data.
+		approveFlexTable.setText(0, 0, "Month");
+		approveFlexTable.setText(0, 1, "Crimes");
+		approveFlexTable.setText(0, 2, "Approve");
+
+		// Add styles to elements in the crime list table.
+		approveFlexTable.setCellPadding(6);
+		approveFlexTable.getRowFormatter().addStyleName(0, "approveCrimeListHeader");
+		approveFlexTable.addStyleName("approveCrimeList");
+		approveFlexTable.getCellFormatter().addStyleName(0, 1, "approveCrimeListNumericColumn");
+		approveFlexTable.getCellFormatter().addStyleName(0, 2, "approveCrimeListNumericColumn");
+
+		for(int i = 0; i < monthlyCrimes.length; i++){
+			String monthString;
+			switch (i+1) {
+			case 1:  monthString = "January";	break;
+			case 2:  monthString = "February";	break;
+			case 3:  monthString = "March";		break;
+			case 4:  monthString = "April";		break;
+			case 5:  monthString = "May";		break;
+			case 6:  monthString = "June";		break;
+			case 7:  monthString = "July";		break;
+			case 8:  monthString = "August";	break;
+			case 9:  monthString = "September";	break;
+			case 10: monthString = "October";	break;
+			case 11: monthString = "November";	break;
+			case 12: monthString = "December";	break;
+			default: monthString = "Invalid month";	break;
+			}
+			displayCrime(monthString, monthlyCrimes[i]);
+		}
+	}
+
+	private void displayCrime(final String month, int crimeCount) {
+		// Add the crime to the table.
+		int row = approveFlexTable.getRowCount();
+		
+		approveFlexTable.setText(row, 0, month);
+		approveFlexTable.setText(row, 1, ""+crimeCount);
+		approveFlexTable.setWidget(row, 2, new Label());
+		approveFlexTable.getCellFormatter().addStyleName(row, 1, "watchListNumericColumn");
+		approveFlexTable.getCellFormatter().addStyleName(row, 2, "watchListNumericColumn");
+		approveFlexTable.getCellFormatter().addStyleName(row, 3, "watchListRemoveColumn");
+
+		// Add a button to remove this crime from the table.
+		//	  	  Button removecrimeButton = new Button("x");
+		//	  	  removecrimeButton.addStyleDependentName("remove");
+		//	  	  removecrimeButton.addClickHandler(new ClickHandler() {
+		//	  		  public void onClick(ClickEvent event) {
+		//	  			  removecrime(symbol);
+		//	  		  }
+		//	  	  });
+		//	  	  approveFlexTable.setWidget(row, 3, removecrimeButton);
+
 	}
 }
