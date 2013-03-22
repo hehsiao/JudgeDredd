@@ -20,7 +20,7 @@ public class AdminPanel extends Composite
 	{
 		FlowPanel flowpanel = new FlowPanel();
 		initWidget(flowpanel);
-		flowpanel.setSize("1000px", "550px");
+		flowpanel.setSize("100%", "100%");
 		
 		// Create the popup dialog box
 		final DialogBox dialogBox = new DialogBox();

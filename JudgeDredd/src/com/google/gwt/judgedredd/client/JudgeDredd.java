@@ -145,7 +145,7 @@ public class JudgeDredd implements EntryPoint {
 		
 		flowpanel = new FlowPanel();
 		flowpanel.add((IsWidget) new AdminPanel());
-		panel.add(flowpanel, "Administration");
+		panel.add(flowpanel, "Import Data");
 		
 		panel.selectTab(0);
 
