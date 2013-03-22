@@ -163,23 +163,22 @@ public class AdminPanel extends Composite
 	private void displayCrime(final String month, int crimeCount) {
 		// Add the crime to the table.
 		int row = approveFlexTable.getRowCount();
-		
+
 		approveFlexTable.setText(row, 0, month);
 		approveFlexTable.setText(row, 1, ""+crimeCount);
 		approveFlexTable.setWidget(row, 2, new Label());
 		approveFlexTable.getCellFormatter().addStyleName(row, 1, "watchListNumericColumn");
 		approveFlexTable.getCellFormatter().addStyleName(row, 2, "watchListNumericColumn");
-		approveFlexTable.getCellFormatter().addStyleName(row, 3, "watchListRemoveColumn");
 
-		// Add a button to remove this crime from the table.
-		//	  	  Button removecrimeButton = new Button("x");
-		//	  	  removecrimeButton.addStyleDependentName("remove");
-		//	  	  removecrimeButton.addClickHandler(new ClickHandler() {
-		//	  		  public void onClick(ClickEvent event) {
-		//	  			  removecrime(symbol);
-		//	  		  }
-		//	  	  });
-		//	  	  approveFlexTable.setWidget(row, 3, removecrimeButton);
+		//Add a button to remove this crime from the table.
+		Button removecrimeButton = new Button("x");
+		removecrimeButton.addStyleDependentName("remove");
+		removecrimeButton.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				//removecrime(symbol);
+			}
+		});
+		approveFlexTable.setWidget(row, 2, removecrimeButton);
 
 	}
 }
