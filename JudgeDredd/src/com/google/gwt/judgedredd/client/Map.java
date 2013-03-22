@@ -1,9 +1,9 @@
 package com.google.gwt.judgedredd.client;
 
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.RootLayoutPanel;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.Widget;
 import com.google.maps.gwt.client.GoogleMap;
 import com.google.maps.gwt.client.LatLng;
 import com.google.maps.gwt.client.MapOptions;
@@ -13,9 +13,15 @@ public class Map extends Composite
 {
 	public Map()
 	{
-		SimplePanel mapPanel = new SimplePanel();
+		final GoogleMap crimeMap;
+		
+		HorizontalPanel mapPanel = new HorizontalPanel();
 		initWidget(mapPanel);
 		mapPanel.setSize("1000px", "550px");
+		
+		SimplePanel filterPanel = new SimplePanel();
+		filterPanel.add((IsWidget) new UserPanel());
+		mapPanel.add(filterPanel);
 		
 		MapOptions options  = MapOptions.create() ;
 	    options.setCenter(LatLng.create( +49.2505, -123.1119 ));   
@@ -26,6 +32,7 @@ public class Map extends Composite
 	    options.setScaleControl(true) ;
 	    options.setScrollwheel(true) ;
 
-	    final GoogleMap theMap = GoogleMap.create( mapPanel.getElement(), options );
+	    SimplePanel crimeMapPanel = new SimplePanel();
+	    crimeMap = GoogleMap.create( crimeMapPanel.getElement(), options );
 	}
 }

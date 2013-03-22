@@ -28,10 +28,4 @@ public class UserPanel extends Composite
 		flowPanel = new FlowPanel();
 		tabPanel.add(flowPanel, "Type");
 	}	// end UserPanel()
-
-	public static UserPanel get()
-	{
-		return UPanel;
-	}	// end UserPanel get()
-	
 }	// end UserPanel
