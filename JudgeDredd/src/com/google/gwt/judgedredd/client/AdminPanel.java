@@ -124,9 +124,10 @@ public class AdminPanel extends Composite
 	}
 
 	private void displayCrimes(int[] monthlyCrimes) {
+		
 		approveFlexTable = new FlexTable();
 		flowpanel.add(approveFlexTable);
-
+		
 		// Create table for crime data.
 		approveFlexTable.setText(0, 0, "Month");
 		approveFlexTable.setText(0, 1, "Crimes");
@@ -138,8 +139,12 @@ public class AdminPanel extends Composite
 		approveFlexTable.addStyleName("approveCrimeList");
 		approveFlexTable.getCellFormatter().addStyleName(0, 1, "approveCrimeListNumericColumn");
 		approveFlexTable.getCellFormatter().addStyleName(0, 2, "approveCrimeListNumericColumn");
-
+		
+		int totalCrimes = 0;
+		
 		for(int i = 0; i < monthlyCrimes.length; i++){
+
+			totalCrimes += monthlyCrimes[i]; 
 			String monthString;
 			switch (i+1) {
 			case 1:  monthString = "January";	break;
@@ -158,6 +163,8 @@ public class AdminPanel extends Composite
 			}
 			displayCrime(monthString, monthlyCrimes[i]);
 		}
+		
+		flowpanel.add(new Label("Total Crime Count Imported: " + totalCrimes));
 	}
 
 	private void displayCrime(final String month, int crimeCount) {
@@ -171,7 +178,7 @@ public class AdminPanel extends Composite
 		approveFlexTable.getCellFormatter().addStyleName(row, 2, "watchListNumericColumn");
 
 		//Add a button to remove this crime from the table.
-		Button removecrimeButton = new Button("x");
+		Button removecrimeButton = new Button("Approve");
 		removecrimeButton.addStyleDependentName("remove");
 		removecrimeButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
