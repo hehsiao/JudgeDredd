@@ -1,6 +1,6 @@
 com.google.gwt.i18n.shared.impl.DateRecord, true, true, false, false, com.google.gwt.i18n.shared.impl.DateRecord/3375188634, 3375188634
-com.google.gwt.judgedredd.client.ClientCrime, true, true, false, false, com.google.gwt.judgedredd.client.ClientCrime/790615088, 790615088
-[Lcom.google.gwt.judgedredd.client.ClientCrime;, true, true, false, false, [Lcom.google.gwt.judgedredd.client.ClientCrime;/1656528332, 1656528332
+com.google.gwt.judgedredd.client.ClientCrime, true, true, false, false, com.google.gwt.judgedredd.client.ClientCrime/2994506645, 2994506645
+[Lcom.google.gwt.judgedredd.client.ClientCrime;, true, true, false, false, [Lcom.google.gwt.judgedredd.client.ClientCrime;/308649004, 308649004
 com.google.gwt.judgedredd.client.CrimeService, false, false, false, false, _, 4114933915
 com.google.gwt.judgedredd.client.NotLoggedInException, true, true, false, false, com.google.gwt.judgedredd.client.NotLoggedInException/2379331663, 2379331663
 com.google.gwt.user.client.rpc.IncompatibleRemoteServiceException, true, true, true, true, com.google.gwt.user.client.rpc.IncompatibleRemoteServiceException/3936916533, 3936916533

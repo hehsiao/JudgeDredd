@@ -30,7 +30,10 @@ public class AdminPanel extends Composite
 		final DialogBox dialogBox = new DialogBox();
 		dialogBox.setText("Remote Procedure Call");
 		dialogBox.setAnimationEnabled(true);
+		
 		final Button closeButton = new Button("Close");
+		final Button btnParseData = new Button("Parse Data");
+		
 		// We can set the id of a widget by accessing its Element
 		closeButton.getElement().setId("closeButton");
 		final HTML serverResponseLabel = new HTML();
@@ -48,8 +51,6 @@ public class AdminPanel extends Composite
 		flowpanel.add(URL_Field);
 		URL_Field.setWidth("250px");
 
-		final Button btnParseData = new Button("Parse Data");
-
 		// Add a handler to close the DialogBox
 		closeButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
@@ -58,6 +59,7 @@ public class AdminPanel extends Composite
 				btnParseData.setFocus(true);
 			}
 		});
+		
 
 		btnParseData.addClickHandler(new ClickHandler() 
 		{

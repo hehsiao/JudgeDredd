@@ -15,7 +15,7 @@ import org.xml.sax.SAXException;
 
 public class CrimeParser {
 
-	final private int MAX_NUMBER_OF_CRIMES = 500; // max number of crimes to store in datastore
+	final private int MAX_NUMBER_OF_CRIMES = 200; // max number of crimes to store in datastore
 	private int[] monthlyCrimes;
 	
 	/**

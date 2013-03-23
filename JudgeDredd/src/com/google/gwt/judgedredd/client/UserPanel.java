@@ -4,50 +4,111 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.HasData;
+
 
 public class UserPanel extends Composite
 {
 
 	private final CrimeServiceAsync crimeService = GWT.create(CrimeService.class);
 	private VerticalPanel vp;
+	private VerticalPanel vp2 = new VerticalPanel();
+
 	
 	public UserPanel(){
 		vp = new VerticalPanel();
 		initWidget(vp);
-		int[] months = {1,2,3,4,5,6,7,8,9,10,11,12};
+
 		
-		crimeService.getCrimesByMonth(months, new AsyncCallback<ClientCrime[]>() 
-				{
-			public void onFailure(Throwable error) 
-			{
-//				System.out.println("Failed");
+
+
+		final Button submitButton = new Button("Show All Crimes");
+		// Add a handler to close the DialogBox
+		submitButton.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				int[] months = {1,2,3,4,5,6,7,8,9,10,11,12};
+				crimeService.getCrimesByMonth(months, new AsyncCallback<ClientCrime[]>() 
+						{
+					public void onFailure(Throwable error) 
+					{
+						//						System.out.println("Failed");
+					}
+					public void onSuccess(ClientCrime[] crimes) 
+					{
+						//						System.out.println("Retrieving Crimes");
+
+						vp.add(displayResults(crimes));
+					}
+						});
 			}
-			public void onSuccess(ClientCrime[] crimes) 
-			{
-//				System.out.println("Retrieving Crimes");
-				displayResults(crimes);
+		});
+
+		final ListBox crimeTypesBox = new ListBox();
+		crimeTypesBox.addItem("Commercial BE");
+		crimeTypesBox.addItem("Mischief Over $5000");
+		crimeTypesBox.addItem("Mischief Under $5000");
+		crimeTypesBox.addItem("Theft From Auto Over $5000");
+		crimeTypesBox.addItem("Theft From Auto Under $5000");
+		crimeTypesBox.addItem("Theft Of Auto Under $5000");
+		crimeTypesBox.addItem("Theft Of Auto Over $5000");
+
+		crimeTypesBox.setVisibleItemCount(1);
+		// Create and add new Label to Horizontal Panel  
+		vp.add(new Label("Search for Crime Type:"));
+		// Add SuggestBox to Horizontal Panel
+		vp.add(crimeTypesBox);
+
+		final Button typeSubmitButton = new Button("Show Crimes for Type");
+		// Add a handler to close the DialogBox
+		typeSubmitButton.addClickHandler(new ClickHandler() {
+
+			public void onClick(ClickEvent event) {
+				String crimeType = crimeTypesBox.getItemText(crimeTypesBox.getSelectedIndex());
+				System.out.println("looking for crime type " + crimeType);
+				crimeService.getCertainCrimeType(crimeType, new AsyncCallback<ClientCrime[]>() 
+						{
+					public void onFailure(Throwable error) 
+					{
+						//						System.out.println("Failed");
+					}
+					public void onSuccess(ClientCrime[] crimes) 
+					{
+						//						System.out.println("Retrieving Crimes");
+
+						vp.add(displayResults(crimes));
+					}
+						});
 			}
-				});
+		});
+
+		vp.add(typeSubmitButton);
+		vp.add(submitButton);
+		
 	}
+
 	/**
-	 * 
+	 * Display the requested crimes in a cell Table
 	 */
-	public void displayResults(ClientCrime[] crimes) {
+	public VerticalPanel displayResults(ClientCrime[] crimes) {
 		final List<ClientCrime> CRIMES = Arrays.asList(crimes);
-		
+
 		// Create a CellTable.
-		final CellTable<ClientCrime> table = new CellTable<ClientCrime>();
+		final CellTable<ClientCrime> crimeTable = new CellTable<ClientCrime>();
 		// Display 3 rows in one page
-		table.setPageSize(10);
-		
+		crimeTable.setPageSize(10);
+
 
 		// Add a text column to show the name.
 		TextColumn<ClientCrime> typeColumn = new TextColumn<ClientCrime>() {
@@ -56,7 +117,7 @@ public class UserPanel extends Composite
 				return object.getType();
 			}
 		};
-		table.addColumn(typeColumn, "Crime Type");
+		crimeTable.addColumn(typeColumn, "Crime Type");
 
 		// Add a date column to show the birthday.
 		TextColumn<ClientCrime> monthColumn = new TextColumn<ClientCrime>() {
@@ -65,7 +126,7 @@ public class UserPanel extends Composite
 				return object.getCrimeMonth()+"";
 			}
 		};
-		table.addColumn(monthColumn, "Month");
+		crimeTable.addColumn(monthColumn, "Month");
 
 		// Add a text column to show the address.
 		TextColumn<ClientCrime> addressColumn = new TextColumn<ClientCrime>() {
@@ -74,7 +135,7 @@ public class UserPanel extends Composite
 				return object.getLocation();
 			}
 		};
-		table.addColumn(addressColumn, "Location");
+		crimeTable.addColumn(addressColumn, "Location");
 
 		// Associate an async data provider to the table
 		// XXX: Use AsyncCallback in the method onRangeChanged
@@ -89,13 +150,13 @@ public class UserPanel extends Composite
 				updateRowData(start, sub);
 			}
 		};
-		provider.addDataDisplay(table);
+		provider.addDataDisplay(crimeTable);
 		provider.updateRowCount(CRIMES.size(), true);
 
-		SimplePager pager = new SimplePager();
-		pager.setDisplay(table);
-		
-		vp.add(table);
-		vp.add(pager);
+		SimplePager crimeTablePager = new SimplePager();
+		crimeTablePager.setDisplay(crimeTable);
+		vp2.add(crimeTable);
+		vp2.add(crimeTablePager);
+		return vp2;
 	}
 }	// end UserPanel
