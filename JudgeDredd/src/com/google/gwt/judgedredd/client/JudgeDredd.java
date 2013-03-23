@@ -101,6 +101,11 @@ public class JudgeDredd implements EntryPoint {
 
 		panel.setSize("100%", "100%");
 		panel.addStyleName("table-center");
+<<<<<<< HEAD
+=======
+		
+		RootPanel.get("login").add(loginPanel);
+>>>>>>> Ignore this update. I want to sync.
 		RootPanel.get("body").add(panel);
 	}
 
