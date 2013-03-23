@@ -13,7 +13,8 @@ public class ClientCrime implements Serializable {
 	private Date dateAdded;
 
 	private Boolean approved;
-	
+	private double latitude;
+	private double longitude;
 	
 	/**
 	 * Getters for other classes
@@ -45,6 +46,14 @@ public class ClientCrime implements Serializable {
 	
 	public boolean isApproved() {
 		return this.approved;
+	}
+	
+	public double getLatitude() {
+		return latitude;
+	}
+
+	public double getLongitude() {
+		return longitude;
 	}
 	
 	/**
@@ -82,4 +91,5 @@ public class ClientCrime implements Serializable {
 	public void setApproved(Boolean approved) {
 		this.approved = approved;
 	}
+
 }

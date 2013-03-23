@@ -86,20 +86,22 @@ public class JudgeDredd implements EntryPoint {
 			loginPanel.add(signInLink);
 		}
 		
+
+		RootPanel.get("login").add(loginPanel);
+		RootPanel.get("map").add(new Map());
+		
 		panel = new TabPanel();
 		panel.setAnimationEnabled(true);
 
 		flowpanel = new FlowPanel();
-		flowpanel.add((IsWidget) new Label("Home"));
+		flowpanel.add((IsWidget) new UserPanel());
 		panel.add(flowpanel, "Home");
 		
 		panel.selectTab(0);
 
 		panel.setSize("100%", "100%");
 		panel.addStyleName("table-center");
-		RootPanel.get("login").add(loginPanel);
 		RootPanel.get("body").add(panel);
-		RootPanel.get("map").add(new Map());
 	}
 
 	/**

@@ -124,10 +124,10 @@ public class AdminPanel extends Composite
 	}
 
 	private void displayCrimes(int[] monthlyCrimes) {
-		
+
 		approveFlexTable = new FlexTable();
 		flowpanel.add(approveFlexTable);
-		
+
 		// Create table for crime data.
 		approveFlexTable.setText(0, 0, "Month");
 		approveFlexTable.setText(0, 1, "Crimes");
@@ -139,9 +139,9 @@ public class AdminPanel extends Composite
 		approveFlexTable.addStyleName("approveCrimeList");
 		approveFlexTable.getCellFormatter().addStyleName(0, 1, "approveCrimeListNumericColumn");
 		approveFlexTable.getCellFormatter().addStyleName(0, 2, "approveCrimeListNumericColumn");
-		
+
 		int totalCrimes = 0;
-		
+
 		for(int i = 0; i < monthlyCrimes.length; i++){
 
 			totalCrimes += monthlyCrimes[i]; 
@@ -163,7 +163,7 @@ public class AdminPanel extends Composite
 			}
 			displayCrime(monthString, monthlyCrimes[i]);
 		}
-		
+
 		flowpanel.add(new Label("Total Crime Count Imported: " + totalCrimes));
 	}
 
