@@ -9,6 +9,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.TextColumn;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
@@ -23,17 +24,14 @@ public class UserPanel extends Composite
 {
 
 	private final CrimeServiceAsync crimeService = GWT.create(CrimeService.class);
-	private VerticalPanel vp;
-	private VerticalPanel vp2 = new VerticalPanel();
+	private VerticalPanel searchOptionsPanel = new VerticalPanel();
+	private VerticalPanel resultPanel = new VerticalPanel();
 
 	
 	public UserPanel(){
-		vp = new VerticalPanel();
-		initWidget(vp);
+		initWidget(searchOptionsPanel);
 
 		
-
-
 		final Button submitButton = new Button("Show All Crimes");
 		// Add a handler to close the DialogBox
 		submitButton.addClickHandler(new ClickHandler() {
@@ -43,13 +41,11 @@ public class UserPanel extends Composite
 						{
 					public void onFailure(Throwable error) 
 					{
-						//						System.out.println("Failed");
+						Window.alert(error.getMessage());
 					}
 					public void onSuccess(ClientCrime[] crimes) 
 					{
-						//						System.out.println("Retrieving Crimes");
-
-						vp.add(displayResults(crimes));
+						searchOptionsPanel.add(displayResults(crimes));
 					}
 						});
 			}
@@ -66,9 +62,9 @@ public class UserPanel extends Composite
 
 		crimeTypesBox.setVisibleItemCount(1);
 		// Create and add new Label to Horizontal Panel  
-		vp.add(new Label("Search for Crime Type:"));
+		searchOptionsPanel.add(new Label("Search for Crime Type:"));
 		// Add SuggestBox to Horizontal Panel
-		vp.add(crimeTypesBox);
+		searchOptionsPanel.add(crimeTypesBox);
 
 		final Button typeSubmitButton = new Button("Show Crimes for Type");
 		// Add a handler to close the DialogBox
@@ -81,20 +77,18 @@ public class UserPanel extends Composite
 						{
 					public void onFailure(Throwable error) 
 					{
-						//						System.out.println("Failed");
+						Window.alert(error.getMessage());
 					}
 					public void onSuccess(ClientCrime[] crimes) 
 					{
-						//						System.out.println("Retrieving Crimes");
-
-						vp.add(displayResults(crimes));
+						searchOptionsPanel.add(displayResults(crimes));
 					}
 						});
 			}
 		});
 
-		vp.add(typeSubmitButton);
-		vp.add(submitButton);
+		searchOptionsPanel.add(typeSubmitButton);
+		searchOptionsPanel.add(submitButton);
 		
 	}
 
@@ -102,6 +96,7 @@ public class UserPanel extends Composite
 	 * Display the requested crimes in a cell Table
 	 */
 	public VerticalPanel displayResults(ClientCrime[] crimes) {
+		resultPanel.clear();
 		final List<ClientCrime> CRIMES = Arrays.asList(crimes);
 
 		// Create a CellTable.
@@ -155,8 +150,8 @@ public class UserPanel extends Composite
 
 		SimplePager crimeTablePager = new SimplePager();
 		crimeTablePager.setDisplay(crimeTable);
-		vp2.add(crimeTable);
-		vp2.add(crimeTablePager);
-		return vp2;
+		resultPanel.add(crimeTable);
+		resultPanel.add(crimeTablePager);
+		return resultPanel;
 	}
 }	// end UserPanel

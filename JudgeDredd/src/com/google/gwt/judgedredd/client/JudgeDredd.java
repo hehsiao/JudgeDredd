@@ -50,9 +50,8 @@ public class JudgeDredd implements EntryPoint {
 			public void onSuccess(LoginInfo result) {
 				loginInfo = result;
 				if(loginInfo.isLoggedIn() && isJudge(loginInfo)) {
-						loadJudgeDredd();
+					loadJudgeDredd();
 				} else {
-//					loadLogin();
 					loadCivilians();
 				}
 			}
