@@ -26,48 +26,21 @@ public class UserPanel extends Composite
 	private final CrimeServiceAsync crimeService = GWT.create(CrimeService.class);
 	private VerticalPanel searchOptionsPanel = new VerticalPanel();
 	private VerticalPanel resultPanel = new VerticalPanel();
+	private String[] CRIME_TYPES = {"Commercial BE", "Mischief Over $5000", "Mischief Under $5000", 
+			"Theft From Auto Over $5000","Theft From Auto Under $5000","Theft Of Auto Under $5000", "Theft Of Auto Over $5000"};
+	private String[] MONTHS = {"January", "February", "March", "April", "May", "June",
+			"July", "August", "September", "October", "November", "December"};
 
-	
 	public UserPanel(){
 		initWidget(searchOptionsPanel);
 
-		
-		final Button submitButton = new Button("Show All Crimes");
-		// Add a handler to close the DialogBox
-		submitButton.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				int[] months = {1,2,3,4,5,6,7,8,9,10,11,12};
-				crimeService.getCrimesByMonth(months, new AsyncCallback<ClientCrime[]>() 
-						{
-					public void onFailure(Throwable error) 
-					{
-						Window.alert(error.getMessage());
-					}
-					public void onSuccess(ClientCrime[] crimes) 
-					{
-						searchOptionsPanel.add(displayResults(crimes));
-					}
-						});
-			}
-		});
-
-		final ListBox crimeTypesBox = new ListBox();
-		crimeTypesBox.addItem("Commercial BE");
-		crimeTypesBox.addItem("Mischief Over $5000");
-		crimeTypesBox.addItem("Mischief Under $5000");
-		crimeTypesBox.addItem("Theft From Auto Over $5000");
-		crimeTypesBox.addItem("Theft From Auto Under $5000");
-		crimeTypesBox.addItem("Theft Of Auto Under $5000");
-		crimeTypesBox.addItem("Theft Of Auto Over $5000");
-
-		crimeTypesBox.setVisibleItemCount(1);
-		// Create and add new Label to Horizontal Panel  
+		/**
+		 * Crime Type Search Box
+		 */
 		searchOptionsPanel.add(new Label("Search for Crime Type:"));
-		// Add SuggestBox to Horizontal Panel
+		final ListBox crimeTypesBox = pullDownMenus(CRIME_TYPES);
 		searchOptionsPanel.add(crimeTypesBox);
-
 		final Button typeSubmitButton = new Button("Show Crimes for Type");
-		// Add a handler to close the DialogBox
 		typeSubmitButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
@@ -86,10 +59,82 @@ public class UserPanel extends Composite
 						});
 			}
 		});
-
 		searchOptionsPanel.add(typeSubmitButton);
-		searchOptionsPanel.add(submitButton);
+
+		// Crime Type Search End
+
+		/**
+		 * Month and Year Search Box
+		 */
+		searchOptionsPanel.add(new Label("Search by Month:"));
+		final ListBox monthBox = pullDownMenus(MONTHS);
 		
+		// TODO:
+		// 	EITHER HARDCODE OR GENERATE FROM QUERY
+		String[] YEARS = {"NOT BEING USED YET", "2010", "2011"};
+		final ListBox yearBox = pullDownMenus(YEARS);
+		
+		searchOptionsPanel.add(monthBox);
+		searchOptionsPanel.add(yearBox);
+		final Button dateSubmitButton = new Button("Show Crimes by Month");
+		dateSubmitButton.addClickHandler(new ClickHandler() {
+
+			public void onClick(ClickEvent event) {
+				String month = monthBox.getItemText(monthBox.getSelectedIndex());
+				String year = yearBox.getItemText(yearBox.getSelectedIndex());
+				System.out.println("looking for period " + month +" at Index: "+ monthBox.getSelectedIndex() + ", " + year);
+				int[] targetMonth = {monthBox.getSelectedIndex()+1};
+				crimeService.getCrimesByMonth(targetMonth, new AsyncCallback<ClientCrime[]>() 
+						{
+					public void onFailure(Throwable error) 
+					{
+						Window.alert(error.getMessage());
+					}
+					public void onSuccess(ClientCrime[] crimes) 
+					{
+						searchOptionsPanel.add(displayResults(crimes));
+					}
+						});
+			}
+		});
+		searchOptionsPanel.add(dateSubmitButton);
+
+		// Crime Type Search End
+
+		/**
+		 * Show All Crimes
+		 */
+		final Button showAllButton = new Button("Show All Crimes");
+		// Add a handler to close the DialogBox
+		showAllButton.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				int[] months = {1,2,3,4,5,6,7,8,9,10,11,12};
+				crimeService.getCrimesByMonth(months, new AsyncCallback<ClientCrime[]>() 
+						{
+					public void onFailure(Throwable error) 
+					{
+						Window.alert(error.getMessage());
+					}
+					public void onSuccess(ClientCrime[] crimes) 
+					{
+						searchOptionsPanel.add(displayResults(crimes));
+					}
+						});
+			}
+		});
+		searchOptionsPanel.add(showAllButton);
+		// Show All Crime Ends
+
+	}
+
+	private ListBox pullDownMenus(String[] items){
+		final ListBox listBox = new ListBox();
+		for(String item : items){
+			listBox.addItem(item);
+		}
+		listBox.setVisibleItemCount(1);
+		// Add SuggestBox to Horizontal Panel
+		return listBox;
 	}
 
 	/**
@@ -97,61 +142,66 @@ public class UserPanel extends Composite
 	 */
 	public VerticalPanel displayResults(ClientCrime[] crimes) {
 		resultPanel.clear();
-		final List<ClientCrime> CRIMES = Arrays.asList(crimes);
+		if(crimes.length == 0){
+			resultPanel.add(new Label("No Crimes Found on Search Criteria"));
+		}
+		else{
+			final List<ClientCrime> CRIMES = Arrays.asList(crimes);
 
-		// Create a CellTable.
-		final CellTable<ClientCrime> crimeTable = new CellTable<ClientCrime>();
-		// Display 3 rows in one page
-		crimeTable.setPageSize(10);
+			// Create a CellTable.
+			final CellTable<ClientCrime> crimeTable = new CellTable<ClientCrime>();
+			// Display 3 rows in one page
+			crimeTable.setPageSize(10);
 
 
-		// Add a text column to show the name.
-		TextColumn<ClientCrime> typeColumn = new TextColumn<ClientCrime>() {
-			@Override
-			public String getValue(ClientCrime object) {
-				return object.getType();
-			}
-		};
-		crimeTable.addColumn(typeColumn, "Crime Type");
+			// Add a text column to show the name.
+			TextColumn<ClientCrime> typeColumn = new TextColumn<ClientCrime>() {
+				@Override
+				public String getValue(ClientCrime object) {
+					return object.getType();
+				}
+			};
+			crimeTable.addColumn(typeColumn, "Crime Type");
 
-		// Add a date column to show the birthday.
-		TextColumn<ClientCrime> monthColumn = new TextColumn<ClientCrime>() {
-			@Override
-			public String getValue(ClientCrime object) {
-				return object.getCrimeMonth()+"";
-			}
-		};
-		crimeTable.addColumn(monthColumn, "Month");
+			// Add a date column to show the birthday.
+			TextColumn<ClientCrime> monthColumn = new TextColumn<ClientCrime>() {
+				@Override
+				public String getValue(ClientCrime object) {
+					return object.getCrimeMonth()+"";
+				}
+			};
+			crimeTable.addColumn(monthColumn, "Month");
 
-		// Add a text column to show the address.
-		TextColumn<ClientCrime> addressColumn = new TextColumn<ClientCrime>() {
-			@Override
-			public String getValue(ClientCrime object) {
-				return object.getLocation();
-			}
-		};
-		crimeTable.addColumn(addressColumn, "Location");
+			// Add a text column to show the address.
+			TextColumn<ClientCrime> addressColumn = new TextColumn<ClientCrime>() {
+				@Override
+				public String getValue(ClientCrime object) {
+					return object.getLocation();
+				}
+			};
+			crimeTable.addColumn(addressColumn, "Location");
 
-		// Associate an async data provider to the table
-		// XXX: Use AsyncCallback in the method onRangeChanged
-		// to actaully get the data from the server side
-		AsyncDataProvider<ClientCrime> provider = new AsyncDataProvider<ClientCrime>() {
-			@Override
-			protected void onRangeChanged(HasData<ClientCrime> display) {
-				int start = display.getVisibleRange().getStart();
-				int end = start + display.getVisibleRange().getLength();
-				end = end >= CRIMES.size() ? CRIMES.size() : end;
-				List<ClientCrime> sub = CRIMES.subList(start, end);
-				updateRowData(start, sub);
-			}
-		};
-		provider.addDataDisplay(crimeTable);
-		provider.updateRowCount(CRIMES.size(), true);
+			// Associate an async data provider to the table
+			// XXX: Use AsyncCallback in the method onRangeChanged
+			// to actaully get the data from the server side
+			AsyncDataProvider<ClientCrime> provider = new AsyncDataProvider<ClientCrime>() {
+				@Override
+				protected void onRangeChanged(HasData<ClientCrime> display) {
+					int start = display.getVisibleRange().getStart();
+					int end = start + display.getVisibleRange().getLength();
+					end = end >= CRIMES.size() ? CRIMES.size() : end;
+					List<ClientCrime> sub = CRIMES.subList(start, end);
+					updateRowData(start, sub);
+				}
+			};
+			provider.addDataDisplay(crimeTable);
+			provider.updateRowCount(CRIMES.size(), true);
 
-		SimplePager crimeTablePager = new SimplePager();
-		crimeTablePager.setDisplay(crimeTable);
-		resultPanel.add(crimeTable);
-		resultPanel.add(crimeTablePager);
+			SimplePager crimeTablePager = new SimplePager();
+			crimeTablePager.setDisplay(crimeTable);
+			resultPanel.add(crimeTable);
+			resultPanel.add(crimeTablePager);
+		}
 		return resultPanel;
 	}
 }	// end UserPanel
