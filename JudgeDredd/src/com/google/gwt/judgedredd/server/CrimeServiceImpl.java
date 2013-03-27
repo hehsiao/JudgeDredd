@@ -42,14 +42,6 @@ public class CrimeServiceImpl extends RemoteServiceServlet implements CrimeServi
 		CrimeParser parser = new CrimeParser();
 		ArrayList<Crime> crimeReport = parser.retrieveCrimeDataset(url);
 
-		// can be used as a seperate call
-		approveReport(crimeReport);
-
-		return parser.getCrimesCountByMonth();
-	}
-
-	public void approveReport (ArrayList<Crime> crimeReport){
-
 		PersistenceManager pm = getPersistenceManager();
 		// make persistent
 		try{
@@ -59,12 +51,11 @@ public class CrimeServiceImpl extends RemoteServiceServlet implements CrimeServi
 		finally {
 			pm.close();
 		}
+		return parser.getCrimesCountByMonth();
 	}
 
+	public ClientCrime[] getCrimesByMonth(int[] targetMonths, int targetYear) {
 
-	public ClientCrime[] getCrimesByMonth(int[] targetMonths, int targetYear) throws NotLoggedInException {
-
-		//		checkLoggedIn();
 		PersistenceManager pm = getPersistenceManager();
 		List<ClientCrime> crimes = new ArrayList<ClientCrime>();
 
@@ -73,7 +64,7 @@ public class CrimeServiceImpl extends RemoteServiceServlet implements CrimeServi
 				System.out.println("Set new query for " + month);
 				Query q = pm.newQuery(Crime.class, "month == targetMonth && year == targetYear && approved == f");
 				q.declareParameters("Integer targetMonth, Integer targetYear, Boolean f");
-				q.setOrdering("crimeType asc");
+				q.setOrdering("year desc, month asc");
 				List<Crime> report = (List<Crime>) q.execute(month, targetYear, false);
 				System.out.println("executed");
 				for (Crime c : report) {
@@ -95,9 +86,8 @@ public class CrimeServiceImpl extends RemoteServiceServlet implements CrimeServi
 		return (ClientCrime[]) crimes.toArray(new ClientCrime[0]);
 	}
 
-	public ClientCrime[] getAllCrimes() throws NotLoggedInException {
+	public ClientCrime[] getAllCrimes() {
 
-		//		checkLoggedIn();
 		PersistenceManager pm = getPersistenceManager();
 		List<ClientCrime> crimes = new ArrayList<ClientCrime>();
 
@@ -105,7 +95,7 @@ public class CrimeServiceImpl extends RemoteServiceServlet implements CrimeServi
 			System.out.println("Set new query for all crimes");
 			Query q = pm.newQuery(Crime.class, "approved == f");
 			q.declareParameters("Boolean f");
-			q.setOrdering("crimeType asc");
+			q.setOrdering("year desc, month asc");
 			List<Crime> report = (List<Crime>) q.execute(false);
 			System.out.println("executed");
 			for (Crime c : report) {
@@ -151,16 +141,15 @@ public class CrimeServiceImpl extends RemoteServiceServlet implements CrimeServi
 	}	
 
 
-	public ClientCrime[] getCertainCrimeType(String crimeType) throws NotLoggedInException {
+	public ClientCrime[] getCertainCrimeType(String crimeType) {
 
-		//		checkLoggedIn();
 		PersistenceManager pm = getPersistenceManager();
 		List<ClientCrime> crimes = new ArrayList<ClientCrime>();
 
 		try {
 			Query q = pm.newQuery(Crime.class, "crimeType == ct");
 			q.declareParameters("String ct");
-			q.setOrdering("crimeType asc");
+			q.setOrdering("year desc, month asc");
 			System.out.println("set new Query");
 			List<Crime> report = (List<Crime>) q.execute(crimeType);
 			System.out.println("executed");

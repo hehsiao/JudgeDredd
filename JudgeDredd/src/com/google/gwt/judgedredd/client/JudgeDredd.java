@@ -30,8 +30,6 @@ public class JudgeDredd implements EntryPoint {
 	
 	private LoginInfo loginInfo = null;
 	private VerticalPanel loginPanel = new VerticalPanel();
-	private Label welcomeLabel = new Label("Citizens of Vancouver, this is Judge Dredd.");
-	private Label loginLabel = new Label("You are required, by law, to sign in using your Google Account to access the Grand Hall of Justice of Vancouver.");
 	private Anchor signInLink = new Anchor("Sign In");
 	private Anchor signOutLink = new Anchor("Sign Out");
 	private TabPanel panel;
@@ -110,8 +108,6 @@ public class JudgeDredd implements EntryPoint {
 		
 		signOutLink.setHref(loginInfo.getLogoutUrl());
 		loginPanel.add(signOutLink);
-//		welcomeLabel = new Label("Hello " + loginInfo.getNickname() + ", you are logged in as a Judge.");
-//		loginPanel.add(welcomeLabel);
 		
 		panel = new TabPanel();
 		panel.setAnimationEnabled(true);

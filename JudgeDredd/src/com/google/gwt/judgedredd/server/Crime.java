@@ -18,6 +18,18 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 import com.google.appengine.api.users.User;
 
+/**
+ * @author goodweather
+ *
+ */
+/**
+ * @author goodweather
+ *
+ */
+/**
+ * @author goodweather
+ *
+ */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class Crime {
 
@@ -60,53 +72,82 @@ public class Crime {
 	}
 	
 	/**
-	 * Getters for other classes
+	 * Returns the id of Crime
+	 * @return Key
 	 */
-	
 	public Long getKey(){
 		return this.id;
 	}
 	
+	/**
+	 * returns the address of crime
+	 * @return location
+	 */
 	public String getLocation(){
 		return this.location;
 	}
 	
+	/**
+	 * returns type of crime
+	 * @return crimeType
+	 */
 	public String getType(){
 		return this.crimeType;
 	}
 	
+	/**
+	 * returns the year of crime
+	 * @return year
+	 */
 	public int getCrimeYear(){
 		return this.year;
 	}
-	
+
+	/**
+	 * returns the month of crime
+	 * @return month
+	 */
 	public int getCrimeMonth(){
 		return this.month;
 	}
 
+	/**
+	 * returns the date added to datastore
+	 * @return dateAdded
+	 */
 	public Date getDateAdded() {
 		return this.dateAdded;
 	}
 	
+	/**
+	 * returns whether or not the crime has been approved by administrator.
+	 * @return approval status
+	 */
 	public boolean isApproved() {
 		return this.approved;
 	}
 	
+	/**
+	 * returns the latitude of where the crime occurred
+	 * @return latitude
+	 */
 	public double getLatitude() {
 		return latitude;
 	}
 	
+	/**
+	 * returns the longitude of where the crime occurred
+	 * @return longitude
+	 */	
 	public double getLongitude() {
 		return longitude;
 	}
 	
 	/**
-	 * Setters
+	 * Approves the crime in data store
 	 */
-	
 	public void setApproval(){
 		this.approved = true;
 	}
 
-
-	
 }
