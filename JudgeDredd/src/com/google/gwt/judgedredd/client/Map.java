@@ -53,9 +53,9 @@ public class Map extends Composite
 		geocodeAddress("Oakridge Center, Vancouver");
 
 		findUserLocation();
-
 	}
 
+	
 	/**
 	 * 
 	 */
@@ -102,6 +102,26 @@ public class Map extends Composite
 		}
 	}
 
+	public void addCrimePoint(String crimeType, double lat, double lng){
+		final MarkerOptions markerOpts = MarkerOptions.create();
+		markerOpts.setMap(theMap);
+		markerOpts.setPosition(LatLng.create(lat, lng));
+		
+		final Marker marker = Marker.create(markerOpts);
+		InfoWindowOptions infowindowOpts = InfoWindowOptions.create();
+		infowindowOpts.setContent(crimeType);
+		
+		final InfoWindow infowindow = InfoWindow.create(infowindowOpts);
+		marker.addClickListener(new Marker.ClickHandler() {
+			@Override
+			public void handle(MouseEvent event) {
+				infowindow.open(theMap, marker);
+			}
+		});
+		
+	}
+	
+	
 	/**
 	 * Handles the geo location errors
 	 * @param errorFlag - geolocation errors

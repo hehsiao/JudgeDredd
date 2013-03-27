@@ -27,7 +27,7 @@ body, table td, select {
   font-size: 13pt;
   font-family: 'Verdana', Monospace;
   background: transparent;
-  color: #CCCCCC;
+  color: #000000;
 }
 select {
   color: #000;

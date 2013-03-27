@@ -11,7 +11,7 @@ public class ClientCrime implements Serializable {
 	private int month;
 	private String location;
 	private Date dateAdded;
-
+	
 	private Boolean approved;
 	private double latitude;
 	private double longitude;
@@ -91,5 +91,15 @@ public class ClientCrime implements Serializable {
 	public void setApproved(Boolean approved) {
 		this.approved = approved;
 	}
+
+	public void setLatitude(double latitude) {
+		this.latitude = latitude;
+	}
+
+	public void setLongitude(double longitude) {
+		this.longitude = longitude;
+	}
+
+	
 
 }

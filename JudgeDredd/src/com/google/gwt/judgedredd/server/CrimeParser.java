@@ -4,12 +4,15 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Scanner;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 
 import org.xml.sax.SAXException;
+
+import com.google.maps.gwt.client.LatLng;
 
 
 
@@ -67,6 +70,7 @@ public class CrimeParser {
 	 * 
 	 * @param crimeList
 	 */
+	@SuppressWarnings("deprecation")
 	public ArrayList<Crime> selectCrimes(ArrayList<ArrayList<String>> crimeList){
 		
 		int crimes_counter = 0;
@@ -84,7 +88,6 @@ public class CrimeParser {
 		    
 		    double latitude = 0.00;
 		    double longitude = 0.00;
-		    
 		    try {
 				Geocoder geocode = new Geocoder(cleanAddress);
 				latlng = geocode.getLatlng();
@@ -114,7 +117,7 @@ public class CrimeParser {
 
 		    } else {
 		    	// DEBUG
-		    	//System.out.println("ADDED: " + crimes_counter + " " + crimeType+ " " +year+ " " +month+ " " +cleanAddress+ " " +latitude+ " " +longitude);
+//		    	System.out.println("ADDED: " + crimes_counter + " " + crimeType+ " " +year+ " " +month+ " " +cleanAddress+ " " +latitude+ " " +longitude);
 			    crimeReport.add(new Crime(crimeType, year, month, cleanAddress, latitude, longitude));
 			    monthlyCrimes[month-1]++;
 			    crimes_counter++;

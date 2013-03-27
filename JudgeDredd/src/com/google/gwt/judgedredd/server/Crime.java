@@ -10,7 +10,6 @@
 
 package com.google.gwt.judgedredd.server;
 
-import java.util.Calendar;
 import java.util.Date;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -83,7 +82,7 @@ public class Crime {
 	public int getCrimeMonth(){
 		return this.month;
 	}
-	
+
 	public Date getDateAdded() {
 		return this.dateAdded;
 	}

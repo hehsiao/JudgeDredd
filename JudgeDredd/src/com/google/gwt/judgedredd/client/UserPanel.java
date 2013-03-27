@@ -18,6 +18,7 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.HasData;
+import com.google.gwt.judgedredd.client.Map;
 
 
 public class UserPanel extends Composite
@@ -30,6 +31,7 @@ public class UserPanel extends Composite
 			"Theft From Auto Over $5000","Theft From Auto Under $5000","Theft Of Auto Under $5000", "Theft Of Auto Over $5000"};
 	private String[] MONTHS = {"January", "February", "March", "April", "May", "June",
 			"July", "August", "September", "October", "November", "December"};
+	private String[] YEARS = {"2010", "2011"};
 
 	public UserPanel(){
 		initWidget(searchOptionsPanel);
@@ -68,12 +70,11 @@ public class UserPanel extends Composite
 		 */
 		searchOptionsPanel.add(new Label("Search by Month:"));
 		final ListBox monthBox = pullDownMenus(MONTHS);
-		
+
 		// TODO:
 		// 	EITHER HARDCODE OR GENERATE FROM QUERY
-		String[] YEARS = {"NOT BEING USED YET", "2010", "2011"};
 		final ListBox yearBox = pullDownMenus(YEARS);
-		
+
 		searchOptionsPanel.add(monthBox);
 		searchOptionsPanel.add(yearBox);
 		final Button dateSubmitButton = new Button("Show Crimes by Month");
@@ -81,10 +82,18 @@ public class UserPanel extends Composite
 
 			public void onClick(ClickEvent event) {
 				String month = monthBox.getItemText(monthBox.getSelectedIndex());
-				String year = yearBox.getItemText(yearBox.getSelectedIndex());
-				System.out.println("looking for period " + month +" at Index: "+ monthBox.getSelectedIndex() + ", " + year);
+				int targetYear = 2010;
+				try
+				{
+				   targetYear = Integer.parseInt(yearBox.getItemText(yearBox.getSelectedIndex()));
+				}
+				catch (NumberFormatException nfe)
+				{
+
+				}
+				System.out.println("looking for period " + month +" at Index: "+ monthBox.getSelectedIndex() + ", " + targetYear);
 				int[] targetMonth = {monthBox.getSelectedIndex()+1};
-				crimeService.getCrimesByMonth(targetMonth, new AsyncCallback<ClientCrime[]>() 
+				crimeService.getCrimesByMonth(targetMonth, targetYear, new AsyncCallback<ClientCrime[]>() 
 						{
 					public void onFailure(Throwable error) 
 					{
@@ -107,9 +116,8 @@ public class UserPanel extends Composite
 		final Button showAllButton = new Button("Show All Crimes");
 		// Add a handler to close the DialogBox
 		showAllButton.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				int[] months = {1,2,3,4,5,6,7,8,9,10,11,12};
-				crimeService.getCrimesByMonth(months, new AsyncCallback<ClientCrime[]>() 
+			public void onClick(ClickEvent event) {				
+				crimeService.getAllCrimes(new AsyncCallback<ClientCrime[]>() 
 						{
 					public void onFailure(Throwable error) 
 					{
@@ -150,7 +158,7 @@ public class UserPanel extends Composite
 
 			// Create a CellTable.
 			final CellTable<ClientCrime> crimeTable = new CellTable<ClientCrime>();
-			// Display 3 rows in one page
+			// Display 10 rows in one page
 			crimeTable.setPageSize(10);
 
 
@@ -163,7 +171,7 @@ public class UserPanel extends Composite
 			};
 			crimeTable.addColumn(typeColumn, "Crime Type");
 
-			// Add a date column to show the birthday.
+			// add Month Column
 			TextColumn<ClientCrime> monthColumn = new TextColumn<ClientCrime>() {
 				@Override
 				public String getValue(ClientCrime object) {
@@ -171,7 +179,15 @@ public class UserPanel extends Composite
 				}
 			};
 			crimeTable.addColumn(monthColumn, "Month");
-
+			
+			// Add a Year column 
+			TextColumn<ClientCrime> yearColumn = new TextColumn<ClientCrime>() {
+				@Override
+				public String getValue(ClientCrime object) {
+					return object.getCrimeYear()+"";
+				}
+			};
+			crimeTable.addColumn(yearColumn, "Year");
 			// Add a text column to show the address.
 			TextColumn<ClientCrime> addressColumn = new TextColumn<ClientCrime>() {
 				@Override
@@ -181,9 +197,6 @@ public class UserPanel extends Composite
 			};
 			crimeTable.addColumn(addressColumn, "Location");
 
-			// Associate an async data provider to the table
-			// XXX: Use AsyncCallback in the method onRangeChanged
-			// to actaully get the data from the server side
 			AsyncDataProvider<ClientCrime> provider = new AsyncDataProvider<ClientCrime>() {
 				@Override
 				protected void onRangeChanged(HasData<ClientCrime> display) {
@@ -192,16 +205,27 @@ public class UserPanel extends Composite
 					end = end >= CRIMES.size() ? CRIMES.size() : end;
 					List<ClientCrime> sub = CRIMES.subList(start, end);
 					updateRowData(start, sub);
+//					updateMapPoints(start, sub);
 				}
+
+
 			};
 			provider.addDataDisplay(crimeTable);
 			provider.updateRowCount(CRIMES.size(), true);
-
 			SimplePager crimeTablePager = new SimplePager();
 			crimeTablePager.setDisplay(crimeTable);
 			resultPanel.add(crimeTable);
 			resultPanel.add(crimeTablePager);
+
 		}
 		return resultPanel;
 	}
+
+//	protected void updateMapPoints(int start, List<ClientCrime> sub) {
+//		// TODO Auto-generated method stub
+//		for(ClientCrime c : sub){
+//			addCrimePoint(c.getType(), c.getLatitude(), c.getLongitude());
+//		}
+//
+//	}
 }	// end UserPanel
