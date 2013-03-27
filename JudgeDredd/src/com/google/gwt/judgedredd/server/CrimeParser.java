@@ -90,6 +90,7 @@ public class CrimeParser {
 				latlng = geocode.getLatlng();
 				latitude = latlng[0];
 				longitude = latlng[1];
+				cleanAddress = geocode.getFormattedAddress();
 			} catch (XPathExpressionException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -104,9 +105,16 @@ public class CrimeParser {
 				e.printStackTrace();
 			}
 		    
-		    if(latitude == Double.NaN || longitude == Double.NaN){
+		    if(cleanAddress == null || !cleanAddress.contains("Vancouver")){
 		    	// Skip entry if latlng is not returned.
+		    	
+		    	// DEBUG
+//		    	if(cleanAddress != null) 
+//		    		System.out.println("SKIPPED: " + crimes_counter + " " + crimeType+ " " +year+ " " +month+ " " +cleanAddress+ " " +latitude+ " " +longitude);
+
 		    } else {
+		    	// DEBUG
+		    	//System.out.println("ADDED: " + crimes_counter + " " + crimeType+ " " +year+ " " +month+ " " +cleanAddress+ " " +latitude+ " " +longitude);
 			    crimeReport.add(new Crime(crimeType, year, month, cleanAddress, latitude, longitude));
 			    monthlyCrimes[month-1]++;
 			    crimes_counter++;

@@ -22,6 +22,7 @@ public class Geocoder {
 	// URL prefix to the geocoder
 	private static final String GEOCODER_REQUEST_PREFIX_FOR_XML = "http://maps.google.com/maps/api/geocode/xml";
 	private double[] latlng = new double[2];
+	private String formattedAddress;
 
 	public Geocoder (){
 	}
@@ -51,6 +52,11 @@ public class Geocoder {
 
 		// extract the result
 		NodeList resultNodeList = null;
+		
+	    resultNodeList = (NodeList) xpath.evaluate("/GeocodeResponse/result/formatted_address", geocoderResultDocument, XPathConstants.NODESET);
+	    for(int i=0; i<resultNodeList.getLength(); ++i) {
+	      formattedAddress = resultNodeList.item(i).getTextContent();
+	    }
 
 		resultNodeList = (NodeList) xpath.evaluate("/GeocodeResponse/result[1]/geometry/location/*", geocoderResultDocument, XPathConstants.NODESET);
 		double lat = Double.NaN;
@@ -61,7 +67,8 @@ public class Geocoder {
 			if("lng".equals(node.getNodeName())) lng = Double.parseDouble(node.getTextContent()); 
 		}
 		
-		System.out.println("lat/lng=" + lat + "," + lng);
+//		System.out.println("formatted address: " + formattedAddress);
+//		System.out.println("lat/lng=" + lat + "," + lng);
 		
 		latlng[0] = lat;
 		latlng[1] = lng;
@@ -73,6 +80,10 @@ public class Geocoder {
 	 */
 	public double[] getLatlng() {
 		return latlng;
+	}
+
+	public String getFormattedAddress() {
+		return formattedAddress;
 	}
 	
 
