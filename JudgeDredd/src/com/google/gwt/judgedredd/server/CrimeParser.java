@@ -15,7 +15,6 @@ import org.xml.sax.SAXException;
 import com.google.maps.gwt.client.LatLng;
 
 
-
 public class CrimeParser {
 
 	final private int MAX_NUMBER_OF_CRIMES = 200; // max number of crimes to store in datastore

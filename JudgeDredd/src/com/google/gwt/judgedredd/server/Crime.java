@@ -18,18 +18,6 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 import com.google.appengine.api.users.User;
 
-/**
- * @author goodweather
- *
- */
-/**
- * @author goodweather
- *
- */
-/**
- * @author goodweather
- *
- */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class Crime {
 
