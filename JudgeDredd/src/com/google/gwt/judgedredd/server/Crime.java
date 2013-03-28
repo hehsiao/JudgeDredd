@@ -40,14 +40,14 @@ public class Crime {
 	private Date dateAdded;
 	@Persistent
 	private Boolean approved;
-	
+
 	/**
 	 * Constructors 
 	 */
 	public Crime() {
 		this.dateAdded = new Date();
 	}
-	
+
 	public Crime(String type, int year, int month, String location, double latitude, double longitude){
 		this();
 		this.crimeType = type;
@@ -58,7 +58,7 @@ public class Crime {
 		this.longitude = longitude;
 		this.approved = false;
 	}
-	
+
 	/**
 	 * Returns the id of Crime
 	 * @return Key
@@ -66,7 +66,7 @@ public class Crime {
 	public Long getKey(){
 		return this.id;
 	}
-	
+
 	/**
 	 * returns the address of crime
 	 * @return location
@@ -74,7 +74,7 @@ public class Crime {
 	public String getLocation(){
 		return this.location;
 	}
-	
+
 	/**
 	 * returns type of crime
 	 * @return crimeType
@@ -82,7 +82,7 @@ public class Crime {
 	public String getType(){
 		return this.crimeType;
 	}
-	
+
 	/**
 	 * returns the year of crime
 	 * @return year
@@ -106,7 +106,7 @@ public class Crime {
 	public Date getDateAdded() {
 		return this.dateAdded;
 	}
-	
+
 	/**
 	 * returns whether or not the crime has been approved by administrator.
 	 * @return approval status
@@ -114,7 +114,7 @@ public class Crime {
 	public boolean isApproved() {
 		return this.approved;
 	}
-	
+
 	/**
 	 * returns the latitude of where the crime occurred
 	 * @return latitude
@@ -122,7 +122,7 @@ public class Crime {
 	public double getLatitude() {
 		return latitude;
 	}
-	
+
 	/**
 	 * returns the longitude of where the crime occurred
 	 * @return longitude
@@ -130,12 +130,18 @@ public class Crime {
 	public double getLongitude() {
 		return longitude;
 	}
-	
+
 	/**
 	 * Approves the crime in data store
+	 * toggle the approve flag
 	 */
 	public void setApproval(){
-		this.approved = true;
+		if(approved){
+			this.approved = false;
+		}
+		else {
+			this.approved = true;
+		}
 	}
 
 }

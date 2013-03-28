@@ -18,7 +18,7 @@ import com.google.maps.gwt.client.LatLng;
 
 public class CrimeParser {
 
-	final private int MAX_NUMBER_OF_CRIMES = 200; // max number of crimes to store in datastore
+	final private int MAX_NUMBER_OF_CRIMES = 10; // max number of crimes to store in datastore
 	private int[] monthlyCrimes;
 
 	/**
@@ -108,8 +108,7 @@ public class CrimeParser {
 			}
 
 			if(cleanAddress == null || !cleanAddress.contains("Vancouver")){
-				// Skip entry if latlng is not returned.
-
+				// Skip entry if geocoder results is not returned.
 				// DEBUG
 				//		    	if(cleanAddress != null) 
 				//		    		System.out.println("SKIPPED: " + crimes_counter + " " + crimeType+ " " +year+ " " +month+ " " +cleanAddress+ " " +latitude+ " " +longitude);

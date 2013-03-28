@@ -23,6 +23,8 @@ public class AdminPanel extends Composite
 	private FlexTable approveFlexTable;
 	private FlowPanel flowpanel;
 	private ArrayList<String> months = new ArrayList<String>();
+	private final DialogBox dialogBox = new DialogBox();
+	private final Button closeButton = new Button("Close");
 
 	public AdminPanel() 
 	{
@@ -31,17 +33,13 @@ public class AdminPanel extends Composite
 		flowpanel.setSize("100%", "100%");
 
 		// Create the popup dialog box
-		final DialogBox dialogBox = new DialogBox();
-		dialogBox.setText("Remote Procedure Call");
 		dialogBox.setAnimationEnabled(true);
-
-		final Button closeButton = new Button("Close");
 		final Button btnParseData = new Button("Parse Data");
 
 		// We can set the id of a widget by accessing its Element
 		closeButton.getElement().setId("closeButton");
 		final HTML serverResponseLabel = new HTML();
-		VerticalPanel dialogVPanel = new VerticalPanel();
+		final VerticalPanel dialogVPanel = new VerticalPanel();
 		dialogVPanel.addStyleName("dialogVPanel");
 		dialogVPanel.add(serverResponseLabel);
 		dialogVPanel.setHorizontalAlignment(VerticalPanel.ALIGN_RIGHT);
@@ -59,6 +57,7 @@ public class AdminPanel extends Composite
 		closeButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				dialogBox.hide();
+				dialogVPanel.remove(serverResponseLabel);
 				btnParseData.setEnabled(true);
 				btnParseData.setFocus(true);
 			}
@@ -71,6 +70,11 @@ public class AdminPanel extends Composite
 			{
 				btnParseData.setEnabled(false);
 				String url = URL_Field.getText();
+
+				dialogBox.setText("Please wait... processing dataset from " + url + "...");
+				closeButton.setVisible(false);
+				dialogBox.center();
+
 				crimeService.addReport(url, new AsyncCallback<int[]>() 
 						{
 					public void onFailure(Throwable error) 
@@ -79,8 +83,8 @@ public class AdminPanel extends Composite
 					}
 					public void onSuccess(int[] monthlyCrimes) 
 					{
-						displayCrimes(monthlyCrimes);
 						popUpDisplay(monthlyCrimes);
+						displayCrimes(monthlyCrimes);
 					}
 
 					private void popUpDisplay(int[] monthlyCrimes) {
@@ -90,25 +94,11 @@ public class AdminPanel extends Composite
 						System.out.println("Success");		
 						int totalCrimes = 0;
 						String result = "";
+
 						for(int i = 0; i < monthlyCrimes.length; i++){
 
 							totalCrimes += monthlyCrimes[i]; 
-							String monthString;
-							switch (i+1) {
-							case 1:  monthString = "January";	break;
-							case 2:  monthString = "February";	break;
-							case 3:  monthString = "March";		break;
-							case 4:  monthString = "April";		break;
-							case 5:  monthString = "May";		break;
-							case 6:  monthString = "June";		break;
-							case 7:  monthString = "July";		break;
-							case 8:  monthString = "August";	break;
-							case 9:  monthString = "September";	break;
-							case 10: monthString = "October";	break;
-							case 11: monthString = "November";	break;
-							case 12: monthString = "December";	break;
-							default: monthString = "Invalid month";	break;
-							}
+							String monthString = convertMonthToString(i);
 							result +=  monthlyCrimes[i] + " crimes occured in " + monthString + ".<br>";
 							//							System.out.println(monthString + " has " + monthlyCrimes[i] + " crimes.");
 						}
@@ -117,6 +107,7 @@ public class AdminPanel extends Composite
 						dialogBox.setText("Parsing Complete");
 						serverResponseLabel.setHTML(result);
 						dialogBox.center();
+						closeButton.setVisible(true);
 						closeButton.setFocus(true);
 					} 
 						});
@@ -125,6 +116,29 @@ public class AdminPanel extends Composite
 
 		flowpanel.add(btnParseData);
 
+		//Add a button to remove this crime from the table.
+		final Button removeUnapprovedCrimesButton = new Button("Remove unapproved Crimes");
+		removeUnapprovedCrimesButton.addStyleDependentName("remove");
+		removeUnapprovedCrimesButton.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				crimeService.removeCrimes(new AsyncCallback<Integer>() 
+						{
+					public void onFailure(Throwable error) 
+					{
+						Window.alert(error.getMessage());
+					}
+					public void onSuccess(Integer crimesDeleted) 
+					{
+						dialogBox.setText(crimesDeleted + " unapproved Crimes were removed");
+						closeButton.setVisible(true);
+						closeButton.setFocus(true);
+						removeUnapprovedCrimesButton.setEnabled(false);
+						dialogBox.center();
+					}
+						});
+			}
+		});
+		flowpanel.add(removeUnapprovedCrimesButton);
 
 
 	}
@@ -149,24 +163,8 @@ public class AdminPanel extends Composite
 		int totalCrimes = 0;
 
 		for(int i = 0; i < monthlyCrimes.length; i++){
-
 			totalCrimes += monthlyCrimes[i]; 
-			String monthString;
-			switch (i+1) {
-			case 1:  monthString = "January";	break;
-			case 2:  monthString = "February";	break;
-			case 3:  monthString = "March";		break;
-			case 4:  monthString = "April";		break;
-			case 5:  monthString = "May";		break;
-			case 6:  monthString = "June";		break;
-			case 7:  monthString = "July";		break;
-			case 8:  monthString = "August";	break;
-			case 9:  monthString = "September";	break;
-			case 10: monthString = "October";	break;
-			case 11: monthString = "November";	break;
-			case 12: monthString = "December";	break;
-			default: monthString = "Invalid month";	break;
-			}
+			String monthString = convertMonthToString(i);
 			if(monthlyCrimes[i] > 0){
 				displayCrime(monthString, i+1, monthlyCrimes[i]);
 			}
@@ -175,7 +173,7 @@ public class AdminPanel extends Composite
 		flowpanel.add(new Label("Total Crime Count Imported: " + totalCrimes));
 	}
 
-	private void displayCrime(final String monthString, final int month, int crimeCount) {
+	private void displayCrime(final String monthString, final int month, final int crimeCount) {
 		// Add the crime to the table.
 		int row = approveFlexTable.getRowCount();
 		months.add(monthString);
@@ -186,27 +184,53 @@ public class AdminPanel extends Composite
 		approveFlexTable.getCellFormatter().addStyleName(row, 2, "watchListNumericColumn");
 
 		//Add a button to remove this crime from the table.
-		Button removecrimeButton = new Button("X");
-		removecrimeButton.addStyleDependentName("remove");
-		removecrimeButton.addClickHandler(new ClickHandler() {
+		final Button approveCrimeButton = new Button("Approve");
+		approveCrimeButton.addStyleDependentName("remove");
+		approveCrimeButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				crimeService.removeCrimes(month, 2011, new AsyncCallback<Boolean>() 
+				crimeService.approveCrimes(month, new AsyncCallback<Void>() 
 						{
 					public void onFailure(Throwable error) 
 					{
 						Window.alert(error.getMessage());
 					}
-					public void onSuccess(Boolean status) 
+					public void onSuccess(Void status) 
 					{
-						Window.alert("Success");
-						int removedIndex = months.indexOf(monthString);
-						months.remove(removedIndex);
-						approveFlexTable.removeRow(removedIndex+1);
+						dialogBox.setText(crimeCount + " crimes from " + monthString + " are approved");
+						approveCrimeButton.setEnabled(false);
+						closeButton.setVisible(true);
+						closeButton.setFocus(true);
+						dialogBox.center();
 					}
 						});
 			}
 		});
-		approveFlexTable.setWidget(row, 2, removecrimeButton);
+		approveFlexTable.setWidget(row, 2, approveCrimeButton);
 
+	}
+
+	/**
+	 * converts months in integer to String
+	 * @param month in integer
+	 * @return Month in String form
+	 */
+	private String convertMonthToString(int i) {
+		String monthString;
+		switch (i+1) {
+		case 1:  monthString = "January";	break;
+		case 2:  monthString = "February";	break;
+		case 3:  monthString = "March";		break;
+		case 4:  monthString = "April";		break;
+		case 5:  monthString = "May";		break;
+		case 6:  monthString = "June";		break;
+		case 7:  monthString = "July";		break;
+		case 8:  monthString = "August";	break;
+		case 9:  monthString = "September";	break;
+		case 10: monthString = "October";	break;
+		case 11: monthString = "November";	break;
+		case 12: monthString = "December";	break;
+		default: monthString = "Invalid month";	break;
+		}
+		return monthString;
 	}
 }

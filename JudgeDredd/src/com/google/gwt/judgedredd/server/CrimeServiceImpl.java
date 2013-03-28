@@ -41,40 +41,43 @@ public class CrimeServiceImpl extends RemoteServiceServlet implements CrimeServi
 
 		CrimeParser parser = new CrimeParser();
 		ArrayList<Crime> crimeReport = parser.retrieveCrimeDataset(url);
-		
+
 		PersistenceManager pm = getPersistenceManager();
 		// make persistent
-		try{
+		try
+		{
 			System.out.println("make persistent call");
 			pm.makePersistentAll(crimeReport);
 		}
 		finally {
+
 			pm.close();
 		}
 		return parser.getCrimesCountByMonth();
 	}
 
-	public boolean removeCrimes(int month, int targetYear) {
-
+	public int removeCrimes() {
+		int crimesDeleted;
 		PersistenceManager pm = getPersistenceManager();
 		List<ClientCrime> crimes = new ArrayList<ClientCrime>();
-
-		try {
-			System.out.println("Set new query for " + month);
-			Query q = pm.newQuery(Crime.class, "month == targetMonth && year == targetYear && approved == f");
-			q.declareParameters("Integer targetMonth, Integer targetYear, Boolean f");
-			q.setOrdering("year desc, month asc");
-			List<Crime> report = (List<Crime>) q.execute(month, targetYear, false);
-			System.out.println("executed");
+		try
+		{
+			Query q = pm.newQuery(Crime.class, "approved == f");
+			q.declareParameters("Boolean f");
+			List<Crime> report = (List<Crime>) q.execute(false);
 			if(!report.isEmpty()){
 				pm.deletePersistentAll(report);
+				crimesDeleted = report.size();
+			}
+			else {
+				crimesDeleted = 0;
 			}
 
 		} finally {
 			pm.close();
 		}
 
-		return true;
+		return crimesDeleted;
 	}
 
 
@@ -83,30 +86,22 @@ public class CrimeServiceImpl extends RemoteServiceServlet implements CrimeServi
 
 		PersistenceManager pm = getPersistenceManager();
 		List<ClientCrime> crimes = new ArrayList<ClientCrime>();
-
-		try {
+		try
+		{
 			for(int month: targetMonths){
 				System.out.println("Set new query for " + month);
 				Query q = pm.newQuery(Crime.class, "month == targetMonth && year == targetYear && approved == f");
 				q.declareParameters("Integer targetMonth, Integer targetYear, Boolean f");
 				q.setOrdering("year desc, month asc");
-				List<Crime> report = (List<Crime>) q.execute(month, targetYear, false);
+				List<Crime> report = (List<Crime>) q.execute(month, targetYear, true);
 				System.out.println("executed");
 				for (Crime c : report) {
 					crimes.add(crimeToClientCrime(c));
-					//					System.out.println(clientC.getType() + ", " + clientC.getCrimeYear() + ", " + clientC.getCrimeMonth() + ", " + clientC.getLocation() + " Size: " + crimes.size());
 				}
-				//				System.out.println("done printing list");
 			}
 		} finally {
 			pm.close();
 		}
-		System.out.println("Full list of crimes returning");
-		//		System.out.println("Test 1: " + crimes.get(0).getLocation());
-		//		System.out.println("Test 2: " + crimes.get(crimes.size()-2).getLocation());
-		//		for (ClientCrime c: crimes){
-		//			System.out.println(c.getType() + ", " + c.getCrimeYear() + ", " + c.getCrimeMonth() + ", " + c.getLocation());
-		//		}
 
 		return (ClientCrime[]) crimes.toArray(new ClientCrime[0]);
 	}
@@ -115,72 +110,60 @@ public class CrimeServiceImpl extends RemoteServiceServlet implements CrimeServi
 
 		PersistenceManager pm = getPersistenceManager();
 		List<ClientCrime> crimes = new ArrayList<ClientCrime>();
-
-		try {
+		try
+		{
 			System.out.println("Set new query for all crimes");
 			Query q = pm.newQuery(Crime.class, "approved == f");
 			q.declareParameters("Boolean f");
 			q.setOrdering("year desc, month asc");
-			List<Crime> report = (List<Crime>) q.execute(false);
+			List<Crime> report = (List<Crime>) q.execute(true);
 			System.out.println("executed");
 			for (Crime c : report) {
 				crimes.add(crimeToClientCrime(c));
-				//					System.out.println(clientC.getType() + ", " + clientC.getCrimeYear() + ", " + clientC.getCrimeMonth() + ", " + clientC.getLocation() + " Size: " + crimes.size());
 			}
-
 		} finally {
 			pm.close();
 		}
-		System.out.println("Full list of crimes returning");
-		//		System.out.println("Test 1: " + crimes.get(0).getLocation());
-		//		System.out.println("Test 2: " + crimes.get(crimes.size()-2).getLocation());
-		//		for (ClientCrime c: crimes){
-		//			System.out.println(c.getType() + ", " + c.getCrimeYear() + ", " + c.getCrimeMonth() + ", " + c.getLocation());
-		//		}
 
 		return (ClientCrime[]) crimes.toArray(new ClientCrime[0]);
 	}
+	
 	public void approveCrimes(int month) throws NotLoggedInException {
 
 		checkLoggedIn();
 		PersistenceManager pm = getPersistenceManager();
 		List<Crime> crimes = new ArrayList<Crime>();
-		Transaction tx = pm.currentTransaction();
 		try {
-			tx.begin();
-			Extent e = pm.getExtent(Crime.class, true);
+			Extent<Crime> e = pm.getExtent(Crime.class, true);
 			java.util.Iterator iter=e.iterator();
 			while (iter.hasNext()) {
-				Crime c = (Crime) iter.next();
+				Crime c = (Crime) iter.next();				
 				if (c.isApproved() == false && c.getCrimeMonth() == month) {
 					c.setApproval();
 				}
-				tx.commit();
 			}
 		}
-		catch (Exception e) {
-			if (tx.isActive()) {
-				tx.rollback();
-			}
+
+		finally {
+			pm.close();
 		}
 	}	
-
 
 	public ClientCrime[] getCertainCrimeType(String crimeType) {
 
 		PersistenceManager pm = getPersistenceManager();
 		List<ClientCrime> crimes = new ArrayList<ClientCrime>();
-
-		try {
+		try
+		{
 			Query q = pm.newQuery(Crime.class, "crimeType == ct");
 			q.declareParameters("String ct");
 			q.setOrdering("year desc, month asc");
 			System.out.println("set new Query");
 			List<Crime> report = (List<Crime>) q.execute(crimeType);
 			System.out.println("executed");
-			for (Crime c : report) {;
-			crimes.add(crimeToClientCrime(c));
-			//				System.out.println(c.getType() + ", " + c.getCrimeYear() + ", " + c.getCrimeMonth() + ", " + c.getLocation());
+			for (Crime c : report) {
+				crimes.add(crimeToClientCrime(c));
+				//				System.out.println(c.getType() + ", " + c.getCrimeYear() + ", " + c.getCrimeMonth() + ", " + c.getLocation());
 			}
 			System.out.println("done printing list");
 		} finally {
@@ -242,4 +225,6 @@ public class CrimeServiceImpl extends RemoteServiceServlet implements CrimeServi
 	private PersistenceManager getPersistenceManager() {
 		return PMF.getPersistenceManager();
 	}
+
+
 }
