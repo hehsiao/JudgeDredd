@@ -1,6 +1,9 @@
 package com.google.gwt.judgedredd.client;
 
+import java.util.ArrayList;
+
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DialogBox;
@@ -19,6 +22,7 @@ public class AdminPanel extends Composite
 	private final CrimeServiceAsync crimeService = GWT.create(CrimeService.class);
 	private FlexTable approveFlexTable;
 	private FlowPanel flowpanel;
+	private ArrayList<String> months = new ArrayList<String>();
 
 	public AdminPanel() 
 	{
@@ -30,10 +34,10 @@ public class AdminPanel extends Composite
 		final DialogBox dialogBox = new DialogBox();
 		dialogBox.setText("Remote Procedure Call");
 		dialogBox.setAnimationEnabled(true);
-		
+
 		final Button closeButton = new Button("Close");
 		final Button btnParseData = new Button("Parse Data");
-		
+
 		// We can set the id of a widget by accessing its Element
 		closeButton.getElement().setId("closeButton");
 		final HTML serverResponseLabel = new HTML();
@@ -59,7 +63,7 @@ public class AdminPanel extends Composite
 				btnParseData.setFocus(true);
 			}
 		});
-		
+
 
 		btnParseData.addClickHandler(new ClickHandler() 
 		{
@@ -163,28 +167,43 @@ public class AdminPanel extends Composite
 			case 12: monthString = "December";	break;
 			default: monthString = "Invalid month";	break;
 			}
-			displayCrime(monthString, monthlyCrimes[i]);
+			if(monthlyCrimes[i] > 0){
+				displayCrime(monthString, i+1, monthlyCrimes[i]);
+			}
 		}
 
 		flowpanel.add(new Label("Total Crime Count Imported: " + totalCrimes));
 	}
 
-	private void displayCrime(final String month, int crimeCount) {
+	private void displayCrime(final String monthString, final int month, int crimeCount) {
 		// Add the crime to the table.
 		int row = approveFlexTable.getRowCount();
-
-		approveFlexTable.setText(row, 0, month);
+		months.add(monthString);
+		approveFlexTable.setText(row, 0, monthString);
 		approveFlexTable.setText(row, 1, ""+crimeCount);
 		approveFlexTable.setWidget(row, 2, new Label());
 		approveFlexTable.getCellFormatter().addStyleName(row, 1, "watchListNumericColumn");
 		approveFlexTable.getCellFormatter().addStyleName(row, 2, "watchListNumericColumn");
 
 		//Add a button to remove this crime from the table.
-		Button removecrimeButton = new Button("Approve");
+		Button removecrimeButton = new Button("X");
 		removecrimeButton.addStyleDependentName("remove");
 		removecrimeButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				//removecrime(symbol);
+				crimeService.removeCrimes(month, 2011, new AsyncCallback<Boolean>() 
+						{
+					public void onFailure(Throwable error) 
+					{
+						Window.alert(error.getMessage());
+					}
+					public void onSuccess(Boolean status) 
+					{
+						Window.alert("Success");
+						int removedIndex = months.indexOf(monthString);
+						months.remove(removedIndex);
+						approveFlexTable.removeRow(removedIndex+1);
+					}
+						});
 			}
 		});
 		approveFlexTable.setWidget(row, 2, removecrimeButton);

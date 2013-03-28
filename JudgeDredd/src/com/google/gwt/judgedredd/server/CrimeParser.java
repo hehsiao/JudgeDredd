@@ -1,6 +1,7 @@
 package com.google.gwt.judgedredd.server;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,7 +20,7 @@ public class CrimeParser {
 
 	final private int MAX_NUMBER_OF_CRIMES = 200; // max number of crimes to store in datastore
 	private int[] monthlyCrimes;
-	
+
 	/**
 	 * Constructor
 	 * Initialize monthlyCrimes counter
@@ -55,7 +56,7 @@ public class CrimeParser {
 
 		// OPTIONAL
 		ArrayList<Crime> report = selectCrimes(crimeList);
-		
+
 		return report;
 
 	}
@@ -69,25 +70,24 @@ public class CrimeParser {
 	 * 
 	 * @param crimeList
 	 */
-	@SuppressWarnings("deprecation")
 	public ArrayList<Crime> selectCrimes(ArrayList<ArrayList<String>> crimeList){
-		
+
 		int crimes_counter = 0;
 		double[] latlng = new double[2];
 		ArrayList<Crime> crimeReport = new ArrayList<Crime>();
-		
+
 		Collections.shuffle(crimeList);
 		for (ArrayList<String> aCrime: crimeList) {
 
 			String crimeType = aCrime.get(0);
 			int year = Integer.parseInt(aCrime.get(1));
-		    int month = Integer.parseInt(aCrime.get(2));
+			int month = Integer.parseInt(aCrime.get(2));
 
-		    String cleanAddress = parseAddress(aCrime.get(3));
-		    
-		    double latitude = 0.00;
-		    double longitude = 0.00;
-		    try {
+			String cleanAddress = parseAddress(aCrime.get(3));
+
+			double latitude = 0.00;
+			double longitude = 0.00;
+			try {
 				Geocoder geocode = new Geocoder(cleanAddress);
 				latlng = geocode.getLatlng();
 				latitude = latlng[0];
@@ -106,39 +106,39 @@ public class CrimeParser {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		    
-		    if(cleanAddress == null || !cleanAddress.contains("Vancouver")){
-		    	// Skip entry if latlng is not returned.
-		    	
-		    	// DEBUG
-//		    	if(cleanAddress != null) 
-//		    		System.out.println("SKIPPED: " + crimes_counter + " " + crimeType+ " " +year+ " " +month+ " " +cleanAddress+ " " +latitude+ " " +longitude);
 
-		    } else {
-		    	// DEBUG
-//		    	System.out.println("ADDED: " + crimes_counter + " " + crimeType+ " " +year+ " " +month+ " " +cleanAddress+ " " +latitude+ " " +longitude);
-			    crimeReport.add(new Crime(crimeType, year, month, cleanAddress, latitude, longitude));
-			    monthlyCrimes[month-1]++;
-			    crimes_counter++;
+			if(cleanAddress == null || !cleanAddress.contains("Vancouver")){
+				// Skip entry if latlng is not returned.
+
+				// DEBUG
+				//		    	if(cleanAddress != null) 
+				//		    		System.out.println("SKIPPED: " + crimes_counter + " " + crimeType+ " " +year+ " " +month+ " " +cleanAddress+ " " +latitude+ " " +longitude);
+
+			} else {
+				// DEBUG
+				System.out.println("ADDED: " + crimes_counter + " " + crimeType+ " " +year+ " " +month+ " " +cleanAddress+ " " +latitude+ " " +longitude);
+				crimeReport.add(new Crime(crimeType, year, month, cleanAddress, latitude, longitude));
+				monthlyCrimes[month-1]++;
+				crimes_counter++;
 			}
-		    
-		    // max entries from dataset
-		    if(crimes_counter == MAX_NUMBER_OF_CRIMES){
-		    	break;
-		    }
-		    
+
+			// max entries from dataset
+			if(crimes_counter == MAX_NUMBER_OF_CRIMES){
+				break;
+			}
+
 		}
-		
-	
+
+
 		// DEBUG CODE 
-//		for(int i = 0; i < monthlyCrimes.length; i++){
-//			int month = i+1;
-//			System.out.println("Month " + month + " has " + monthlyCrimes[i] + " crimes.");
-//		}
-		
+		//		for(int i = 0; i < monthlyCrimes.length; i++){
+		//			int month = i+1;
+		//			System.out.println("Month " + month + " has " + monthlyCrimes[i] + " crimes.");
+		//		}
+
 		return crimeReport;
 	}
-	
+
 	/**
 	 * helper method to clean Address and prepare for Geocoding.
 	 * replaces XX to 00 and "/" to "and" and add Vancouver, BC to the end.
@@ -148,15 +148,15 @@ public class CrimeParser {
 	 */
 	public String parseAddress(String location) {
 
-	    location = location.replace("XX", "00");
-	    location = location.replace("/", "and");
-	    
-	    location += ", Vancouver, BC";
-	    
-	    // DEBUG
-//	    System.out.println(location);
-	    
-	    return location;
+		location = location.replace("XX", "00");
+		location = location.replace("/", "and");
+
+		location += ", Vancouver, BC";
+
+		// DEBUG
+		//	    System.out.println(location);
+
+		return location;
 	}
 
 	/**
@@ -168,5 +168,5 @@ public class CrimeParser {
 	public int[] getCrimesCountByMonth(){
 		return monthlyCrimes;
 	}
-	
+
 }

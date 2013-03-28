@@ -41,7 +41,7 @@ public class CrimeServiceImpl extends RemoteServiceServlet implements CrimeServi
 
 		CrimeParser parser = new CrimeParser();
 		ArrayList<Crime> crimeReport = parser.retrieveCrimeDataset(url);
-
+		
 		PersistenceManager pm = getPersistenceManager();
 		// make persistent
 		try{
@@ -54,32 +54,31 @@ public class CrimeServiceImpl extends RemoteServiceServlet implements CrimeServi
 		return parser.getCrimesCountByMonth();
 	}
 
-	public void removeCrimes(int[] targetMonths, int targetYear) {
+	public boolean removeCrimes(int month, int targetYear) {
 
 		PersistenceManager pm = getPersistenceManager();
 		List<ClientCrime> crimes = new ArrayList<ClientCrime>();
 
 		try {
-			for(int month: targetMonths){
-				System.out.println("Set new query for " + month);
-				Query q = pm.newQuery(Crime.class, "month == targetMonth && year == targetYear && approved == f");
-				q.declareParameters("Integer targetMonth, Integer targetYear, Boolean f");
-				q.setOrdering("year desc, month asc");
-				List<Crime> report = (List<Crime>) q.execute(month, targetYear, false);
-				System.out.println("executed");
-				if(!report.isEmpty()){
-					pm.deletePersistentAll(report);
-				}
-				
+			System.out.println("Set new query for " + month);
+			Query q = pm.newQuery(Crime.class, "month == targetMonth && year == targetYear && approved == f");
+			q.declareParameters("Integer targetMonth, Integer targetYear, Boolean f");
+			q.setOrdering("year desc, month asc");
+			List<Crime> report = (List<Crime>) q.execute(month, targetYear, false);
+			System.out.println("executed");
+			if(!report.isEmpty()){
+				pm.deletePersistentAll(report);
 			}
+
 		} finally {
 			pm.close();
 		}
 
+		return true;
 	}
-	
-	
-	
+
+
+
 	public ClientCrime[] getCrimesByMonth(int[] targetMonths, int targetYear) {
 
 		PersistenceManager pm = getPersistenceManager();
