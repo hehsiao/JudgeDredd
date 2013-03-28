@@ -262,6 +262,11 @@ a, a:visited, a:hover {
 }
 
 .gwt-Label {
+	font-size: 100%%; 
+   	font-weight: bold;
+   	color:white;
+   	padding:5px;
+   	margin:0px;
 }
 
 .gwt-ListBox {
