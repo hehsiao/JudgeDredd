@@ -1,4 +1,4 @@
-package com.google.gwt.judgedredd.client;
+	package com.google.gwt.judgedredd.client;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -33,6 +33,7 @@ public class JudgeDredd implements EntryPoint {
 	private Anchor signOutLink = new Anchor("Sign Out");
 	private TabPanel panel;
 	private FlowPanel flowpanel;
+	
 	/**
 	 * This is the entry point method.
 	 */

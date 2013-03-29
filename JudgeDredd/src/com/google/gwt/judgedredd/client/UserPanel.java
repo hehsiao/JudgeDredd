@@ -176,19 +176,20 @@ public class UserPanel extends Composite
 			TextColumn<ClientCrime> monthColumn = new TextColumn<ClientCrime>() {
 				@Override
 				public String getValue(ClientCrime object) {
-					return object.getCrimeMonth()+"";
+					return object.getCrimeMonth()+"/"+object.getCrimeYear();
 				}
 			};
-			crimeTable.addColumn(monthColumn, "Month");
+			crimeTable.addColumn(monthColumn, "Date");
+//			
+//			// Add a Year column 
+//			TextColumn<ClientCrime> yearColumn = new TextColumn<ClientCrime>() {
+//				@Override
+//				public String getValue(ClientCrime object) {
+//					return object.getCrimeYear()+"";
+//				}
+//			};
+//			crimeTable.addColumn(yearColumn, "Year");
 			
-			// Add a Year column 
-			TextColumn<ClientCrime> yearColumn = new TextColumn<ClientCrime>() {
-				@Override
-				public String getValue(ClientCrime object) {
-					return object.getCrimeYear()+"";
-				}
-			};
-			crimeTable.addColumn(yearColumn, "Year");
 			// Add a text column to show the address.
 			TextColumn<ClientCrime> addressColumn = new TextColumn<ClientCrime>() {
 				@Override
