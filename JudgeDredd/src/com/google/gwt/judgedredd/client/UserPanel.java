@@ -3,10 +3,14 @@ package com.google.gwt.judgedredd.client;
 import java.util.Arrays;
 import java.util.List;
 
+import com.google.gwt.cell.client.SafeHtmlCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.cellview.client.CellTable;
+import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.Window;
@@ -46,7 +50,7 @@ public class UserPanel extends Composite
 		initWidget(searchOptionsPanel);
 		hFacebook = new HTML("&nbsp;", true);
 	    
-		searchOptionsPanel.add(hFacebook);
+		RootPanel.get("fb_like").add(hFacebook);
 	    setupFacebookScript();
 	    drawFacebookButton();
 		/**
@@ -204,6 +208,20 @@ public class UserPanel extends Composite
 			};
 			crimeTable.addColumn(addressColumn, "Location");
 
+			final SafeHtmlCell fbCell = new SafeHtmlCell();
+
+		    Column<ClientCrime, SafeHtml> fbColumn = new Column<ClientCrime, SafeHtml>(fbCell) {
+
+		        @Override
+		        public SafeHtml getValue(ClientCrime object) {
+		            SafeHtmlBuilder sb = new SafeHtmlBuilder();
+		            sb.appendHtmlConstant("<img src=\"images/car.jpg\" alt=\"car\" height=\"42\" width=\"42\">");
+		            return sb.toSafeHtml();
+		        }
+		    };
+
+			crimeTable.addColumn(fbColumn, "Facebook");
+
 			AsyncDataProvider<ClientCrime> provider = new AsyncDataProvider<ClientCrime>() {
 				@Override
 				protected void onRangeChanged(HasData<ClientCrime> display) {
@@ -242,7 +260,11 @@ public class UserPanel extends Composite
 		String s = "<fb:like " +
 				"href=\"http://judgedredd.appspot.com\" " +
 				"layout=\"button_count\" " +
+<<<<<<< HEAD
 				"show_faces=\"true\" " +
+=======
+				"show_faces=\"false\" " +
+>>>>>>> SAMPLE CODE FOR ADDING IMAGES TO COLUMN
 				"width=\"50\">" +
 				"</fb:like>";
 
