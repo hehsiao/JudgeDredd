@@ -83,7 +83,6 @@ public class JudgeDredd implements EntryPoint {
 			loginPanel.add(signInLink);
 		}
 		
-
 		RootPanel.get("login").add(loginPanel);
 		
 		panel = new TabPanel();

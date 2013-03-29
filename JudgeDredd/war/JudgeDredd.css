@@ -24,7 +24,7 @@ h1 {
 }
 
 body, table td, select {
-  font-size: 13pt;
+  font-size: 10pt;
   font-family: 'Verdana', Monospace;
   background: transparent;
   color: #000000;
@@ -262,11 +262,6 @@ a, a:visited, a:hover {
 }
 
 .gwt-Label {
-	font-size: 90%%; 
-   	font-weight: bold;
-   	color:white;
-   	padding:5px;
-   	margin:0px;
 }
 
 .gwt-ListBox {
