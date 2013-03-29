@@ -108,6 +108,7 @@ public class Map extends Composite
 		markerOpts.setPosition(LatLng.create(lat, lng));
 		
 		final Marker marker = Marker.create(markerOpts);
+		
 		InfoWindowOptions infowindowOpts = InfoWindowOptions.create();
 		infowindowOpts.setContent(crimeType);
 		
@@ -117,6 +118,7 @@ public class Map extends Composite
 			public void handle(MouseEvent event) {
 				infowindow.open(theMap, marker);
 			}
+			
 		});
 		
 	}

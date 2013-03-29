@@ -85,7 +85,6 @@ public class JudgeDredd implements EntryPoint {
 		
 
 		RootPanel.get("login").add(loginPanel);
-		RootPanel.get("map").add(new Map());
 		
 		panel = new TabPanel();
 		panel.setAnimationEnabled(true);
@@ -127,7 +126,6 @@ public class JudgeDredd implements EntryPoint {
 
 		RootPanel.get("login").add(loginPanel);
 		RootPanel.get("body").add(panel);
-		RootPanel.get("map").add(new Map());
 	}
 	
 	/**

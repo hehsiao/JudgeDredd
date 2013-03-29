@@ -15,6 +15,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.HasData;
@@ -27,6 +28,8 @@ public class UserPanel extends Composite
 	private final CrimeServiceAsync crimeService = GWT.create(CrimeService.class);
 	private VerticalPanel searchOptionsPanel = new VerticalPanel();
 	private VerticalPanel resultPanel = new VerticalPanel();
+
+	private Map theMap = new Map();
 	private String[] CRIME_TYPES = {"Commercial BE", "Mischief Over $5000", "Mischief Under $5000", 
 			"Theft From Auto Over $5000","Theft From Auto Under $5000","Theft Of Auto Under $5000", "Theft Of Auto Over $5000"};
 	private String[] MONTHS = {"January", "February", "March", "April", "May", "June",
@@ -34,6 +37,7 @@ public class UserPanel extends Composite
 	private String[] YEARS = {"2010", "2011"};
 
 	public UserPanel(){
+		RootPanel.get("map").add(theMap);
 		initWidget(searchOptionsPanel);
 
 		/**
@@ -172,7 +176,7 @@ public class UserPanel extends Composite
 			};
 			crimeTable.addColumn(typeColumn, "Crime Type");
 
-			// add Month Column
+			// add Date Column
 			TextColumn<ClientCrime> monthColumn = new TextColumn<ClientCrime>() {
 				@Override
 				public String getValue(ClientCrime object) {
@@ -180,15 +184,6 @@ public class UserPanel extends Composite
 				}
 			};
 			crimeTable.addColumn(monthColumn, "Date");
-//			
-//			// Add a Year column 
-//			TextColumn<ClientCrime> yearColumn = new TextColumn<ClientCrime>() {
-//				@Override
-//				public String getValue(ClientCrime object) {
-//					return object.getCrimeYear()+"";
-//				}
-//			};
-//			crimeTable.addColumn(yearColumn, "Year");
 			
 			// Add a text column to show the address.
 			TextColumn<ClientCrime> addressColumn = new TextColumn<ClientCrime>() {
@@ -207,7 +202,7 @@ public class UserPanel extends Composite
 					end = end >= CRIMES.size() ? CRIMES.size() : end;
 					List<ClientCrime> sub = CRIMES.subList(start, end);
 					updateRowData(start, sub);
-//					updateMapPoints(start, sub);
+					updateMapPoints(start, sub);
 				}
 
 
@@ -220,14 +215,16 @@ public class UserPanel extends Composite
 			resultPanel.add(crimeTablePager);
 
 		}
+
 		return resultPanel;
+
 	}
 
-//	protected void updateMapPoints(int start, List<ClientCrime> sub) {
-//		// TODO Auto-generated method stub
-//		for(ClientCrime c : sub){
-//			addCrimePoint(c.getType(), c.getLatitude(), c.getLongitude());
-//		}
-//
-//	}
+	protected void updateMapPoints(int start, List<ClientCrime> sub) {
+		// TODO Auto-generated method stub
+		for(ClientCrime c : sub){
+			theMap.addCrimePoint(c.getType(), c.getLatitude(), c.getLongitude());
+		}
+
+	}
 }	// end UserPanel
