@@ -260,11 +260,8 @@ public class UserPanel extends Composite
 		String s = "<fb:like " +
 				"href=\"http://judgedredd.appspot.com\" " +
 				"layout=\"button_count\" " +
-<<<<<<< HEAD
 				"show_faces=\"true\" " +
-=======
 				"show_faces=\"false\" " +
->>>>>>> SAMPLE CODE FOR ADDING IMAGES TO COLUMN
 				"width=\"50\">" +
 				"</fb:like>";
 
