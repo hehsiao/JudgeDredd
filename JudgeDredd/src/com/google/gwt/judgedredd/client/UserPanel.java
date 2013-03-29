@@ -241,7 +241,7 @@ public class UserPanel extends Composite
 	private void drawFacebookButton() {
 		String s = "<fb:like " +
 				"href=\"http://judgedredd.appspot.com\" " +
-				"layout=\"box_count\" " +
+				"layout=\"button_count\" " +
 				"show_faces=\"true\" " +
 				"width=\"50\">" +
 				"</fb:like>";
