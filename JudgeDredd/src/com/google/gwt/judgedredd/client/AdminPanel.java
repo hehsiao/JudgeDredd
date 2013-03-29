@@ -1,6 +1,12 @@
 package com.google.gwt.judgedredd.client;
 
+import java.io.IOException;
 import java.util.ArrayList;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPathExpressionException;
+
+import org.xml.sax.SAXException;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
@@ -13,18 +19,23 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.judgedredd.server.Crime;
+import com.google.gwt.judgedredd.server.Geocoder;
 import com.google.gwt.user.client.ui.FlexTable;
 
 public class AdminPanel extends Composite 
 {
 	private final CrimeServiceAsync crimeService = GWT.create(CrimeService.class);
-	private FlexTable approveFlexTable;
+	private FlexTable approveFlexTable = new FlexTable();
 	private FlowPanel flowpanel;
+	private Label totalCrimeCountLbl = new Label();
 	private ArrayList<String> months = new ArrayList<String>();
 	private final DialogBox dialogBox = new DialogBox();
 	private final Button closeButton = new Button("Close");
+	private final Button removeUnapprovedCrimesButton = new Button("Remove unapproved Crimes");
 
 	public AdminPanel() 
 	{
@@ -117,7 +128,72 @@ public class AdminPanel extends Composite
 		flowpanel.add(btnParseData);
 
 		//Add a button to remove this crime from the table.
-		final Button removeUnapprovedCrimesButton = new Button("Remove unapproved Crimes");
+		final Button showUnapprovedCrimesButton = new Button("Show unapproved Crimes");
+		showUnapprovedCrimesButton.addStyleDependentName("remove");
+		showUnapprovedCrimesButton.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				crimeService.getAllCrimes(false, new AsyncCallback<ClientCrime[]>() 
+						{
+					public void onFailure(Throwable error) 
+					{
+						Window.alert(error.getMessage());
+					}
+					public void onSuccess(ClientCrime[] crimes) 
+					{
+						if(crimes.length > 0){
+							displayCrimes(countCrimesByMonth(crimes));
+						}
+						else{
+							Window.alert("no unapproved Crimes");
+						}
+					}
+					private int[] countCrimesByMonth(ClientCrime[] crimes) {
+						// TODO Auto-generated method stub
+						int[] monthlyCrimes = new int[12];
+						for ( ClientCrime c : crimes) {
+							monthlyCrimes[c.getCrimeMonth()-1]++;
+						}
+						return monthlyCrimes;
+					}
+						});
+			}
+		});
+		flowpanel.add(showUnapprovedCrimesButton);
+
+	}
+
+	private void displayCrimes(int[] monthlyCrimes) {
+		flowpanel.remove(approveFlexTable);
+		flowpanel.remove(totalCrimeCountLbl);
+		flowpanel.remove(removeUnapprovedCrimesButton);
+		approveFlexTable = new FlexTable();
+		flowpanel.add(approveFlexTable);
+
+		// Create table for crime data.
+		approveFlexTable.setText(0, 0, "Month");
+		approveFlexTable.setText(0, 1, "Crimes");
+		approveFlexTable.setText(0, 2, "Approve");
+
+		// Add styles to elements in the crime list table.
+		approveFlexTable.setCellPadding(6);
+		//		approveFlexTable.getRowFormatter().addStyleName(0, "approveCrimeListHeader");
+		//		approveFlexTable.addStyleName("approveCrimeList");
+		//		approveFlexTable.getCellFormatter().addStyleName(0, 1, "approveCrimeListNumericColumn");
+		//		approveFlexTable.getCellFormatter().addStyleName(0, 2, "approveCrimeListNumericColumn");
+
+		int totalCrimes = 0;
+
+		for(int i = 0; i < monthlyCrimes.length; i++){
+			totalCrimes += monthlyCrimes[i]; 
+			String monthString = convertMonthToString(i);
+			if(monthlyCrimes[i] > 0){
+				displayCrime(monthString, i+1, monthlyCrimes[i]);
+			}
+		}
+		totalCrimeCountLbl.setText("Total Crime Count Imported: " + totalCrimes);
+		flowpanel.add(totalCrimeCountLbl);
+
+		//Add a button to remove this crime from the table.
 		removeUnapprovedCrimesButton.addStyleDependentName("remove");
 		removeUnapprovedCrimesButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
@@ -134,43 +210,15 @@ public class AdminPanel extends Composite
 						closeButton.setFocus(true);
 						removeUnapprovedCrimesButton.setEnabled(false);
 						dialogBox.center();
+
+						flowpanel.remove(approveFlexTable);
+						flowpanel.remove(totalCrimeCountLbl);
+						flowpanel.remove(removeUnapprovedCrimesButton);
 					}
 						});
 			}
 		});
 		flowpanel.add(removeUnapprovedCrimesButton);
-
-
-	}
-
-	private void displayCrimes(int[] monthlyCrimes) {
-
-		approveFlexTable = new FlexTable();
-		flowpanel.add(approveFlexTable);
-
-		// Create table for crime data.
-		approveFlexTable.setText(0, 0, "Month");
-		approveFlexTable.setText(0, 1, "Crimes");
-		approveFlexTable.setText(0, 2, "Approve");
-
-		// Add styles to elements in the crime list table.
-		approveFlexTable.setCellPadding(6);
-		approveFlexTable.getRowFormatter().addStyleName(0, "approveCrimeListHeader");
-		approveFlexTable.addStyleName("approveCrimeList");
-		approveFlexTable.getCellFormatter().addStyleName(0, 1, "approveCrimeListNumericColumn");
-		approveFlexTable.getCellFormatter().addStyleName(0, 2, "approveCrimeListNumericColumn");
-
-		int totalCrimes = 0;
-
-		for(int i = 0; i < monthlyCrimes.length; i++){
-			totalCrimes += monthlyCrimes[i]; 
-			String monthString = convertMonthToString(i);
-			if(monthlyCrimes[i] > 0){
-				displayCrime(monthString, i+1, monthlyCrimes[i]);
-			}
-		}
-
-		flowpanel.add(new Label("Total Crime Count Imported: " + totalCrimes));
 	}
 
 	private void displayCrime(final String monthString, final int month, final int crimeCount) {

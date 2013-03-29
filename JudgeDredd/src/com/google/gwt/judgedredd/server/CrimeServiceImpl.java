@@ -81,7 +81,6 @@ public class CrimeServiceImpl extends RemoteServiceServlet implements CrimeServi
 	}
 
 
-
 	public ClientCrime[] getCrimesByMonth(int[] targetMonths, int targetYear) {
 
 		PersistenceManager pm = getPersistenceManager();
@@ -106,7 +105,7 @@ public class CrimeServiceImpl extends RemoteServiceServlet implements CrimeServi
 		return (ClientCrime[]) crimes.toArray(new ClientCrime[0]);
 	}
 
-	public ClientCrime[] getAllCrimes() {
+	public ClientCrime[] getAllCrimes(boolean status) {
 
 		PersistenceManager pm = getPersistenceManager();
 		List<ClientCrime> crimes = new ArrayList<ClientCrime>();
@@ -116,7 +115,7 @@ public class CrimeServiceImpl extends RemoteServiceServlet implements CrimeServi
 			Query q = pm.newQuery(Crime.class, "approved == f");
 			q.declareParameters("Boolean f");
 			q.setOrdering("year desc, month asc");
-			List<Crime> report = (List<Crime>) q.execute(true);
+			List<Crime> report = (List<Crime>) q.execute(status);
 			System.out.println("executed");
 			for (Crime c : report) {
 				crimes.add(crimeToClientCrime(c));

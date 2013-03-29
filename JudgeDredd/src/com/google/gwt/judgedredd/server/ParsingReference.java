@@ -44,7 +44,6 @@ public class ParsingReference {
 			int year = Integer.parseInt(aCrime.get(1));
 		    int month = Integer.parseInt(aCrime.get(2));
 		    
-		    Date crimeDate = new Date(year, month, 1);
 		    String location = aCrime.get(3).replace("XX", "00");
 		    System.out.println(crimeType + ", " + year + ", " + month + ", " + location);
 		    count++;

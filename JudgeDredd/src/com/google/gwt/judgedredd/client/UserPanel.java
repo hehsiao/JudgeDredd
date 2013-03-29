@@ -131,7 +131,7 @@ public class UserPanel extends Composite
 		// Add a handler to close the DialogBox
 		showAllButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {				
-				crimeService.getAllCrimes(new AsyncCallback<ClientCrime[]>() 
+				crimeService.getAllCrimes(true, new AsyncCallback<ClientCrime[]>() 
 						{
 					public void onFailure(Throwable error) 
 					{
@@ -230,6 +230,7 @@ public class UserPanel extends Composite
 	}
 
 	protected void updateMapPoints(int start, List<ClientCrime> sub) {
+		theMap.clearCrimePoints();
 		// TODO Auto-generated method stub
 		for(ClientCrime crime : sub){
 			theMap.addCrimePoint(crime);

@@ -12,7 +12,7 @@ public interface CrimeService extends RemoteService {
 	public int[] addReport(String url) throws NotLoggedInException;
 	public ClientCrime[] getCrimesByMonth(int[] targetMonths, int targetYear) throws NotLoggedInException;
 	public int removeCrimes();
-	public ClientCrime[] getAllCrimes() throws NotLoggedInException;
+	public ClientCrime[] getAllCrimes(boolean status) throws NotLoggedInException;
 	public void approveCrimes(int month) throws NotLoggedInException;
 	public ClientCrime[] getCertainCrimeType(String crimeType) throws NotLoggedInException;
 	// TODO: getMonthlyCrimesCount()
