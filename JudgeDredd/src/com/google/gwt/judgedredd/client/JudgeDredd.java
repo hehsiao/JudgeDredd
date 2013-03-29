@@ -57,7 +57,6 @@ public class JudgeDredd implements EntryPoint {
 
 	}
 
-
 	/**
 	 * @param loginInfo
 	 * @return true - if loginInfo email matches one of the ones in the list

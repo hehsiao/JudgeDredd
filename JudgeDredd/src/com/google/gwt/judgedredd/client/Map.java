@@ -1,5 +1,8 @@
 package com.google.gwt.judgedredd.client;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.google.gwt.core.client.Callback;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.geolocation.client.Geolocation;
@@ -33,6 +36,7 @@ public class Map extends Composite
 	private LatLng userLocation;
 	private boolean browserSupportFlag;
 	private MapOptions options;
+	private List<Marker> currMarkers = new ArrayList<Marker>();
 
 	public Map()
 	{
@@ -50,12 +54,12 @@ public class Map extends Composite
 		options.setScrollwheel(true) ;
 
 		theMap = GoogleMap.create( mapPanel.getElement(), options );
-		geocodeAddress("Oakridge Center, Vancouver");
+
 
 		findUserLocation();
 	}
 
-	
+
 	/**
 	 * 
 	 */
@@ -101,29 +105,39 @@ public class Map extends Composite
 			handleNoGeolocation(browserSupportFlag);
 		}
 	}
-
-	public void addCrimePoint(String crimeType, double lat, double lng){
+	public void addCrimePoint(ClientCrime crime){
 		final MarkerOptions markerOpts = MarkerOptions.create();
 		markerOpts.setMap(theMap);
-		markerOpts.setPosition(LatLng.create(lat, lng));
-		
+		markerOpts.setPosition(LatLng.create(crime.getLatitude(), crime.getLongitude()));
+
 		final Marker marker = Marker.create(markerOpts);
-		
+
+		currMarkers.add(marker);
+
 		InfoWindowOptions infowindowOpts = InfoWindowOptions.create();
-		infowindowOpts.setContent(crimeType);
-		
+		infowindowOpts.setContent("<strong>" + crime.getType() + "</strong></br></br>" + crime.getLocation());
+
 		final InfoWindow infowindow = InfoWindow.create(infowindowOpts);
 		marker.addClickListener(new Marker.ClickHandler() {
 			@Override
 			public void handle(MouseEvent event) {
 				infowindow.open(theMap, marker);
 			}
-			
+
 		});
-		
+
 	}
-	
-	
+
+	public void clearCrimePoints() {
+		// TODO Auto-generated method stub
+		for(Marker m : currMarkers){
+			m.setVisible(false);
+		}
+		// clears all the Crime Markers in the list to prevent memory overflow
+		currMarkers.clear();
+
+	}
+
 	/**
 	 * Handles the geo location errors
 	 * @param errorFlag - geolocation errors
@@ -135,8 +149,12 @@ public class Map extends Composite
 			Window.alert("Your browser doesn't support geolocation.");
 		}
 	}
-	
-	private void geocodeAddress(final String address){
+
+	/**
+	 * geocode the address and adds a marker to the map
+	 * @param address
+	 */
+	public void addAddressPin(final String address){
 		System.out.println("Send GeoCode Request");
 		GeocoderRequest request = GeocoderRequest.create();
 		request.setAddress(address);
@@ -166,5 +184,8 @@ public class Map extends Composite
 			}
 		});
 	}
+
+
+
 
 }

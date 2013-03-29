@@ -114,8 +114,12 @@ public class CrimeParser {
 				//		    		System.out.println("SKIPPED: " + crimes_counter + " " + crimeType+ " " +year+ " " +month+ " " +cleanAddress+ " " +latitude+ " " +longitude);
 
 			} else {
+
 				// DEBUG
 				System.out.println("ADDED: " + crimes_counter + " " + crimeType+ " " +year+ " " +month+ " " +cleanAddress+ " " +latitude+ " " +longitude);
+				
+				// retain only the address and building portion of address
+				cleanAddress = cleanAddress.substring(0, cleanAddress.indexOf(", Vancouver"));
 				crimeReport.add(new Crime(crimeType, year, month, cleanAddress, latitude, longitude));
 				monthlyCrimes[month-1]++;
 				crimes_counter++;

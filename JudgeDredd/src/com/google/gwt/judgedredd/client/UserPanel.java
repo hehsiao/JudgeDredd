@@ -155,6 +155,7 @@ public class UserPanel extends Composite
 	 */
 	public VerticalPanel displayResults(ClientCrime[] crimes) {
 		resultPanel.clear();
+		theMap.clearCrimePoints();
 		if(crimes.length == 0){
 			resultPanel.add(new Label("No Crimes Found on Search Criteria"));
 		}
@@ -205,7 +206,6 @@ public class UserPanel extends Composite
 					updateMapPoints(start, sub);
 				}
 
-
 			};
 			provider.addDataDisplay(crimeTable);
 			provider.updateRowCount(CRIMES.size(), true);
@@ -222,8 +222,8 @@ public class UserPanel extends Composite
 
 	protected void updateMapPoints(int start, List<ClientCrime> sub) {
 		// TODO Auto-generated method stub
-		for(ClientCrime c : sub){
-			theMap.addCrimePoint(c.getType(), c.getLatitude(), c.getLongitude());
+		for(ClientCrime crime : sub){
+			theMap.addCrimePoint(crime);
 		}
 
 	}
