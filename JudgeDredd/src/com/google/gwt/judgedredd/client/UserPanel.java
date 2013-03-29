@@ -17,14 +17,17 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.HasData;
 import com.google.gwt.judgedredd.client.Map;
 
+import com.google.gwt.dom.client.Document;
+import com.google.gwt.dom.client.ScriptElement;
+
 
 public class UserPanel extends Composite
 {
-
 	private final CrimeServiceAsync crimeService = GWT.create(CrimeService.class);
 	private VerticalPanel searchOptionsPanel = new VerticalPanel();
 	private VerticalPanel resultPanel = new VerticalPanel();
@@ -36,10 +39,16 @@ public class UserPanel extends Composite
 			"July", "August", "September", "October", "November", "December"};
 	private String[] YEARS = {"2010", "2011"};
 
+	private HTML hFacebook;
+
 	public UserPanel(){
 		RootPanel.get("map").add(theMap);
 		initWidget(searchOptionsPanel);
-
+		hFacebook = new HTML("&nbsp;", true);
+	    
+		searchOptionsPanel.add(hFacebook);
+	    setupFacebookScript();
+	    drawFacebookButton();
 		/**
 		 * Crime Type Search Box
 		 */
@@ -89,7 +98,7 @@ public class UserPanel extends Composite
 				int targetYear = 2010;
 				try
 				{
-				   targetYear = Integer.parseInt(yearBox.getItemText(yearBox.getSelectedIndex()));
+					targetYear = Integer.parseInt(yearBox.getItemText(yearBox.getSelectedIndex()));
 				}
 				catch (NumberFormatException nfe)
 				{
@@ -114,7 +123,7 @@ public class UserPanel extends Composite
 
 		// Crime Type Search End
 
-		
+
 		/**
 		 * Show All Crimes
 		 */
@@ -185,7 +194,7 @@ public class UserPanel extends Composite
 				}
 			};
 			crimeTable.addColumn(monthColumn, "Date");
-			
+
 			// Add a text column to show the address.
 			TextColumn<ClientCrime> addressColumn = new TextColumn<ClientCrime>() {
 				@Override
@@ -226,5 +235,29 @@ public class UserPanel extends Composite
 			theMap.addCrimePoint(crime);
 		}
 
+	}
+
+	private void drawFacebookButton() {
+		String s = "<fb:like " +
+				"href=\"http://judgedredd.appspot.com\" " +
+				"layout=\"box_count\" " +
+				"show_faces=\"true\" " +
+				"width=\"50\">" +
+				"</fb:like>";
+
+		getHFacebook().setHTML(s);
+	}
+
+	private void setupFacebookScript() {
+		Document doc = Document.get();
+		ScriptElement script = doc.createScriptElement();
+		script.setSrc("http://connect.facebook.net/en_US/all.js#xfbml=1");
+		script.setType("text/javascript");
+		script.setLang("javascript");
+		doc.getBody().appendChild(script);
+	}
+
+	public HTML getHFacebook() {
+		return hFacebook;
 	}
 }	// end UserPanel
