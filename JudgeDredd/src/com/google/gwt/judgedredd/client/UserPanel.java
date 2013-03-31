@@ -44,15 +44,18 @@ public class UserPanel extends Composite
 	private String[] YEARS = {"2010", "2011"};
 
 	private HTML hFacebook;
+	private HTML hTwitter;
 
 	public UserPanel(){
 		RootPanel.get("map").add(theMap);
 		initWidget(searchOptionsPanel);
 		hFacebook = new HTML("&nbsp;", true);
-	    
+		hTwitter = new HTML("&nbsp;", true);
+
+		socialSetup();
+
 		RootPanel.get("fb_like").add(hFacebook);
-	    setupFacebookScript();
-	    drawFacebookButton();
+
 		/**
 		 * Crime Type Search Box
 		 */
@@ -208,19 +211,35 @@ public class UserPanel extends Composite
 			};
 			crimeTable.addColumn(addressColumn, "Location");
 
-			final SafeHtmlCell fbCell = new SafeHtmlCell();
+			// Add Twitter Column to Tweet the Crime
+			final SafeHtmlCell twitterCell = new SafeHtmlCell();
 
-		    Column<ClientCrime, SafeHtml> fbColumn = new Column<ClientCrime, SafeHtml>(fbCell) {
+			Column<ClientCrime, SafeHtml> twitterColumn = new Column<ClientCrime, SafeHtml>(twitterCell) {
 
-		        @Override
-		        public SafeHtml getValue(ClientCrime object) {
-		            SafeHtmlBuilder sb = new SafeHtmlBuilder();
-		            sb.appendHtmlConstant("<img src=\"images/car.jpg\" alt=\"car\" height=\"42\" width=\"42\">");
-		            return sb.toSafeHtml();
-		        }
-		    };
+				@Override
+				public SafeHtml getValue(ClientCrime object) {
+					SafeHtmlBuilder sb = new SafeHtmlBuilder();
+					sb.appendHtmlConstant("<a href=\"https://twitter.com/intent/tweet?button_hashtag=Dredd&text=The Law? I am the Law.\" class=\"twitter-hashtag-button\" data-lang=\"en\" >Tweet #Dredd</a>");
+					return sb.toSafeHtml();
+				}
+			};
+			
+			crimeTable.addColumn(twitterColumn, "Tweet Crime");
 
-			crimeTable.addColumn(fbColumn, "Facebook");
+			// Dominic Use this a template to implement the legend
+			final SafeHtmlCell imageCell = new SafeHtmlCell();
+
+			Column<ClientCrime, SafeHtml> imageColumn = new Column<ClientCrime, SafeHtml>(imageCell) {
+
+				@Override
+				public SafeHtml getValue(ClientCrime object) {
+					SafeHtmlBuilder sb = new SafeHtmlBuilder();
+					sb.appendHtmlConstant("<img src=\"images/car.jpg\" alt=\"car\" height=\"42\" width=\"42\">");
+					return sb.toSafeHtml();
+				}
+			};
+
+			crimeTable.addColumn(imageColumn, "Legend");
 
 			AsyncDataProvider<ClientCrime> provider = new AsyncDataProvider<ClientCrime>() {
 				@Override
@@ -256,6 +275,31 @@ public class UserPanel extends Composite
 
 	}
 
+	private void socialSetup() 
+	{
+		setupFacebookScript();
+		setupTwitterScript();
+		drawTwitterButton();
+		drawFacebookButton();
+	}
+
+	private void drawTwitterButton()
+	{
+		String s = "<a href=\"https://twitter.com/intent/tweet?button_hashtag=Dredd&text=The Law? I am the Law.\" class=\"twitter-hashtag-button\" data-lang=\"en\" >Tweet #Dredd</a>";
+
+		getHTwitter().setHTML(s);
+	}
+
+	private void setupTwitterScript()
+	{
+		Document doc = Document.get();
+		ScriptElement script = doc.createScriptElement();
+		script.setSrc("http://platform.twitter.com/widgets.js");
+		script.setType("text/javascript");
+		script.setLang("javascript");
+		doc.getBody().appendChild(script);
+	}
+
 	private void drawFacebookButton() {
 		String s = "<fb:like " +
 				"href=\"http://judgedredd.appspot.com\" " +
@@ -275,6 +319,10 @@ public class UserPanel extends Composite
 		script.setType("text/javascript");
 		script.setLang("javascript");
 		doc.getBody().appendChild(script);
+	}
+
+	public HTML getHTwitter() {
+		return hTwitter;
 	}
 
 	public HTML getHFacebook() {
