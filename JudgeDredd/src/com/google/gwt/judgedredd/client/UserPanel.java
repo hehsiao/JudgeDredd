@@ -55,6 +55,7 @@ public class UserPanel extends Composite
 		socialSetup();
 
 		RootPanel.get("fb_like").add(hFacebook);
+		RootPanel.get("fb_like").add(hTwitter);
 
 		/**
 		 * Crime Type Search Box
@@ -184,14 +185,49 @@ public class UserPanel extends Composite
 			crimeTable.setPageSize(10);
 
 
-			// Add a text column to show the name.
-			TextColumn<ClientCrime> typeColumn = new TextColumn<ClientCrime>() {
+			final SafeHtmlCell imageCell = new SafeHtmlCell();
+
+			Column<ClientCrime, SafeHtml> imageColumn = new Column<ClientCrime, SafeHtml>(imageCell) {
+
 				@Override
-				public String getValue(ClientCrime object) {
-					return object.getType();
+				public SafeHtml getValue(ClientCrime object) {
+					SafeHtmlBuilder sb = new SafeHtmlBuilder();
+					String sbString = "<img src=\"";
+					if(object.getType().equalsIgnoreCase("Mischief Under $5000"))
+					{
+						sbString += "images/mischief.jpg\" alt=\"Mischief Under $5000\" title=\"Mischief Under $5000\"";
+					}
+					else if (object.getType().equalsIgnoreCase("Mischief Over $5000"))
+					{
+						sbString += "images/mischief+.jpg\" alt=\"Mischief Over $5000\" title=\"Mischief Over $5000\"";
+					}
+					else if (object.getType().equalsIgnoreCase("Commercial BE"))
+					{
+						sbString += "images/comm.jpg\" alt=\"Commercial BE\" title=\"Commercial Break and Enter\"";
+					}
+					else if (object.getType().equalsIgnoreCase("Theft from auto under $5000"))
+					{
+						sbString += "images/fromcar.jpg\" alt=\"Theft from auto under $5000\" title=\"Theft From Auto Under $5000\"";
+					}
+					else if (object.getType().equalsIgnoreCase("Theft from auto over $5000"))
+					{
+						sbString += "images/fromcar+.jpg\" alt=\"Theft From Auto Over $5000\" title=\"Theft From Auto Over $5000\"";
+					}
+					else if (object.getType().equalsIgnoreCase("Theft of auto under $5000"))
+					{
+						sbString += "images/car.jpg\" alt=\"Theft of auto under $5000\" title=\"Theft Of Auto Under $5000\"";
+					}
+					else if (object.getType().equalsIgnoreCase("Theft of auto over $5000"))
+					{
+						sbString += "images/car+.jpg\" alt=\"Theft of auto over $5000\" title=\"Theft Of Auto Over $5000\"";
+					}
+					sbString += "height=\"40\" width=\"40\">";
+					sb.appendHtmlConstant(sbString);
+					return sb.toSafeHtml();
 				}
 			};
-			crimeTable.addColumn(typeColumn, "Crime Type");
+
+			crimeTable.addColumn(imageColumn, "Crime Type");
 
 			// add Date Column
 			TextColumn<ClientCrime> monthColumn = new TextColumn<ClientCrime>() {
@@ -220,28 +256,13 @@ public class UserPanel extends Composite
 				public SafeHtml getValue(ClientCrime object) {
 					SafeHtmlBuilder sb = new SafeHtmlBuilder();
 					String tweet = "Citizens of Vancouver. This is Judge Dredd. A " + object.getType() + " occured at " + object.getLocation() + " on " + object.getCrimeMonth() + "/" + object.getCrimeYear() + ".";
-
-					sb.appendHtmlConstant("<a href=\"https://twitter.com/intent/tweet?button_hashtag=Dredd&text=" + tweet + "\"><img src=\"images/twitter.png\" height=\"42\" width=\"42\"></a>");
+					
+					sb.appendHtmlConstant("<a href=\"https://twitter.com/intent/tweet?button_hashtag=Dredd&text=" + tweet + "\"><img src=\"images/twitter.png\" height=\"40\" width=\"40\"></a>");
 					return sb.toSafeHtml();
 				}
 			};
 			
 			crimeTable.addColumn(twitterColumn, "Tweet Crime");
-
-			// Dominic Use this a template to implement the legend
-			final SafeHtmlCell imageCell = new SafeHtmlCell();
-
-			Column<ClientCrime, SafeHtml> imageColumn = new Column<ClientCrime, SafeHtml>(imageCell) {
-
-				@Override
-				public SafeHtml getValue(ClientCrime object) {
-					SafeHtmlBuilder sb = new SafeHtmlBuilder();
-					sb.appendHtmlConstant("<img src=\"images/car.jpg\" alt=\"car\" height=\"42\" width=\"42\">");
-					return sb.toSafeHtml();
-				}
-			};
-
-			crimeTable.addColumn(imageColumn, "Legend");
 
 			AsyncDataProvider<ClientCrime> provider = new AsyncDataProvider<ClientCrime>() {
 				@Override
@@ -287,7 +308,7 @@ public class UserPanel extends Composite
 
 	private void drawTwitterButton()
 	{
-		String s = "<a href=\"https://twitter.com/intent/tweet?button_hashtag=Dredd&text=The Law? I am the Law.\" class=\"twitter-hashtag-button\" data-lang=\"en\" >Tweet #Dredd<img src=\"twitter.png\"></a>";
+		String s = "<a href=\"https://twitter.com/intent/tweet?button_hashtag=Dredd&text=The Law I am the Law.\" class=\"twitter-hashtag-button\" data-lang=\"en\" >Tweet #Dredd<img src=\"twitter.png\"></a>";
 
 		getHTwitter().setHTML(s);
 	}
