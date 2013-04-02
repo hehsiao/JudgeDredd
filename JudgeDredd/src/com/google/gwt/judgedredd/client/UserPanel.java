@@ -219,7 +219,9 @@ public class UserPanel extends Composite
 				@Override
 				public SafeHtml getValue(ClientCrime object) {
 					SafeHtmlBuilder sb = new SafeHtmlBuilder();
-					sb.appendHtmlConstant("<a href=\"https://twitter.com/intent/tweet?button_hashtag=TwitterStories&text=TESTING TWEET\"><img src=\"images/twitter.png\" height=\"42\" width=\"42\"></a>");
+					String tweet = "Citizens of Vancouver. This is Judge Dredd. A " + object.getType() + " occured at " + object.getLocation() + " on " + object.getCrimeMonth() + "/" + object.getCrimeYear() + ".";
+
+					sb.appendHtmlConstant("<a href=\"https://twitter.com/intent/tweet?button_hashtag=Dredd&text=" + tweet + "\"><img src=\"images/twitter.png\" height=\"42\" width=\"42\"></a>");
 					return sb.toSafeHtml();
 				}
 			};
