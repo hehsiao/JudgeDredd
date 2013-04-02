@@ -219,7 +219,7 @@ public class UserPanel extends Composite
 				@Override
 				public SafeHtml getValue(ClientCrime object) {
 					SafeHtmlBuilder sb = new SafeHtmlBuilder();
-					sb.appendHtmlConstant("<a href=\"https://twitter.com/intent/tweet?button_hashtag=Dredd&text=The Law? I am the Law.\" class=\"twitter-hashtag-button\" data-lang=\"en\" >Tweet #Dredd</a>");
+					sb.appendHtmlConstant("<a href=\"https://twitter.com/intent/tweet?button_hashtag=TwitterStories&text=TESTING TWEET\"<img src=\"images/twitter.png\" height=\"42\" width=\"42\"></a>");
 					return sb.toSafeHtml();
 				}
 			};
@@ -234,7 +234,7 @@ public class UserPanel extends Composite
 				@Override
 				public SafeHtml getValue(ClientCrime object) {
 					SafeHtmlBuilder sb = new SafeHtmlBuilder();
-					sb.appendHtmlConstant("<img src=\"images/car.jpg\" alt=\"car\" height=\"42\" width=\"42\">");
+					sb.appendHtmlConstant("<img src=\"images/twitter.png\" alt=\"car\" height=\"42\" width=\"42\">");
 					return sb.toSafeHtml();
 				}
 			};
@@ -285,7 +285,7 @@ public class UserPanel extends Composite
 
 	private void drawTwitterButton()
 	{
-		String s = "<a href=\"https://twitter.com/intent/tweet?button_hashtag=Dredd&text=The Law? I am the Law.\" class=\"twitter-hashtag-button\" data-lang=\"en\" >Tweet #Dredd</a>";
+		String s = "<a href=\"https://twitter.com/intent/tweet?button_hashtag=Dredd&text=The Law? I am the Law.\" class=\"twitter-hashtag-button\" data-lang=\"en\" >Tweet #Dredd<img src=\"twitter.png\"></a>";
 
 		getHTwitter().setHTML(s);
 	}
