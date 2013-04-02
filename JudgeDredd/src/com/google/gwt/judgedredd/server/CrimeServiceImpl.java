@@ -46,7 +46,6 @@ public class CrimeServiceImpl extends RemoteServiceServlet implements CrimeServi
 		// make persistent
 		try
 		{
-			System.out.println("make persistent call");
 			pm.makePersistentAll(crimeReport);
 		}
 		finally {
@@ -148,6 +147,29 @@ public class CrimeServiceImpl extends RemoteServiceServlet implements CrimeServi
 		}
 	}	
 
+	public int approveAllCrimes() throws NotLoggedInException {
+
+		checkLoggedIn();
+		PersistenceManager pm = getPersistenceManager();
+		List<Crime> crimes = new ArrayList<Crime>();
+		int crimesApprovedCount = 0;
+		try {
+			Extent<Crime> e = pm.getExtent(Crime.class, true);
+			java.util.Iterator iter=e.iterator();
+			while (iter.hasNext()) {
+				Crime c = (Crime) iter.next();				
+				if (c.isApproved() == false) {
+					c.setApproval();
+					crimesApprovedCount++;
+				}
+			}
+		}
+
+		finally {
+			pm.close();
+		}
+		return crimesApprovedCount;
+	}	
 	public ClientCrime[] getCertainCrimeType(String crimeType) {
 
 		PersistenceManager pm = getPersistenceManager();

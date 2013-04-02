@@ -36,6 +36,7 @@ public class AdminPanel extends Composite
 	private final DialogBox dialogBox = new DialogBox();
 	private final Button closeButton = new Button("Close");
 	private final Button removeUnapprovedCrimesButton = new Button("Remove unapproved Crimes");
+	private final Button approveAllCrimesButton = new Button("Approve All Crimes");
 
 	public AdminPanel() 
 	{
@@ -128,7 +129,7 @@ public class AdminPanel extends Composite
 		flowpanel.add(btnParseData);
 
 		//Add a button to remove this crime from the table.
-		final Button showUnapprovedCrimesButton = new Button("Show unapproved Crimes");
+		final Button showUnapprovedCrimesButton = new Button("Show Unapproved Crimes");
 		showUnapprovedCrimesButton.addStyleDependentName("remove");
 		showUnapprovedCrimesButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
@@ -194,6 +195,34 @@ public class AdminPanel extends Composite
 		flowpanel.add(totalCrimeCountLbl);
 
 		//Add a button to remove this crime from the table.
+		approveAllCrimesButton.addStyleDependentName("remove");
+		approveAllCrimesButton.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				crimeService.approveAllCrimes(new AsyncCallback<Integer>() 
+						{
+					public void onFailure(Throwable error) 
+					{
+						Window.alert(error.getMessage());
+					}
+					public void onSuccess(Integer crimesApproved) 
+					{
+						dialogBox.setText(crimesApproved + " unapproved Crimes were approved");
+						closeButton.setVisible(true);
+						closeButton.setFocus(true);
+						approveAllCrimesButton.setEnabled(false);
+						dialogBox.center();
+
+						flowpanel.remove(approveFlexTable);
+						flowpanel.remove(totalCrimeCountLbl);
+						flowpanel.remove(approveAllCrimesButton);
+						flowpanel.remove(removeUnapprovedCrimesButton);
+					}
+						});
+			}
+		});
+		flowpanel.add(approveAllCrimesButton);
+		
+		//Add a button to remove this crime from the table.
 		removeUnapprovedCrimesButton.addStyleDependentName("remove");
 		removeUnapprovedCrimesButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
@@ -213,6 +242,7 @@ public class AdminPanel extends Composite
 
 						flowpanel.remove(approveFlexTable);
 						flowpanel.remove(totalCrimeCountLbl);
+						flowpanel.remove(approveAllCrimesButton);
 						flowpanel.remove(removeUnapprovedCrimesButton);
 					}
 						});
@@ -231,7 +261,7 @@ public class AdminPanel extends Composite
 		approveFlexTable.getCellFormatter().addStyleName(row, 1, "watchListNumericColumn");
 		approveFlexTable.getCellFormatter().addStyleName(row, 2, "watchListNumericColumn");
 
-		//Add a button to remove this crime from the table.
+		//Add a button to approve this crime from the table.
 		final Button approveCrimeButton = new Button("Approve");
 		approveCrimeButton.addStyleDependentName("remove");
 		approveCrimeButton.addClickHandler(new ClickHandler() {

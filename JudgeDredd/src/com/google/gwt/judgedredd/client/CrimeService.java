@@ -16,5 +16,6 @@ public interface CrimeService extends RemoteService {
 	public void approveCrimes(int month) throws NotLoggedInException;
 	public ClientCrime[] getCertainCrimeType(String crimeType) throws NotLoggedInException;
 	// TODO: getMonthlyCrimesCount()
+	public int approveAllCrimes() throws NotLoggedInException;
 	
 }

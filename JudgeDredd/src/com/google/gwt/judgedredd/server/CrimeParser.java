@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
@@ -18,7 +20,7 @@ import com.google.maps.gwt.client.LatLng;
 
 public class CrimeParser {
 
-	final private int MAX_NUMBER_OF_CRIMES = 10; // max number of crimes to store in datastore
+	final private int MAX_NUMBER_OF_CRIMES = 200; // max number of crimes to store in datastore
 	private int[] monthlyCrimes;
 
 	/**
@@ -107,7 +109,7 @@ public class CrimeParser {
 				e.printStackTrace();
 			}
 
-			if(cleanAddress == null || !cleanAddress.contains("Vancouver")){
+			if(cleanAddress == null || !cleanAddress.contains(", Vancouver")){
 				// Skip entry if geocoder results is not returned.
 				// DEBUG
 				//		    	if(cleanAddress != null) 
@@ -117,6 +119,7 @@ public class CrimeParser {
 
 				// DEBUG
 				System.out.println("ADDED: " + crimes_counter + " " + crimeType+ " " +year+ " " +month+ " " +cleanAddress+ " " +latitude+ " " +longitude);
+				//logger.log(Level.FINE, "ADDED: " + crimes_counter + " " + crimeType+ " " +year+ " " +month+ " " +cleanAddress+ " " +latitude+ " " +longitude);
 				
 				// retain only the address and building portion of address
 				cleanAddress = cleanAddress.substring(0, cleanAddress.indexOf(", Vancouver"));

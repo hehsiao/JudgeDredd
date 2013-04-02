@@ -11,4 +11,5 @@ public interface CrimeServiceAsync {
 	public void approveCrimes(int month, AsyncCallback<Void> async);
 	public void getCertainCrimeType(String crimeType, AsyncCallback<ClientCrime[]> async);
 //	public void getMonthlyCrimesCount(AsyncCallback<Integer> async);
+	public void approveAllCrimes(AsyncCallback<Integer> asyncCallback);
 }
