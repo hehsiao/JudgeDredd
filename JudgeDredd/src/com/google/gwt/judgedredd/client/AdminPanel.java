@@ -83,7 +83,7 @@ public class AdminPanel extends Composite
 				btnParseData.setEnabled(false);
 				String url = URL_Field.getText();
 
-				dialogBox.setText("Please wait... processing dataset from " + url + "...");
+				dialogBox.setText("Please wait... processing dataset from " + url + "...\n" + "This process could take up to 5 minutes.");
 				closeButton.setVisible(false);
 				dialogBox.center();
 
@@ -177,10 +177,10 @@ public class AdminPanel extends Composite
 
 		// Add styles to elements in the crime list table.
 		approveFlexTable.setCellPadding(6);
-		//		approveFlexTable.getRowFormatter().addStyleName(0, "approveCrimeListHeader");
-		//		approveFlexTable.addStyleName("approveCrimeList");
-		//		approveFlexTable.getCellFormatter().addStyleName(0, 1, "approveCrimeListNumericColumn");
-		//		approveFlexTable.getCellFormatter().addStyleName(0, 2, "approveCrimeListNumericColumn");
+		approveFlexTable.getRowFormatter().addStyleName(0, "approveCrimeListHeader");
+		approveFlexTable.addStyleName("approveCrimeList");
+		approveFlexTable.getCellFormatter().addStyleName(0, 1, "approveCrimeListNumericColumn");
+		approveFlexTable.getCellFormatter().addStyleName(0, 2, "approveCrimeListNumericColumn");
 
 		int totalCrimes = 0;
 

@@ -103,7 +103,7 @@ public class UserPanel extends Composite
 
 			public void onClick(ClickEvent event) {
 				String month = monthBox.getItemText(monthBox.getSelectedIndex());
-				int targetYear = 2010;
+				int targetYear = 2010; //default value
 				try
 				{
 					targetYear = Integer.parseInt(yearBox.getItemText(yearBox.getSelectedIndex()));
@@ -183,7 +183,6 @@ public class UserPanel extends Composite
 			final CellTable<ClientCrime> crimeTable = new CellTable<ClientCrime>();
 			// Display 10 rows in one page
 			crimeTable.setPageSize(10);
-
 
 			final SafeHtmlCell imageCell = new SafeHtmlCell();
 

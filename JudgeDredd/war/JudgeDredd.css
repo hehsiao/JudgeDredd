@@ -51,6 +51,7 @@ body {
 }
 
 .approveCrimeList {
+  background-color: #666666;
   border: 1px solid silver;
   padding: 2px;
   margin-bottom:6px;
@@ -262,6 +263,7 @@ a, a:visited, a:hover {
 }
 
 .gwt-Label {
+	color: white;
 }
 
 .gwt-ListBox {
