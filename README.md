@@ -1,4 +1,5 @@
-L2F-Red_Hot_Techie_Peppers
-==========================
+# Judge Dredd Vancouver Crime Watcher
 
-L2F-Red_Hot_Techie_Peppers
+## Project Description
+
+Using the freely avaliable crime dataset from Data Vancouver, we built a tool using Java and GWT to visualize those raw data.
