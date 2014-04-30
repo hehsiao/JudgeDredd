@@ -53,7 +53,6 @@ public class Map extends Composite
 
 		theMap = GoogleMap.create( mapPanel.getElement(), options );
 
-
 		findUserLocation();
 	}
 
@@ -84,6 +83,7 @@ public class Map extends Composite
 							infowindowOpts.setContent("You are here!");
 
 							final InfoWindow infowindow = InfoWindow.create(infowindowOpts);
+							
 							marker2.addClickListener(new Marker.ClickHandler() {
 								@Override
 								public void handle(MouseEvent event) {
