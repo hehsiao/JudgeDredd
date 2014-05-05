@@ -6,6 +6,8 @@
 *.war
 *.ear
 
+.metadata
+
 JudgeDredd/.gwt/.gwt-log
 
 JudgeDredd/war/WEB-INF/appengine-generated/local_db.bin
